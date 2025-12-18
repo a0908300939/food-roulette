@@ -1,0 +1,1 @@
+ALTER TABLE `spin_history` ADD `isShared` boolean DEFAULT false NOT NULL;
