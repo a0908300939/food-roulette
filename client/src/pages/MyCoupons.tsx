@@ -229,6 +229,9 @@ export default function MyCoupons() {
               const expired = isCouponExpired(new Date(coupon.createdAt), isCheckInReward);
               const daysExpired = getDaysExpired(new Date(coupon.createdAt), isCheckInReward);
               const canRedeem = !expired && !coupon.isRedeemed && coupon.couponId !== null;
+              
+              // 計算簽到獎勵的過期日期
+              const checkInRewardExpiry = isCheckInReward ? new Date(new Date(coupon.createdAt).getTime() + 7 * 24 * 60 * 60 * 1000) : null;
 
               return (
                 <Card 

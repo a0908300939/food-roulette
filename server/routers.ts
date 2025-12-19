@@ -11,7 +11,7 @@ import { spinLimitRouter } from "./spinLimitRouter";
 import { pushNotificationRouter } from "./pushNotificationRouter";
 import { adminRouter } from "./adminRouter";
 import { notificationRouter } from "./routers/notificationRouter";
-import { merchantAdminRouter, merchantRouter } from "./merchantRouter";
+// import { merchantAdminRouter, merchantRouter } from "./merchantRouter";
 import { storagePut } from "./storage";
 
 // 管理員權限檢查
@@ -30,8 +30,8 @@ export const appRouter = router({
   pushNotification: pushNotificationRouter,
   admin: adminRouter,
   notification: notificationRouter,
-  merchantAdmin: merchantAdminRouter,
-  merchant: merchantRouter,
+  // merchantAdmin: merchantAdminRouter,
+  // merchant: merchantRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -118,6 +118,10 @@ export const appRouter = router({
             deviceId,
             loginMethod: 'simple',
           });
+          
+          if (!newUser) {
+            throw new Error('建立使用者失敗');
+          }
           
           // 生成 session token
           const token = await db.createUserSession(newUser.id);
@@ -729,7 +733,7 @@ export const appRouter = router({
           isDefault: false,
           createdBy: ctx.user.id,
         });
-        return { success: true, id: result.insertId };
+        return { success: true, id: (result as any).insertId };
       }),
 
     // 查詢所有自訂轉盤樣式

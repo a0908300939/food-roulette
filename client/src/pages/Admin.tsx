@@ -12,7 +12,7 @@ import UserManagement from "./admin/UserManagement";
 import AnalyticsDashboard from "./admin/AnalyticsDashboard";
 import WheelImageSettings from "./admin/WheelImageSettings";
 import NotificationManagement from "./NotificationManagement";
-import MerchantManagement from "./admin/MerchantManagement";
+// import MerchantManagement from "./admin/MerchantManagement";
 
 export default function Admin() {
   const { user, loading } = useAuth();
@@ -74,10 +74,10 @@ export default function Admin() {
               <Bell className="h-4 w-4" />
               <span className="hidden sm:inline">推播管理</span>
             </TabsTrigger>
-            <TabsTrigger value="merchants" className="flex items-center gap-2">
+            {/* <TabsTrigger value="merchants" className="flex items-center gap-2">
               <Briefcase className="h-4 w-4" />
               <span className="hidden sm:inline">商家管理</span>
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
 
           <TabsContent value="restaurants">
@@ -104,9 +104,9 @@ export default function Admin() {
             <NotificationManagement />
           </TabsContent>
 
-          <TabsContent value="merchants">
+          {/* <TabsContent value="merchants">
             <MerchantManagement />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </DashboardLayout>
