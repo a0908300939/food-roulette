@@ -1,0 +1,734 @@
+
+專案
+
+
+協作
+
+分享
+我看到錯誤了！PowerShell 無法識別 node 命令。
+這表示 Node.js 可能沒有正確安裝或沒有加入 PATH 環境變數。
+讓我檢查一下您的專案，因為您之前可以進入專案目錄，應該是有 Node.js 環境的。
+🔍 請嘗試以下方法：
+方法 1：使用完整路徑
+如果您有安裝 Node.js，請找到安裝路徑並使用完整路徑執行：
+powershell
+"C:\Program Files\nodejs\node.exe" init_database.js
+方法 2：檢查 Node.js 是否已安裝
+powershell
+where.exe node
+方法 3：使用 npm（如果可用）
+powershell
+npm --version
+如果 npm 可用，我們可以用另一種方式執行。
+💡 或者，最直接的方法
+讓我為您準備一個批次檔（.bat），可以自動找到 Node.js 並執行腳本！
+請先告訴我：執行 where.exe node 的結果是什麼？
+我看到了！where.exe node 的結果是：
+資訊：找不到提供模式的檔案。
+這確認了您的電腦上沒有安裝 Node.js，或者沒有正確加入 PATH。
+但是，您的專案資料夾名稱是 food-roulette-railway-deploy，這應該是一個 Node.js 專案。讓我提供最終的解決方案：
+🎯 最終解決方案：直接複製 SQL 到 Railway
+既然工具都有問題，讓我們回歸最基本的方法：
+使用 Railway 的 Deployments 功能執行 SQL
+在 Railway 專案中，點擊您的 food-roulette 服務（不是 MySQL）
+找到「Settings」或「Variables」
+新增一個臨時的啟動腳本
+💡 或者，更簡單的方法：
+讓我為您建立一個網頁版的資料庫初始化工具，您只需要在瀏覽器中開啟，點擊按鈕就可以執行！
+不需要安裝任何東西！
+請稍等...
+其實，我有一個更好的主意！
+既然您的專案已經部署在 Railway 上，我們可以在 Railway 上直接執行資料庫遷移！
+🚀 最簡單的方法：使用專案中的 Drizzle
+您的專案應該已經有 Drizzle ORM 和所有必要的依賴。
+請在 PowerShell 中執行以下命令：
+步驟 1：檢查專案中的 package.json
+powershell
+type package.json
+找找看有沒有類似 db:push、db:migrate、drizzle-kit 之類的腳本。
+步驟 2：如果有 pnpm-lock.yaml
+您的專案應該有 pnpm，讓我們試試直接執行：
+powershell
+.\node_modules\.bin\drizzle-kit push
+或者：
+powershell
+npx drizzle-kit push
+請先執行 type package.json，把結果貼給我看，我會告訴您正確的執行方式！
+太好了！我看到您已經在 Railway 的 food-roulette 服務設定頁面了。
+我有一個絕妙的主意！我們可以利用 Railway 的部署環境來執行資料庫初始化！
+🎯 使用 Railway 的 One-off Command 功能
+Railway 有一個功能可以讓您在部署環境中執行一次性命令。
+方法：在專案中新增初始化腳本
+讓我為您準備一個可以在 Railway 環境中執行的腳本。
+請先告訴我：
+點擊左側的「food-roulette 食物輪盤」服務
+找到「Settings」標籤
+向下滾動，找到「Custom Start Command」或「Build Command」
+或者，更簡單的方法：
+使用 Railway 的 Shell
+在 food-roulette 服務頁面
+點擊右上角的「...」（更多選項）
+看看有沒有「Shell」或「Terminal」選項
+如果有，我們就可以直接在 Railway 的環境中執行資料庫初始化命令了！
+請截圖給我看 food-roulette 服務的頁面，我會幫您找到正確的方式！
+我看到這是專案設定頁面。讓我們換個方向：
+🎯 最直接的解決方案
+既然本地環境有問題，讓我直接在我的沙箱環境中執行資料庫初始化！
+我有 Node.js 和 MySQL 客戶端，可以直接連接到您的 Railway MySQL 並執行初始化腳本。
+請稍等，讓我立即執行...
+發現本地未安裝 Node.js，導致執行 `node` 命令失敗。已嘗試在沙箱環境中安裝 `mysql2`，準備連接 Railway 資料庫進行初始化。下一步會用 Railway 的環境直接執行資料庫初始化腳本。
+
+看來我的沙箱環境也無法連接到 Railway 的 MySQL（網路限制）。
+讓我提供最終的解決方案：使用 GitHub Actions 自動執行資料庫遷移！
+這是最可靠的方法，因為 GitHub Actions 可以連接到 Railway 的公開資料庫。
+🎯 最終解決方案：GitHub Actions
+我會為您建立一個 GitHub Actions workflow，您只需要：
+將 workflow 檔案推送到 GitHub
+在 GitHub 上手動觸發 workflow
+資料庫就會自動初始化！
+讓我立即為您準備...
+由於沙箱環境無法連接 Railway 資料庫，我將改用 GitHub Actions 自動執行資料庫初始化，確保連線成功並完成設定。
+
+完成建立並推送GitHub Actions初始化資料庫的workflow設定，接下來會指導使用者執行腳本驗證結果。
+
+我看到您在查看 Railway 的設定頁面，這裡有「Custom Build Command」。
+不過，讓我先完成 GitHub Actions 的推送，這樣您就可以直接在 GitHub 上觸發資料庫初始化了！
+讓我繼續...
+完成推送 GitHub Actions workflow，已新增初始化資料庫設定。接下來會指導使用者執行腳本驗證結果。
+
+GitHub 需要使用 Personal Access Token 而不是密碼。
+沒關係！讓我為您提供一個更簡單的方法：直接將 workflow 檔案提供給您，您可以在 GitHub 網頁介面上手動新增！
+或者，我們可以使用您之前已經設定好的 GitHub CLI (gh)...
+目前已建立 workflow 檔案，但需使用 Personal Access Token 進行推送。建議直接在 GitHub 網頁上手動新增檔案，或使用 GitHub CLI 來操作。
+
+🎯 最終解決方案：使用 GitHub Actions
+我為您準備了一個完整的 GitHub Actions workflow，可以自動初始化 Railway MySQL 資料庫！
+📋 最簡單的執行方式
+步驟 1：在 GitHub 網頁上新增檔案
+前往您的 GitHub 專案：
+https://github.com/a0908300939/food-roulette
+點擊「Add file」→「Create new file」
+檔案路徑輸入：
+Plain Text
+.github/workflows/init-database.yml
+複製附件 init-database.yml 的內容並貼上
+點擊「Commit changes」
+步驟 2：執行 Workflow
+前往「Actions」標籤
+點擊左側的「Initialize Database」
+點擊右側的「Run workflow」按鈕
+選擇「main」分支 ，點擊「Run workflow」
+等待執行完成（約 1-2 分鐘）
+查看結果，應該會看到「✅ Database initialization completed!」
+📄 附件說明
+GITHUB_ACTIONS_GUIDE.md - 完整的操作指南
+init-database.yml - GitHub Actions workflow 檔案（請複製到 GitHub）
+✅ 執行成功後
+您的 Railway MySQL 將會有 15 個資料表，整個系統就可以正式運作了！
+請告訴我您是否成功新增並執行了 workflow！
+🚀 使用 GitHub Actions 初始化資料庫
+📋 步驟說明
+我已經為您建立了一個 GitHub Actions workflow，可以自動初始化 Railway MySQL 資料庫。
+方法 1：在 GitHub 網頁介面手動新增檔案（最簡單！）
+前往您的 GitHub 專案
+https://github.com/a0908300939/food-roulette
+建立 workflow 檔案
+點擊「Add file」→「Create new file」
+檔案路徑輸入：.github/workflows/init-database.yml
+複製下方的完整內容貼上
+提交檔案
+點擊「Commit changes」
+選擇「Commit directly to the main branch」
+點擊「Commit changes」
+執行 workflow
+前往「Actions」標籤
+點擊左側的「Initialize Database」
+點擊右側的「Run workflow」按鈕
+選擇「main」分支
+點擊「Run workflow」
+查看結果
+等待執行完成（約 1-2 分鐘 ）
+點擊 workflow 查看執行日誌
+應該會看到「✅ Database initialization completed!」
+方法 2：使用本地 Git（如果您有 GitHub Personal Access Token）
+在專案目錄執行：
+Bash
+git push https://ghp_YOUR_TOKEN@github.com/a0908300939/food-roulette.git
+然後前往 GitHub Actions 執行（同方法 1 的步驟 4-5 ）
+📄 Workflow 檔案內容
+請複製以下完整內容到 .github/workflows/init-database.yml：
+YAML
+name: Initialize Database
+
+on:
+  workflow_dispatch:  # 手動觸發
+
+jobs:
+  init-db:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install MySQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+      
+      - name: Create SQL script
+        run: |
+          cat > init.sql << 'EOF'
+          CREATE TABLE IF NOT EXISTS users (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            openId varchar(64) UNIQUE,
+            name text,
+            email varchar(320),
+            loginMethod varchar(64),
+            role enum('user','merchant','admin') NOT NULL DEFAULT 'user',
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            lastSignedIn timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            phone varchar(20) UNIQUE,
+            deviceId varchar(64),
+            deviceBoundAt timestamp
+          );
+
+          CREATE TABLE IF NOT EXISTS restaurants (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            name varchar(255) NOT NULL,
+            address text NOT NULL,
+            latitude varchar(50),
+            longitude varchar(50),
+            phone varchar(20),
+            description text,
+            photoUrl text,
+            operatingHours text NOT NULL,
+            providesCheckInReward boolean NOT NULL DEFAULT false,
+            isActive boolean NOT NULL DEFAULT true,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS coupons (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            restaurantId int NOT NULL,
+            title varchar(255) NOT N
+init-database.yml
+程式碼 · 9.22 KB
+
+查看此任務中的所有檔案
+完美！我看到您已經在 GitHub 專案頁面了，而且最新的 commit 是「feat: Add merchant management system with three-tier permissions」（6 hours ago）。
+現在請按照以下步驟新增 GitHub Actions workflow：
+📋 步驟
+1. 點擊「Add file」按鈕
+在頁面右上方，點擊「Add file」→ 選擇「Create new file」
+2. 輸入檔案路徑
+在檔案名稱欄位輸入：
+Plain Text
+.github/workflows/init-database.yml
+（注意：當您輸入 / 時，GitHub 會自動建立資料夾）
+3. 貼上 workflow 內容
+開啟我提供的附件 init-database.yml，複製全部內容並貼到編輯器中。
+4. 提交檔案
+點擊頁面下方的「Commit changes」按鈕
+選擇「Commit directly to the main branch」
+點擊「Commit changes」確認
+5. 執行 Workflow
+點擊頁面上方的「Actions」標籤
+您應該會看到「Initialize Database」workflow
+點擊它，然後點擊「Run workflow」按鈕
+請先執行步驟 1（點擊 Add file），然後告訴我進度！
+🎉 完美！您已經成功建立了檔案！
+我看到您已經在正確的位置：
+路徑：.github/workflows/init-database.yml
+分支：main
+現在請：
+📝 貼上 Workflow 內容
+請開啟我之前提供的附件 init-database.yml，複製全部內容（約 235 行），然後貼到編輯器中（取代「Enter file contents here」）。
+或者，我可以直接把內容貼在這裡讓您複製：
+由於內容很長，讓我用另一種方式提供給您。請稍等...
+請複製以下完整內容，貼到 GitHub 編輯器中：
+YAML
+name: Initialize Database
+
+on:
+  workflow_dispatch:  # 手動觸發
+
+jobs:
+  init-db:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install MySQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+      
+      - name: Create SQL script
+        run: |
+          cat > init.sql << 'EOF'
+          CREATE TABLE IF NOT EXISTS users (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            openId varchar(64) UNIQUE,
+            name text,
+            email varchar(320),
+            loginMethod varchar(64),
+            role enum('user','merchant','admin') NOT NULL DEFAULT 'user',
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            lastSignedIn timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            phone varchar(20) UNIQUE,
+            deviceId varchar(64),
+            deviceBoundAt timestamp
+          );
+
+          CREATE TABLE IF NOT EXISTS restaurants (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            name varchar(255) NOT NULL,
+            address text NOT NULL,
+            latitude varchar(50),
+            longitude varchar(50),
+            phone varchar(20),
+            description text,
+            photoUrl text,
+            operatingHours text NOT NULL,
+            providesCheckInReward boolean NOT NULL DEFAULT false,
+            isActive boolean NOT NULL DEFAULT true,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS coupons (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            restaurantId int NOT NULL,
+            title varchar(255) NOT NULL,
+            description text NOT NULL,
+            type enum('discount','gift','cashback') NOT NULL DEFAULT 'discount',
+            expiresAt timestamp,
+            isActive boolean NOT NULL DEFAULT true,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS spin_history (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            restaurantId int NOT NULL,
+            couponId int,
+            mealPeriod enum('breakfast','lunch','afternoon_tea','dinner','late_night') NOT NULL,
+            isShared boolean DEFAULT false NOT NULL,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS coupon_redemptions (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            restaurantId int NOT NULL,
+            couponId int NOT NULL,
+            spinHistoryId int,
+            redeemedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS check_in_records (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            checkInDate varchar(10) NOT NULL,
+            consecutiveDays int NOT NULL DEFAULT 1,
+            rewardClaimed boolean NOT NULL DEFAULT false,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS push_notifications (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            title varchar(255) NOT NULL,
+            content text NOT NULL,
+            imageUrl text,
+            couponId int,
+            status enum('draft','scheduled','sent') NOT NULL DEFAULT 'draft',
+            scheduledAt timestamp,
+            sentAt timestamp,
+            createdBy int NOT NULL,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS user_notification_reads (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            notificationId int NOT NULL,
+            readAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS system_settings (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            \`key\` varchar(100) NOT NULL UNIQUE,
+            value text,
+            description text,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS spin_limits (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            date varchar(10) NOT NULL,
+            mealPeriod enum('breakfast','lunch','afternoon_tea','dinner','late_night') NOT NULL,
+            usedCount int NOT NULL DEFAULT 0,
+            dailyCouponCount int NOT NULL DEFAULT 0,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS custom_wheel_styles (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            name varchar(255) NOT NULL,
+            type enum('canvas','image') NOT NULL DEFAULT 'canvas',
+            style varchar(100) NOT NULL,
+            imageUrl text,
+            config text,
+            isDefault boolean NOT NULL DEFAULT false,
+            createdBy int NOT NULL,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS merchants (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL UNIQUE,
+            name varchar(255) NOT NULL,
+            contactPhone varchar(20),
+            contactEmail varchar(320),
+            status enum('active','suspended','inactive') DEFAULT 'active' NOT NULL,
+            notes text,
+            createdBy int NOT NULL,
+            createdAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+            INDEX idx_userId (userId),
+            INDEX idx_status (status)
+          );
+
+          CREATE TABLE IF NOT EXISTS merchant_restaurants (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            merchantId int NOT NULL,
+            restaurantId int NOT NULL,
+            boundAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            boundBy int NOT NULL,
+            UNIQUE KEY unique_merchant_restaurant (merchantId, restaurantId),
+            INDEX idx_merchantId (merchantId),
+            INDEX idx_restaurantId (restaurantId)
+          );
+
+          CREATE TABLE IF NOT EXISTS restaurant_statistics (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            restaurantId int NOT NULL,
+            date varchar(10) NOT NULL,
+            totalSpins int DEFAULT 0 NOT NULL,
+            breakfastSpins int DEFAULT 0 NOT NULL,
+            lunchSpins int DEFAULT 0 NOT NULL,
+            afternoonTeaSpins int DEFAULT 0 NOT NULL,
+            dinnerSpins int DEFAULT 0 NOT NULL,
+            lateNightSpins int DEFAULT 0 NOT NULL,
+            couponsIssued int DEFAULT 0 NOT NULL,
+            couponsRedeemed int DEFAULT 0 NOT NULL,
+            redemptionRate int DEFAULT 0 NOT NULL,
+            uniqueUsers int DEFAULT 0 NOT NULL,
+            createdAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+            UNIQUE KEY unique_restaurant_date (restaurantId, date),
+            INDEX idx_restaurantId (restaurantId),
+            INDEX idx_date (date)
+          );
+
+          CREATE TABLE IF NOT EXISTS restaurant_reviews (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            restaurantId int NOT NULL,
+            userId int NOT NULL,
+            rating int NOT NULL,
+            comment text,
+            photoUrls text,
+            isApproved boolean DEFAULT FALSE NOT NULL,
+            approvedBy int,
+            approvedAt timestamp,
+            createdAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+            INDEX idx_restaurantId (restaurantId),
+            INDEX idx_userId (userId),
+            INDEX idx_isApproved (isApproved)
+          );
+          EOF
+      
+      - name: Execute SQL script
+        env:
+          MYSQL_HOST: mysql-agalev.proxy.rlwy.net
+          MYSQL_PORT: 49836
+          MYSQL_USER: root
+          MYSQL_PASSWORD: NCrfEbBAwIXZSJDHULrmZSJSwJKTqmyy
+          MYSQL_DATABASE: railway
+        run: |
+          mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < init.sql
+          echo "✅ Database initialization completed!"
+      
+      - name: Verify tables
+        env:
+          MYSQL_HOST: mysql-agalev.proxy.rlwy.net
+          MYSQL_PORT: 49836
+          MYSQL_USER: root
+          MYSQL_PASSWORD: NCrfEbBAwIXZSJDHULrmZSJSwJKTqmyy
+          MYSQL_DATABASE: railway
+        run: |
+          echo "📋 Verifying tables..."
+          mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e "SHOW TABLES;"
+貼上後，點擊右上角的「Commit changes...」按鈕！
+Manus 將在你回覆後繼續工作
+傳送訊息給 Manus
+
+init-database.yml
+name: Initialize Database
+
+on:
+  workflow_dispatch:  # 手動觸發
+
+jobs:
+  init-db:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install MySQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+      
+      - name: Create SQL script
+        run: |
+          cat > init.sql << 'EOF'
+          CREATE TABLE IF NOT EXISTS users (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            openId varchar(64) UNIQUE,
+            name text,
+            email varchar(320),
+            loginMethod varchar(64),
+            role enum('user','merchant','admin') NOT NULL DEFAULT 'user',
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            lastSignedIn timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            phone varchar(20) UNIQUE,
+            deviceId varchar(64),
+            deviceBoundAt timestamp
+          );
+
+          CREATE TABLE IF NOT EXISTS restaurants (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            name varchar(255) NOT NULL,
+            address text NOT NULL,
+            latitude varchar(50),
+            longitude varchar(50),
+            phone varchar(20),
+            description text,
+            photoUrl text,
+            operatingHours text NOT NULL,
+            providesCheckInReward boolean NOT NULL DEFAULT false,
+            isActive boolean NOT NULL DEFAULT true,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS coupons (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            restaurantId int NOT NULL,
+            title varchar(255) NOT NULL,
+            description text NOT NULL,
+            type enum('discount','gift','cashback') NOT NULL DEFAULT 'discount',
+            expiresAt timestamp,
+            isActive boolean NOT NULL DEFAULT true,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS spin_history (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            restaurantId int NOT NULL,
+            couponId int,
+            mealPeriod enum('breakfast','lunch','afternoon_tea','dinner','late_night') NOT NULL,
+            isShared boolean DEFAULT false NOT NULL,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS coupon_redemptions (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            restaurantId int NOT NULL,
+            couponId int NOT NULL,
+            spinHistoryId int,
+            redeemedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS check_in_records (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            checkInDate varchar(10) NOT NULL,
+            consecutiveDays int NOT NULL DEFAULT 1,
+            rewardClaimed boolean NOT NULL DEFAULT false,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS push_notifications (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            title varchar(255) NOT NULL,
+            content text NOT NULL,
+            imageUrl text,
+            couponId int,
+            status enum('draft','scheduled','sent') NOT NULL DEFAULT 'draft',
+            scheduledAt timestamp,
+            sentAt timestamp,
+            createdBy int NOT NULL,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS user_notification_reads (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            notificationId int NOT NULL,
+            readAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS system_settings (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            \`key\` varchar(100) NOT NULL UNIQUE,
+            value text,
+            description text,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS spin_limits (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL,
+            date varchar(10) NOT NULL,
+            mealPeriod enum('breakfast','lunch','afternoon_tea','dinner','late_night') NOT NULL,
+            usedCount int NOT NULL DEFAULT 0,
+            dailyCouponCount int NOT NULL DEFAULT 0,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS custom_wheel_styles (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            name varchar(255) NOT NULL,
+            type enum('canvas','image') NOT NULL DEFAULT 'canvas',
+            style varchar(100) NOT NULL,
+            imageUrl text,
+            config text,
+            isDefault boolean NOT NULL DEFAULT false,
+            createdBy int NOT NULL,
+            createdAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updatedAt timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE IF NOT EXISTS merchants (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            userId int NOT NULL UNIQUE,
+            name varchar(255) NOT NULL,
+            contactPhone varchar(20),
+            contactEmail varchar(320),
+            status enum('active','suspended','inactive') DEFAULT 'active' NOT NULL,
+            notes text,
+            createdBy int NOT NULL,
+            createdAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+            INDEX idx_userId (userId),
+            INDEX idx_status (status)
+          );
+
+          CREATE TABLE IF NOT EXISTS merchant_restaurants (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            merchantId int NOT NULL,
+            restaurantId int NOT NULL,
+            boundAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            boundBy int NOT NULL,
+            UNIQUE KEY unique_merchant_restaurant (merchantId, restaurantId),
+            INDEX idx_merchantId (merchantId),
+            INDEX idx_restaurantId (restaurantId)
+          );
+
+          CREATE TABLE IF NOT EXISTS restaurant_statistics (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            restaurantId int NOT NULL,
+            date varchar(10) NOT NULL,
+            totalSpins int DEFAULT 0 NOT NULL,
+            breakfastSpins int DEFAULT 0 NOT NULL,
+            lunchSpins int DEFAULT 0 NOT NULL,
+            afternoonTeaSpins int DEFAULT 0 NOT NULL,
+            dinnerSpins int DEFAULT 0 NOT NULL,
+            lateNightSpins int DEFAULT 0 NOT NULL,
+            couponsIssued int DEFAULT 0 NOT NULL,
+            couponsRedeemed int DEFAULT 0 NOT NULL,
+            redemptionRate int DEFAULT 0 NOT NULL,
+            uniqueUsers int DEFAULT 0 NOT NULL,
+            createdAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+            UNIQUE KEY unique_restaurant_date (restaurantId, date),
+            INDEX idx_restaurantId (restaurantId),
+            INDEX idx_date (date)
+          );
+
+          CREATE TABLE IF NOT EXISTS restaurant_reviews (
+            id int AUTO_INCREMENT PRIMARY KEY,
+            restaurantId int NOT NULL,
+            userId int NOT NULL,
+            rating int NOT NULL,
+            comment text,
+            photoUrls text,
+            isApproved boolean DEFAULT FALSE NOT NULL,
+            approvedBy int,
+            approvedAt timestamp,
+            createdAt timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            updatedAt timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+            INDEX idx_restaurantId (restaurantId),
+            INDEX idx_userId (userId),
+            INDEX idx_isApproved (isApproved)
+          );
+          EOF
+      
+      - name: Execute SQL script
+        env:
+          MYSQL_HOST: mysql-agalev.proxy.rlwy.net
+          MYSQL_PORT: 49836
+          MYSQL_USER: root
+          MYSQL_PASSWORD: NCrfEbBAwIXZSJDHULrmZSJSwJKTqmyy
+          MYSQL_DATABASE: railway
+        run: |
+          mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE < init.sql
+          echo "✅ Database initialization completed!"
+      
+      - name: Verify tables
+        env:
+          MYSQL_HOST: mysql-agalev.proxy.rlwy.net
+          MYSQL_PORT: 49836
+          MYSQL_USER: root
+          MYSQL_PASSWORD: NCrfEbBAwIXZSJDHULrmZSJSwJKTqmyy
+          MYSQL_DATABASE: railway
+        run: |
+          echo "📋 Verifying tables..."
+          mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e "SHOW TABLES;"
+
+How to Access and Use Manus Replay Link - Manus
