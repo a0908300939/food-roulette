@@ -10,7 +10,7 @@ import LineCallback from "./pages/LineCallback";
 import LineRedirect from "./pages/LineRedirect";
 import MyCoupons from "./pages/MyCoupons";
 import Notifications from "./pages/Notifications";
-// import Merchant from "./pages/Merchant";
+import Merchant from "./pages/Merchant";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -22,8 +22,8 @@ function Router() {
       <Route path={"/line"} component={LineRedirect} />
       <Route path={"/my-coupons"} component={MyCoupons} />
       <Route path={"/notifications"} component={Notifications} />
-      {/* <Route path={"/merchant"} component={Merchant} />
-      <Route path={"/merchant/:rest*"} component={Merchant} /> */}
+      <Route path={"/merchant"} component={Merchant} />
+      <Route path={"/merchant/:rest*"} component={Merchant} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
