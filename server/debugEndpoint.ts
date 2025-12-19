@@ -22,7 +22,7 @@ debugEndpoint.get('/debug-env', async (req, res) => {
     env: envVars,
     connectionConfig: {
       host: process.env.MYSQL_PRIVATE_DOMAIN || process.env.MYSQLHOST,
-      port: parseInt(process.env.MYSQLPORT || '3306'),
+      port: process.env.MYSQL_PRIVATE_DOMAIN ? 3306 : parseInt(process.env.MYSQLPORT || '3306'),
       user: process.env.MYSQLUSER || 'root',
       database: process.env.MYSQLDATABASE || 'railway'
     }

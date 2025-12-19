@@ -20,7 +20,7 @@ initDbEndpoint.get('/init-database-now', async (req, res) => {
     // 建立資料庫連接 - 使用 Railway 私有網路
     const dbConfig = {
       host: process.env.MYSQL_PRIVATE_DOMAIN || process.env.MYSQLHOST,
-      port: parseInt(process.env.MYSQLPORT || '3306'),
+      port: process.env.MYSQL_PRIVATE_DOMAIN ? 3306 : parseInt(process.env.MYSQLPORT || '3306'),
       user: process.env.MYSQLUSER || 'root',
       password: process.env.MYSQLPASSWORD,
       database: process.env.MYSQLDATABASE || 'railway'
