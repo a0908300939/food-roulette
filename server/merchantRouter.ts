@@ -1,6 +1,7 @@
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
+import * as merchantDb from "./merchantDb";
 import { TRPCError } from '@trpc/server';
 
 /**
@@ -29,14 +30,14 @@ const merchantProcedure = protectedProcedure.use(({ ctx, next }) => {
 export const merchantAdminRouter = router({
   // 列出所有商家
   list: adminProcedure.query(async () => {
-    return db.getAllMerchants();
+    return merchantDb.getAllMerchants();
   }),
 
   // 取得商家詳情
   getById: adminProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input }) => {
-      return db.getMerchantById(input.id);
+      return merchantDb.getMerchantById(input.id);
     }),
 
   // 建立商家帳號
@@ -89,14 +90,14 @@ export const merchantAdminRouter = router({
       }
 
       // 建立使用者帳號（role: merchant）
-      const user = await db.createMerchantUser({
+      const user = await merchantDb.createMerchantUser({
         phone: input.phone,
         email: input.email,
         name: input.name,
       });
 
       // 建立商家資料
-      const merchant = await db.createMerchant({
+      const merchant = await merchantDb.createMerchant({
         userId: user.id,
         name: input.name,
         contactPhone: input.contactPhone || input.phone,
@@ -120,14 +121,14 @@ export const merchantAdminRouter = router({
     }))
     .mutation(async ({ input }) => {
       const { id, ...data } = input;
-      return db.updateMerchant(id, data);
+      return merchantDb.updateMerchant(id, data);
     }),
 
   // 刪除商家帳號
   delete: adminProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
-      return db.deleteMerchant(input.id);
+      return merchantDb.deleteMerchant(input.id);
     }),
 
   // 綁定店鋪到商家
@@ -138,7 +139,7 @@ export const merchantAdminRouter = router({
     }))
     .mutation(async ({ input, ctx }) => {
       // 檢查商家是否存在
-      const merchant = await db.getMerchantById(input.merchantId);
+      const merchant = await merchantDb.getMerchantById(input.merchantId);
       if (!merchant) {
         throw new TRPCError({ code: 'NOT_FOUND', message: '商家不存在' });
       }
@@ -150,13 +151,13 @@ export const merchantAdminRouter = router({
       }
 
       // 檢查是否已經綁定
-      const existing = await db.getMerchantRestaurantBinding(input.merchantId, input.restaurantId);
+      const existing = await merchantDb.getMerchantRestaurantBinding(input.merchantId, input.restaurantId);
       if (existing) {
         throw new TRPCError({ code: 'CONFLICT', message: '此店鋪已綁定到該商家' });
       }
 
       // 建立綁定
-      return db.bindMerchantRestaurant({
+      return merchantDb.bindMerchantRestaurant({
         merchantId: input.merchantId,
         restaurantId: input.restaurantId,
         boundBy: ctx.user.id,
@@ -170,14 +171,14 @@ export const merchantAdminRouter = router({
       restaurantId: z.number(),
     }))
     .mutation(async ({ input }) => {
-      return db.unbindMerchantRestaurant(input.merchantId, input.restaurantId);
+      return merchantDb.unbindMerchantRestaurant(input.merchantId, input.restaurantId);
     }),
 
   // 取得商家管理的所有店鋪
   getRestaurants: adminProcedure
     .input(z.object({ merchantId: z.number() }))
     .query(async ({ input }) => {
-      return db.getMerchantRestaurants(input.merchantId);
+      return merchantDb.getMerchantRestaurants(input.merchantId);
     }),
 });
 
@@ -187,7 +188,7 @@ export const merchantAdminRouter = router({
 export const merchantRouter = router({
   // 取得自己的商家資訊
   getProfile: merchantProcedure.query(async ({ ctx }) => {
-    const merchant = await db.getMerchantByUserId(ctx.user.id);
+    const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
     if (!merchant) {
       throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
     }
@@ -202,20 +203,20 @@ export const merchantRouter = router({
       contactEmail: z.string().optional(),
     }))
     .mutation(async ({ input, ctx }) => {
-      const merchant = await db.getMerchantByUserId(ctx.user.id);
+      const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
       if (!merchant) {
         throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
       }
-      return db.updateMerchant(merchant.id, input);
+      return merchantDb.updateMerchant(merchant.id, input);
     }),
 
   // 取得自己管理的所有店鋪
   getMyRestaurants: merchantProcedure.query(async ({ ctx }) => {
-    const merchant = await db.getMerchantByUserId(ctx.user.id);
+    const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
     if (!merchant) {
       throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
     }
-    return db.getMerchantRestaurants(merchant.id);
+    return merchantDb.getMerchantRestaurants(merchant.id);
   }),
 
   // 取得店鋪詳情（只能查看自己的店鋪）
@@ -228,12 +229,12 @@ export const merchantRouter = router({
       }
 
       // 商家只能查看自己的店鋪
-      const merchant = await db.getMerchantByUserId(ctx.user.id);
+      const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
       if (!merchant) {
         throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
       }
 
-      const hasAccess = await db.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
+      const hasAccess = await merchantDb.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
       if (!hasAccess) {
         throw new TRPCError({ code: 'FORBIDDEN', message: '您沒有權限查看此店鋪' });
       }
@@ -265,12 +266,12 @@ export const merchantRouter = router({
       }
 
       // 商家只能更新自己的店鋪
-      const merchant = await db.getMerchantByUserId(ctx.user.id);
+      const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
       if (!merchant) {
         throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
       }
 
-      const hasAccess = await db.checkMerchantRestaurantAccess(merchant.id, restaurantId);
+      const hasAccess = await merchantDb.checkMerchantRestaurantAccess(merchant.id, restaurantId);
       if (!hasAccess) {
         throw new TRPCError({ code: 'FORBIDDEN', message: '您沒有權限修改此店鋪' });
       }
@@ -288,21 +289,21 @@ export const merchantRouter = router({
     .query(async ({ input, ctx }) => {
       // 管理員可以查看所有店鋪的統計
       if (ctx.user.role === 'admin') {
-        return db.getRestaurantStatistics(input.restaurantId, input.startDate, input.endDate);
+        return merchantDb.getRestaurantStatistics(input.restaurantId, input.startDate, input.endDate);
       }
 
       // 商家只能查看自己的店鋪統計
-      const merchant = await db.getMerchantByUserId(ctx.user.id);
+      const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
       if (!merchant) {
         throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
       }
 
-      const hasAccess = await db.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
+      const hasAccess = await merchantDb.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
       if (!hasAccess) {
         throw new TRPCError({ code: 'FORBIDDEN', message: '您沒有權限查看此店鋪的統計資料' });
       }
 
-      return db.getRestaurantStatistics(input.restaurantId, input.startDate, input.endDate);
+      return merchantDb.getRestaurantStatistics(input.restaurantId, input.startDate, input.endDate);
     }),
 
   // 取得所有店鋪的總覽統計
@@ -312,7 +313,7 @@ export const merchantRouter = router({
       endDate: z.string().optional(),
     }))
     .query(async ({ input, ctx }) => {
-      const merchant = await db.getMerchantByUserId(ctx.user.id);
+      const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
       if (!merchant) {
         throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
       }
@@ -328,12 +329,12 @@ export const merchantRouter = router({
       metric: z.enum(['totalSpins', 'couponsRedeemed', 'redemptionRate']).default('totalSpins'),
     }))
     .query(async ({ input, ctx }) => {
-      const merchant = await db.getMerchantByUserId(ctx.user.id);
+      const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
       if (!merchant) {
         throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
       }
 
-      return db.getRestaurantRanking(merchant.id, input.startDate, input.endDate, input.metric);
+      return merchantDb.getRestaurantRanking(merchant.id, input.startDate, input.endDate, input.metric);
     }),
 
   // 管理優惠券
@@ -344,12 +345,12 @@ export const merchantRouter = router({
       .query(async ({ input, ctx }) => {
         // 檢查權限
         if (ctx.user.role !== 'admin') {
-          const merchant = await db.getMerchantByUserId(ctx.user.id);
+          const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
           if (!merchant) {
             throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
           }
 
-          const hasAccess = await db.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
+          const hasAccess = await merchantDb.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
           if (!hasAccess) {
             throw new TRPCError({ code: 'FORBIDDEN', message: '您沒有權限查看此店鋪的優惠券' });
           }
@@ -373,12 +374,12 @@ export const merchantRouter = router({
       .mutation(async ({ input, ctx }) => {
         // 檢查權限
         if (ctx.user.role !== 'admin') {
-          const merchant = await db.getMerchantByUserId(ctx.user.id);
+          const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
           if (!merchant) {
             throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
           }
 
-          const hasAccess = await db.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
+          const hasAccess = await merchantDb.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
           if (!hasAccess) {
             throw new TRPCError({ code: 'FORBIDDEN', message: '您沒有權限為此店鋪新增優惠券' });
           }
@@ -405,12 +406,12 @@ export const merchantRouter = router({
 
         // 檢查權限
         if (ctx.user.role !== 'admin') {
-          const merchant = await db.getMerchantByUserId(ctx.user.id);
+          const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
           if (!merchant) {
             throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
           }
 
-          const hasAccess = await db.checkMerchantRestaurantAccess(merchant.id, restaurantId);
+          const hasAccess = await merchantDb.checkMerchantRestaurantAccess(merchant.id, restaurantId);
           if (!hasAccess) {
             throw new TRPCError({ code: 'FORBIDDEN', message: '您沒有權限修改此優惠券' });
           }
@@ -428,12 +429,12 @@ export const merchantRouter = router({
       .mutation(async ({ input, ctx }) => {
         // 檢查權限
         if (ctx.user.role !== 'admin') {
-          const merchant = await db.getMerchantByUserId(ctx.user.id);
+          const merchant = await merchantDb.getMerchantByUserId(ctx.user.id);
           if (!merchant) {
             throw new TRPCError({ code: 'NOT_FOUND', message: '商家資料不存在' });
           }
 
-          const hasAccess = await db.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
+          const hasAccess = await merchantDb.checkMerchantRestaurantAccess(merchant.id, input.restaurantId);
           if (!hasAccess) {
             throw new TRPCError({ code: 'FORBIDDEN', message: '您沒有權限刪除此優惠券' });
           }
