@@ -201,15 +201,20 @@
             loginBtn.innerHTML = '<span class="loading"></span>登入中...';
 
             try {
+                // 使用 tRPC batch 格式
                 const response = await fetch('/api/trpc/auth.simpleLogin', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        email: email,
-                        deviceId: deviceId,
-                        deviceInfo: deviceInfo
+                        "0": {
+                            "json": {
+                                email: email,
+                                deviceId: deviceId,
+                                deviceInfo: deviceInfo
+                            }
+                        }
                     })
                 });
 
