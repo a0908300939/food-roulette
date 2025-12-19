@@ -240,6 +240,44 @@ export const initDbRouter = router({
       // 驗證資料表
       const [verifyResult] = await connection.execute('SHOW TABLES');
       
+      // 升級管理員（自動執行）
+      const email = 'a0923188353@gmail.com';
+      let upgradeResult = null;
+      
+      try {
+        const [users] = await connection.execute(
+          'SELECT id, email, phone, role FROM users WHERE email = ?',
+          [email]
+        );
+        
+        if (Array.isArray(users) && users.length > 0) {
+          await connection.execute(
+            'UPDATE users SET role = ? WHERE email = ?',
+            ['admin', email]
+          );
+          
+          const [updatedUsers] = await connection.execute(
+            'SELECT id, email, phone, role FROM users WHERE email = ?',
+            [email]
+          );
+          
+          upgradeResult = {
+            success: true,
+            user: (updatedUsers as any[])[0]
+          };
+        } else {
+          upgradeResult = {
+            success: false,
+            message: '用戶不存在'
+          };
+        }
+      } catch (upgradeError: any) {
+        upgradeResult = {
+          success: false,
+          error: upgradeError.message
+        };
+      }
+      
       return {
         success: true,
         message: '資料庫初始化完成',
@@ -248,7 +286,8 @@ export const initDbRouter = router({
         verification: {
           totalTables: verifyResult.length,
           tableList: verifyResult.map((row: any) => Object.values(row)[0])
-        }
+        },
+        adminUpgrade: upgradeResult
       };
 
     } catch (error: any) {
