@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>升級管理員 - 臨時工具</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #ff6b35;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #ff5722;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeeba;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 升級管理員權限</h1>
+        
+        <div class="warning">
+            <strong>⚠️ 注意：</strong>這是臨時工具，僅用於初始設置。使用後請刪除此頁面。
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email 地址</label>
+            <input type="email" id="email" placeholder="a0923188353@gmail.com" value="a0923188353@gmail.com">
+        </div>
+
+        <div class="form-group">
+            <label for="secret">密鑰</label>
+            <input type="password" id="secret" placeholder="輸入密鑰" value="temp-upgrade-2025-food-roulette">
+        </div>
+
+        <button id="upgradeBtn" onclick="upgradeToAdmin()">升級為管理員</button>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        async function upgradeToAdmin() {
+            const email = document.getElementById('email').value;
+            const secret = document.getElementById('secret').value;
+            const btn = document.getElementById('upgradeBtn');
+            const result = document.getElementById('result');
+
+            if (!email || !secret) {
+                showResult('請填寫所有欄位', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '處理中...';
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/trpc/tempUpgrade.upgradeToAdmin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        secret: secret
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.result && data.result.data) {
+                    showResult(`✅ 升級成功！用戶 ID: ${data.result.data.json.userId}`, 'success');
+                } else if (data.error) {
+                    showResult(`❌ 錯誤: ${data.error.json.message || '未知錯誤'}`, 'error');
+                } else {
+                    showResult('❌ 未知回應格式', 'error');
+                }
+            } catch (error) {
+                showResult(`❌ 請求失敗: ${error.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '升級為管理員';
+            }
+        }
+
+        function showResult(message, type) {
+            const result = document.getElementById('result');
+            result.textContent = message;
+            result.className = 'result ' + type;
+            result.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
