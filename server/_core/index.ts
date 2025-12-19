@@ -8,6 +8,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import merchantRouter from "../merchantRouter";
 import { serveStatic, setupVite } from "./vite";
+import { initDbEndpoint } from "../initDbEndpoint";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -38,6 +39,8 @@ async function startServer() {
   registerOAuthRoutes(app);
   // Merchant REST API
   app.use("/api", merchantRouter);
+  // Database initialization endpoint (temporary)
+  app.use("/", initDbEndpoint);
   // tRPC API
   app.use(
     "/api/trpc",
