@@ -5,6 +5,7 @@
  * 執行完成後應立即刪除此檔案
  * 
  * 訪問: https://your-domain.com/init-database-now
+ * 使用 Railway 私有網路連接
  */
 
 import { Router } from 'express';
