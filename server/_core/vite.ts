@@ -48,8 +48,8 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  // Always use the same path resolution for consistency
-  const distPath = path.resolve(import.meta.dirname, "../..", "dist", "public");
+  // In production, __dirname is /app/dist, and public folder is at /app/dist/public
+  const distPath = path.resolve(import.meta.dirname, "public");
   
   console.log(`[Static] Serving static files from: ${distPath}`);
   console.log(`[Static] __dirname: ${import.meta.dirname}`);
