@@ -17,16 +17,21 @@ initDbEndpoint.get('/init-database-now', async (req, res) => {
   let connection;
   
   try {
-    // 建立資料庫連接 - 使用 Railway 私有網路
-    const dbConfig = {
-      host: process.env.MYSQL_PRIVATE_DOMAIN || process.env.MYSQLHOST,
-      port: process.env.MYSQL_PRIVATE_DOMAIN ? 3306 : parseInt(process.env.MYSQLPORT || '3306'),
-      user: process.env.MYSQLUSER || 'root',
-      password: process.env.MYSQLPASSWORD,
-      database: process.env.MYSQLDATABASE || 'railway'
-    };
-    
-    connection = await mysql.createConnection(dbConfig);
+    // 建立資料庫連接 - 優先使用 DATABASE_URL
+    if (process.env.DATABASE_URL) {
+      // 使用 DATABASE_URL 連接字串
+      connection = await mysql.createConnection(process.env.DATABASE_URL);
+    } else {
+      // 備用方案：使用分離的環境變數
+      const dbConfig = {
+        host: process.env.MYSQL_PRIVATE_DOMAIN || process.env.MYSQLHOST,
+        port: process.env.MYSQL_PRIVATE_DOMAIN ? 3306 : parseInt(process.env.MYSQLPORT || '3306'),
+        user: process.env.MYSQLUSER || 'root',
+        password: process.env.MYSQLPASSWORD,
+        database: process.env.MYSQLDATABASE || 'railway'
+      };
+      connection = await mysql.createConnection(dbConfig);
+    }
     
     const tables = [
       // 1. users - 使用者表（包含三層權限）
