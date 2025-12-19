@@ -124,37 +124,25 @@
             result.style.display = 'none';
 
             try {
-                // 使用 batch=1 格式調用 tRPC mutation
-                const response = await fetch('/api/trpc/tempUpgrade.upgradeToAdmin?batch=1', {
+                // 使用簡單的 REST API 端點
+                const response = await fetch('/api/upgrade-admin', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        "0": {
-                            email: email,
-                            secret: secret
-                        }
+                        email: email,
+                        secret: secret
                     })
                 });
 
                 const data = await response.json();
                 console.log('Response data:', data);
 
-                // 處理 batch 格式回應
-                if (Array.isArray(data) && data[0]) {
-                    const result = data[0];
-                    if (result.result && result.result.data) {
-                        showResult(`✅ 升級成功！用戶 ID: ${result.result.data.json.userId}`, 'success');
-                    } else if (result.error) {
-                        showResult(`❌ 錯誤: ${result.error.json.message || '未知錯誤'}`, 'error');
-                    } else {
-                        showResult('❌ 未知回應格式', 'error');
-                    }
-                } else if (data.result && data.result.data) {
-                    showResult(`✅ 升級成功！用戶 ID: ${data.result.data.json.userId}`, 'success');
+                if (data.success) {
+                    showResult(`✅ 升級成功！用戶 ID: ${data.userId}, 角色: ${data.userRole}`, 'success');
                 } else if (data.error) {
-                    showResult(`❌ 錯誤: ${data.error.json.message || '未知錯誤'}`, 'error');
+                    showResult(`❌ 錯誤: ${data.error}`, 'error');
                 } else {
                     showResult('❌ 未知回應格式: ' + JSON.stringify(data), 'error');
                 }

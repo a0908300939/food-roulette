@@ -6,7 +6,8 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
-import merchantRouter from "../merchantRouter";
+import { merchantRouter } from "../merchantRouter";
+import { setupUpgradeEndpoint } from "../upgrade-endpoint";
 import { serveStatic, setupVite } from "./vite";
 
 
@@ -39,6 +40,9 @@ async function startServer() {
   registerOAuthRoutes(app);
   // Merchant REST API
   app.use("/api", merchantRouter);
+  
+  // Temporary upgrade endpoint
+  setupUpgradeEndpoint(app);
 
   // tRPC API
   app.use(
