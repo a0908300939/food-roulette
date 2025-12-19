@@ -263,5 +263,64 @@ export const initDbRouter = router({
         await connection.end();
       }
     }
+  }),
+
+  // 升級管理員（臨時端點）
+  upgradeAdmin: publicProcedure.mutation(async () => {
+    let connection;
+    try {
+      // 建立資料庫連接
+      connection = await mysql.createConnection(process.env.DATABASE_URL!);
+      
+      const email = 'a0923188353@gmail.com';
+      
+      // 查詢用戶
+      const [users] = await connection.execute(
+        'SELECT id, email, phone, role FROM users WHERE email = ?',
+        [email]
+      );
+      
+      if (!Array.isArray(users) || users.length === 0) {
+        return {
+          success: false,
+          message: '找不到該用戶',
+          email: email
+        };
+      }
+      
+      const user = users[0] as any;
+      
+      // 更新為管理員
+      await connection.execute(
+        'UPDATE users SET role = ? WHERE email = ?',
+        ['admin', email]
+      );
+      
+      // 再次查詢確認
+      const [updatedUsers] = await connection.execute(
+        'SELECT id, email, phone, role FROM users WHERE email = ?',
+        [email]
+      );
+      
+      const updatedUser = (updatedUsers as any[])[0];
+      
+      return {
+        success: true,
+        message: `用戶 ${email} 已成功升級為管理員`,
+        user: updatedUser
+      };
+      
+    } catch (error: any) {
+      console.error('升級管理員錯誤:', error);
+      return {
+        success: false,
+        message: '升級失敗',
+        error: error.message
+      };
+    } finally {
+      if (connection) {
+        await connection.end();
+      }
+    }
   })
 });
