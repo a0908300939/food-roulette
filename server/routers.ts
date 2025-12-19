@@ -14,6 +14,7 @@ import { notificationRouter } from "./routers/notificationRouter";
 // import { merchantAdminRouter, merchantRouter } from "./merchantRouter";
 import { initDbRouter } from "./initDbRouter";
 import { storagePut } from "./storage";
+import { tempUpgradeRouter } from "./tempUpgradeRouter";
 
 // 管理員權限檢查
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -34,6 +35,7 @@ export const appRouter = router({
   // merchantAdmin: merchantAdminRouter,
   // merchant: merchantRouter,
   initDb: initDbRouter,
+  tempUpgrade: tempUpgradeRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
