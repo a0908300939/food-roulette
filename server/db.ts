@@ -1006,3 +1006,7 @@ export async function updateCustomWheelStyle(id: number, data: Partial<InsertCus
   await db.update(customWheelStyles).set({ ...data, updatedAt: new Date() }).where(eq(customWheelStyles.id, id));
 }
 
+
+// ========== 商家管理相關函數 ==========
+// 匯出 merchantDb.ts 中的所有函數
+export * from './merchantDb';

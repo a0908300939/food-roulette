@@ -11,6 +11,7 @@ import { spinLimitRouter } from "./spinLimitRouter";
 import { pushNotificationRouter } from "./pushNotificationRouter";
 import { adminRouter } from "./adminRouter";
 import { notificationRouter } from "./routers/notificationRouter";
+import { merchantAdminRouter, merchantRouter } from "./merchantRouter";
 import { storagePut } from "./storage";
 
 // 管理員權限檢查
@@ -29,6 +30,8 @@ export const appRouter = router({
   pushNotification: pushNotificationRouter,
   admin: adminRouter,
   notification: notificationRouter,
+  merchantAdmin: merchantAdminRouter,
+  merchant: merchantRouter,
   
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

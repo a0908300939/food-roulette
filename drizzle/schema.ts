@@ -15,7 +15,7 @@ export const users = mysqlTable("users", {
   deviceId: varchar("deviceId", { length: 64 }),
   // 裝置綁定時間
   deviceBoundAt: timestamp("deviceBoundAt"),
-  role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
+  role: mysqlEnum("role", ["user", "merchant", "admin"]).default("user").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
@@ -237,3 +237,112 @@ export const customWheelStyles = mysqlTable("custom_wheel_styles", {
 
 export type CustomWheelStyle = typeof customWheelStyles.$inferSelect;
 export type InsertCustomWheelStyle = typeof customWheelStyles.$inferInsert;
+
+/**
+ * 商家資料表
+ * 儲存商家的基本資訊，一個 user 可以是一個商家
+ */
+export const merchants = mysqlTable("merchants", {
+  id: int("id").autoincrement().primaryKey(),
+  // 關聯到 users 表的 ID
+  userId: int("userId").notNull().unique(),
+  // 商家名稱（可以是個人或公司名稱）
+  name: varchar("name", { length: 255 }).notNull(),
+  // 商家聯絡電話
+  contactPhone: varchar("contactPhone", { length: 20 }),
+  // 商家聯絡 Email
+  contactEmail: varchar("contactEmail", { length: 320 }),
+  // 商家狀態: active (啟用), suspended (停權), inactive (停用)
+  status: mysqlEnum("status", ["active", "suspended", "inactive"]).default("active").notNull(),
+  // 備註（管理員可填寫）
+  notes: text("notes"),
+  // 建立者（管理員 ID）
+  createdBy: int("createdBy").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Merchant = typeof merchants.$inferSelect;
+export type InsertMerchant = typeof merchants.$inferInsert;
+
+/**
+ * 商家與店鋪關聯表
+ * 一個商家可以管理多個店鋪（一對多）
+ */
+export const merchantRestaurants = mysqlTable("merchant_restaurants", {
+  id: int("id").autoincrement().primaryKey(),
+  // 商家 ID
+  merchantId: int("merchantId").notNull(),
+  // 店鋪 ID
+  restaurantId: int("restaurantId").notNull(),
+  // 綁定時間
+  boundAt: timestamp("boundAt").defaultNow().notNull(),
+  // 綁定者（管理員 ID）
+  boundBy: int("boundBy").notNull(),
+});
+
+export type MerchantRestaurant = typeof merchantRestaurants.$inferSelect;
+export type InsertMerchantRestaurant = typeof merchantRestaurants.$inferInsert;
+
+/**
+ * 店鋪統計資料表
+ * 儲存每日的店鋪統計資料，用於商家查看數據
+ */
+export const restaurantStatistics = mysqlTable("restaurant_statistics", {
+  id: int("id").autoincrement().primaryKey(),
+  restaurantId: int("restaurantId").notNull(),
+  // 統計日期 (YYYY-MM-DD 格式)
+  date: varchar("date", { length: 10 }).notNull(),
+  // 被抽中總次數
+  totalSpins: int("totalSpins").default(0).notNull(),
+  // 早餐時段被抽中次數
+  breakfastSpins: int("breakfastSpins").default(0).notNull(),
+  // 午餐時段被抽中次數
+  lunchSpins: int("lunchSpins").default(0).notNull(),
+  // 下午茶時段被抽中次數
+  afternoonTeaSpins: int("afternoonTeaSpins").default(0).notNull(),
+  // 晚餐時段被抽中次數
+  dinnerSpins: int("dinnerSpins").default(0).notNull(),
+  // 消夜時段被抽中次數
+  lateNightSpins: int("lateNightSpins").default(0).notNull(),
+  // 優惠券發放數量
+  couponsIssued: int("couponsIssued").default(0).notNull(),
+  // 優惠券兌換數量
+  couponsRedeemed: int("couponsRedeemed").default(0).notNull(),
+  // 優惠券兌換率 (%)
+  redemptionRate: int("redemptionRate").default(0).notNull(),
+  // 不重複使用者數量
+  uniqueUsers: int("uniqueUsers").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RestaurantStatistic = typeof restaurantStatistics.$inferSelect;
+export type InsertRestaurantStatistic = typeof restaurantStatistics.$inferInsert;
+
+/**
+ * 使用者評價表（預留）
+ * 儲存使用者對店鋪的評價和評論
+ */
+export const restaurantReviews = mysqlTable("restaurant_reviews", {
+  id: int("id").autoincrement().primaryKey(),
+  restaurantId: int("restaurantId").notNull(),
+  userId: int("userId").notNull(),
+  // 評分 (1-5 星)
+  rating: int("rating").notNull(),
+  // 評論內容
+  comment: text("comment"),
+  // 評論照片 URL (選填，JSON 格式儲存多張照片)
+  photoUrls: text("photoUrls"),
+  // 是否已審核通過
+  isApproved: boolean("isApproved").default(false).notNull(),
+  // 審核者 ID
+  approvedBy: int("approvedBy"),
+  // 審核時間
+  approvedAt: timestamp("approvedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type RestaurantReview = typeof restaurantReviews.$inferSelect;
+export type InsertRestaurantReview = typeof restaurantReviews.$inferInsert;

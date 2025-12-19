@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { trpc } from "@/lib/trpc";
-import { Store, Ticket, Users, BarChart3, Settings, Bell } from "lucide-react";
+import { Store, Ticket, Users, BarChart3, Settings, Bell, Briefcase } from "lucide-react";
 import { useLocation } from "wouter";
 import RestaurantManagement from "./admin/RestaurantManagement";
 import CouponManagement from "./admin/CouponManagement";
@@ -12,6 +12,7 @@ import UserManagement from "./admin/UserManagement";
 import AnalyticsDashboard from "./admin/AnalyticsDashboard";
 import WheelImageSettings from "./admin/WheelImageSettings";
 import NotificationManagement from "./NotificationManagement";
+import MerchantManagement from "./admin/MerchantManagement";
 
 export default function Admin() {
   const { user, loading } = useAuth();
@@ -73,6 +74,10 @@ export default function Admin() {
               <Bell className="h-4 w-4" />
               <span className="hidden sm:inline">推播管理</span>
             </TabsTrigger>
+            <TabsTrigger value="merchants" className="flex items-center gap-2">
+              <Briefcase className="h-4 w-4" />
+              <span className="hidden sm:inline">商家管理</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="restaurants">
@@ -97,6 +102,10 @@ export default function Admin() {
 
           <TabsContent value="notifications">
             <NotificationManagement />
+          </TabsContent>
+
+          <TabsContent value="merchants">
+            <MerchantManagement />
           </TabsContent>
         </Tabs>
       </div>
