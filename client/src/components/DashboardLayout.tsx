@@ -6,11 +6,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
+import { APP_LOGO, APP_TITLE } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { LogOut } from "lucide-react";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
+import SimpleLoginDialog from "@/components/SimpleLoginDialog";
+import { useState } from "react";
 
 export default function DashboardLayout({
   children,
@@ -18,6 +20,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { loading, user, logout } = useAuth();
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   
   // 查詢背景圖片
   const { data: bgImageData } = trpc.background.get.useQuery();
@@ -48,14 +51,16 @@ export default function DashboardLayout({
             </div>
           </div>
           <Button
-            onClick={() => {
-              window.location.href = getLoginUrl();
-            }}
+            onClick={() => setIsLoginDialogOpen(true)}
             size="lg"
             className="w-full shadow-lg hover:shadow-xl transition-all"
           >
-            Sign in
+            登入 / 註冊
           </Button>
+          <SimpleLoginDialog 
+            open={isLoginDialogOpen} 
+            onOpenChange={setIsLoginDialogOpen}
+          />
         </div>
       </div>
     );

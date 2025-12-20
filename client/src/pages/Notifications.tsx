@@ -7,12 +7,15 @@ import { zhTW } from "date-fns/locale";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
-import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
+import { APP_LOGO, APP_TITLE } from "@/const";
+import SimpleLoginDialog from "@/components/SimpleLoginDialog";
+import { useState } from "react";
 
 export default function Notifications() {
   const { user, loading } = useAuth();
   const [, setLocation] = useLocation();
   const utils = trpc.useUtils();
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
 
   // 查詢使用者的推播訊息
   const { data: notifications, isLoading } = trpc.notification.listForUser.useQuery(
@@ -65,14 +68,16 @@ export default function Notifications() {
             </div>
           </div>
           <Button
-            onClick={() => {
-              window.location.href = getLoginUrl();
-            }}
+            onClick={() => setIsLoginDialogOpen(true)}
             size="lg"
             className="w-full shadow-lg hover:shadow-xl transition-all"
           >
-            登入
+            登入 / 註冊
           </Button>
+          <SimpleLoginDialog 
+            open={isLoginDialogOpen} 
+            onOpenChange={setIsLoginDialogOpen}
+          />
         </div>
       </div>
     );
