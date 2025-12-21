@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1766336423376,
+      "tag": "0000_shiny_makkari",
+      "breakpoints": true
+    }
+  ]
+}

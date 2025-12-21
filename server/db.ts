@@ -1044,3 +1044,133 @@ export async function updateCustomWheelStyle(id: number, data: Partial<InsertCus
 // ========== 商家管理相關函數 ==========
 // 匯出 merchantDb.ts 中的所有函數
 // export * from './merchantDb';
+
+// ========== 使用者管理相關函數 ==========
+
+/**
+ * 取得所有使用者及其關聯的商家
+ */
+export async function getAllUsersWithRestaurants() {
+  const db = await getDb();
+  if (!db) return [];
+
+  const { userRestaurants } = await import("../drizzle/schema");
+  
+  // 取得所有使用者
+  const allUsers = await db.select().from(users).orderBy(users.createdAt);
+  
+  // 取得所有使用者-商家關聯
+  const allUserRestaurants = await db.select().from(userRestaurants);
+  
+  // 組合資料
+  return allUsers.map(user => ({
+    ...user,
+    restaurantIds: allUserRestaurants
+      .filter(ur => ur.userId === user.id)
+      .map(ur => ur.restaurantId),
+  }));
+}
+
+/**
+ * 更新使用者角色
+ */
+export async function updateUserRole(userId: number, role: "user" | "merchant" | "admin") {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db
+    .update(users)
+    .set({ role })
+    .where(eq(users.id, userId));
+}
+
+/**
+ * 指派使用者到商家（會先清除舊的關聯）
+ */
+export async function assignUserToRestaurants(
+  userId: number,
+  restaurantIds: number[],
+  assignedBy: number
+) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const { userRestaurants } = await import("../drizzle/schema");
+
+  // 先刪除該使用者的所有商家關聯
+  await db.delete(userRestaurants).where(eq(userRestaurants.userId, userId));
+
+  // 新增新的關聯
+  if (restaurantIds.length > 0) {
+    const values = restaurantIds.map(restaurantId => ({
+      userId,
+      restaurantId,
+      role: "owner" as const,
+      assignedBy,
+    }));
+    
+    await db.insert(userRestaurants).values(values);
+  }
+}
+
+/**
+ * 取得使用者管理的商家列表
+ */
+export async function getUserRestaurants(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const { userRestaurants } = await import("../drizzle/schema");
+
+  const result = await db
+    .select({
+      id: userRestaurants.id,
+      restaurantId: userRestaurants.restaurantId,
+      role: userRestaurants.role,
+      assignedAt: userRestaurants.assignedAt,
+      restaurantName: restaurants.name,
+    })
+    .from(userRestaurants)
+    .leftJoin(restaurants, eq(userRestaurants.restaurantId, restaurants.id))
+    .where(eq(userRestaurants.userId, userId));
+
+  return result;
+}
+
+/**
+ * 檢查使用者是否有權限管理某個商家
+ */
+export async function canUserManageRestaurant(userId: number, restaurantId: number): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+
+  // 檢查使用者角色
+  const user = await getUserById(userId);
+  if (!user) return false;
+  
+  // 管理員可以管理所有商家
+  if (user.role === "admin") return true;
+  
+  // 商家擁有者只能管理自己的商家
+  if (user.role === "merchant") {
+    const { userRestaurants } = await import("../drizzle/schema");
+    const result = await db
+      .select()
+      .from(userRestaurants)
+      .where(
+        and(
+          eq(userRestaurants.userId, userId),
+          eq(userRestaurants.restaurantId, restaurantId)
+        )
+      )
+      .limit(1);
+    
+    return result.length > 0;
+  }
+  
+  return false;
+}

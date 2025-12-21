@@ -346,3 +346,24 @@ export const restaurantReviews = mysqlTable("restaurant_reviews", {
 
 export type RestaurantReview = typeof restaurantReviews.$inferSelect;
 export type InsertRestaurantReview = typeof restaurantReviews.$inferInsert;
+
+/**
+ * 使用者與店鋪關聯表
+ * 記錄哪些使用者可以管理哪些店鋪（用於權限控制）
+ */
+export const userRestaurants = mysqlTable("user_restaurants", {
+  id: int("id").autoincrement().primaryKey(),
+  // 使用者 ID
+  userId: int("userId").notNull(),
+  // 店鋪 ID
+  restaurantId: int("restaurantId").notNull(),
+  // 角色: owner (擁有者), manager (管理者)
+  role: mysqlEnum("role", ["owner", "manager"]).default("owner").notNull(),
+  // 綁定時間
+  assignedAt: timestamp("assignedAt").defaultNow().notNull(),
+  // 指派者（管理員 ID）
+  assignedBy: int("assignedBy").notNull(),
+});
+
+export type UserRestaurant = typeof userRestaurants.$inferSelect;
+export type InsertUserRestaurant = typeof userRestaurants.$inferInsert;

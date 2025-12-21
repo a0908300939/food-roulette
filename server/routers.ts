@@ -11,6 +11,7 @@ import { spinLimitRouter } from "./spinLimitRouter";
 import { pushNotificationRouter } from "./pushNotificationRouter";
 import { adminRouter } from "./adminRouter";
 import { notificationRouter } from "./routers/notificationRouter";
+import { userManagementRouter } from "./routers/userManagementRouter";
 // import { merchantAdminRouter, merchantRouter } from "./merchantRouter";
 import { initDbRouter } from "./initDbRouter";
 import { storagePut } from "./storage";
@@ -32,6 +33,7 @@ export const appRouter = router({
   pushNotification: pushNotificationRouter,
   admin: adminRouter,
   notification: notificationRouter,
+  userManagement: userManagementRouter,
   // merchantAdmin: merchantAdminRouter,
   // merchant: merchantRouter,
   initDb: initDbRouter,
