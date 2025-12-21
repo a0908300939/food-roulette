@@ -212,9 +212,10 @@ class SDKServer {
       });
       const { openId, appId, name } = payload as Record<string, unknown>;
 
+      // For simple login, appId can be empty
       if (
         !isNonEmptyString(openId) ||
-        !isNonEmptyString(appId) ||
+        typeof appId !== 'string' ||
         !isNonEmptyString(name)
       ) {
         console.warn("[Auth] Session payload missing required fields");
