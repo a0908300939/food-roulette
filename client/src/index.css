@@ -43,74 +43,122 @@
 }
 
 :root {
-  --primary: oklch(0.65 0.22 35);
+  /* 主色：橘紅色 (#FF6B35) */
+  --primary: oklch(0.72 0.18 35);
   --primary-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.65 0.22 35);
+  --sidebar-primary: oklch(0.72 0.18 35);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
+  
+  /* 圖表色：橘色系 */
+  --chart-1: oklch(0.82 0.15 45);
+  --chart-2: oklch(0.72 0.18 35);
+  --chart-3: oklch(0.65 0.20 30);
+  --chart-4: oklch(0.58 0.22 25);
+  --chart-5: oklch(0.50 0.24 20);
+  
+  /* 圓角：較大圓角 */
+  --radius: 0.75rem;
+  
+  /* 背景：淺米色 (#FFF8F0) */
+  --background: oklch(0.99 0.01 60);
+  --foreground: oklch(0.25 0.02 30);
+  
+  /* 卡片：白色 */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
+  --card-foreground: oklch(0.25 0.02 30);
+  
+  /* 彈出層 */
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
+  --popover-foreground: oklch(0.25 0.02 30);
+  
+  /* 次要色：淺橘色 (#FFA559) */
+  --secondary: oklch(0.82 0.15 45);
+  --secondary-foreground: oklch(0.25 0.02 30);
+  
+  /* 靜音色：米黃色 */
+  --muted: oklch(0.96 0.02 60);
+  --muted-foreground: oklch(0.55 0.03 30);
+  
+  /* 強調色：淺橘色 */
+  --accent: oklch(0.96 0.02 60);
+  --accent-foreground: oklch(0.25 0.02 30);
+  
+  /* 錯誤色：保持紅色 */
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  
+  /* 邊框與輸入框 */
+  --border: oklch(0.90 0.01 60);
+  --input: oklch(0.90 0.01 60);
+  
+  /* 焦點環：橘紅色 */
+  --ring: oklch(0.72 0.18 35);
+  
+  /* 側邊欄 */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.25 0.02 30);
+  --sidebar-accent: oklch(0.96 0.02 60);
+  --sidebar-accent-foreground: oklch(0.25 0.02 30);
+  --sidebar-border: oklch(0.90 0.01 60);
+  --sidebar-ring: oklch(0.72 0.18 35);
 }
 
 .dark {
-  --primary: oklch(0.65 0.22 35);
+  /* 深色模式：保持橘紅色主題 */
+  --primary: oklch(0.72 0.18 35);
   --primary-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.65 0.22 35);
+  --sidebar-primary: oklch(0.72 0.18 35);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
+  
+  /* 背景：深棕色 (#2D1B12) */
+  --background: oklch(0.20 0.03 30);
+  --foreground: oklch(0.95 0.01 60);
+  
+  /* 卡片：稍亮的深棕色 */
+  --card: oklch(0.25 0.03 30);
+  --card-foreground: oklch(0.95 0.01 60);
+  
+  /* 彈出層 */
+  --popover: oklch(0.25 0.03 30);
+  --popover-foreground: oklch(0.95 0.01 60);
+  
+  /* 次要色 */
+  --secondary: oklch(0.30 0.04 35);
+  --secondary-foreground: oklch(0.95 0.01 60);
+  
+  /* 靜音色 */
+  --muted: oklch(0.35 0.04 35);
+  --muted-foreground: oklch(0.70 0.02 60);
+  
+  /* 強調色 */
+  --accent: oklch(0.35 0.04 35);
+  --accent-foreground: oklch(0.95 0.01 60);
+  
+  /* 錯誤色 */
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
+  
+  /* 邊框與輸入框 */
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
+  
+  /* 焦點環 */
+  --ring: oklch(0.72 0.18 35);
+  
+  /* 圖表色 */
+  --chart-1: oklch(0.82 0.15 45);
+  --chart-2: oklch(0.72 0.18 35);
+  --chart-3: oklch(0.65 0.20 30);
+  --chart-4: oklch(0.58 0.22 25);
+  --chart-5: oklch(0.50 0.24 20);
+  
+  /* 側邊欄 */
+  --sidebar: oklch(0.25 0.03 30);
+  --sidebar-foreground: oklch(0.95 0.01 60);
+  --sidebar-accent: oklch(0.35 0.04 35);
+  --sidebar-accent-foreground: oklch(0.95 0.01 60);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --sidebar-ring: oklch(0.72 0.18 35);
 }
 
 @layer base {
@@ -177,7 +225,7 @@
 
   /* 優惠券卡片特效 */
   .coupon-card {
-    background: linear-gradient(135deg, oklch(0.65 0.22 35) 0%, oklch(0.7 0.2 45) 100%);
+    background: linear-gradient(135deg, oklch(0.72 0.18 35) 0%, oklch(0.82 0.15 45) 100%);
     position: relative;
     overflow: hidden;
   }
@@ -218,7 +266,7 @@
 
   /* 漸層背景效果 */
   .gradient-primary {
-    background: linear-gradient(135deg, oklch(0.65 0.22 35) 0%, oklch(0.7 0.2 45) 100%);
+    background: linear-gradient(135deg, oklch(0.72 0.18 35) 0%, oklch(0.82 0.15 45) 100%);
   }
 
   .gradient-secondary {
