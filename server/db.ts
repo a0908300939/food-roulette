@@ -890,7 +890,17 @@ export async function createSimpleUser(data: {
       openId: null, // 簡易登入不需要 openId
     };
 
-    await db.insert(users).values(insertData);
+    const result = await db.insert(users).values(insertData);
+    
+    // 取得新建立的使用者 ID
+    const newUserId = result[0].insertId;
+    
+    // 設定 openId 為 simple_${userId}
+    const openId = `simple_${newUserId}`;
+    await db
+      .update(users)
+      .set({ openId })
+      .where(eq(users.id, newUserId));
     
     // 查詢剛建立的使用者
     if (data.phone) {
