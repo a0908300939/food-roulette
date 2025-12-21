@@ -775,12 +775,6 @@ export async function getAllAdmins() {
   return db.select().from(users).where(eq(users.role, "admin")).orderBy(users.name);
 }
 
-export async function updateUserRole(userId: number, role: "user" | "admin") {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  await db.update(users).set({ role }).where(eq(users.id, userId));
-}
-
 export async function getAllUsers() {
   const db = await getDb();
   if (!db) return [];
