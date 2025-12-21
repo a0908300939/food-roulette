@@ -1,5 +1,7 @@
 import { eq, and, desc, gte, lte } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle as drizzleMysql } from "drizzle-orm/mysql2";
+import { drizzle as drizzleSqlite } from "drizzle-orm/better-sqlite3";
+import Database from "better-sqlite3";
 import { 
   InsertUser, 
   users, 
@@ -24,12 +26,34 @@ import {
 } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
-let _db: ReturnType<typeof drizzle> | null = null;
+let _db: ReturnType<typeof drizzleMysql> | ReturnType<typeof drizzleSqlite> | null = null;
+
+// Mock mode for development without database
+const MOCK_MODE = process.env.NODE_ENV === 'development' && !process.env.DATABASE_URL;
+
+if (MOCK_MODE) {
+  console.log('[Database] Running in MOCK MODE - no database required');
+}
 
 export async function getDb() {
+  if (MOCK_MODE) {
+    return null; // Mock mode, no database
+  }
+  
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      // 判斷是 SQLite 還是 MySQL
+      if (process.env.DATABASE_URL.startsWith('file:')) {
+        // SQLite
+        const dbPath = process.env.DATABASE_URL.replace('file:', '');
+        const sqlite = new Database(dbPath);
+        _db = drizzleSqlite(sqlite);
+        console.log('[Database] Connected to SQLite:', dbPath);
+      } else {
+        // MySQL
+        _db = drizzleMysql(process.env.DATABASE_URL);
+        console.log('[Database] Connected to MySQL');
+      }
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
