@@ -103,62 +103,15 @@ export default function CouponManagement() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    let submitData: any = {
+    const submitData = {
       ...formData,
       restaurantId: formData.restaurantId || selectedRestaurant,
     };
 
-    // 如果有上傳新圖片（base64 格式），先上傳到 S3
-    if (formData.imageUrl && formData.imageUrl.startsWith('data:image/')) {
-      try {
-        toast.info('正在上傳圖片...');
-        const mimeType = formData.imageUrl.match(/data:(image\/\w+);/)?.[1] || 'image/jpeg';
-        
-        if (editingId) {
-          // 編輯模式：使用 uploadImage API
-          const uploadResult = await uploadImageMutation.mutateAsync({
-            couponId: editingId,
-            imageData: formData.imageUrl,
-            mimeType,
-          });
-          submitData.imageUrl = uploadResult.url;
-        } else {
-          // 新增模式：先不包含 imageUrl，等待優惠券建立後再處理
-          submitData.imageUrl = '';
-        }
-      } catch (error) {
-        console.error('圖片上傳失敗:', error);
-        toast.error('圖片上傳失敗，請重試');
-        return;
-      }
-    }
-
     if (editingId) {
       updateMutation.mutate({ id: editingId, ...submitData });
     } else {
-      // 新增模式
-      const imageData = formData.imageUrl?.startsWith('data:image/') ? formData.imageUrl : null;
-      const { imageUrl, ...dataWithoutImage } = submitData;
-      
-      createMutation.mutate(dataWithoutImage, {
-        onSuccess: async (newCoupon: any) => {
-          // 如果有圖片，在優惠券建立後上傳
-          if (imageData && newCoupon?.id) {
-            try {
-              const mimeType = imageData.match(/data:(image\/\w+);/)?.[1] || 'image/jpeg';
-              await uploadImageMutation.mutateAsync({
-                couponId: newCoupon.id,
-                imageData: imageData,
-                mimeType,
-              });
-              toast.success('優惠券與圖片新增成功！');
-            } catch (error) {
-              console.error('圖片上傳失敗:', error);
-              toast.warning('優惠券已建立，但圖片上傳失敗');
-            }
-          }
-        },
-      });
+      createMutation.mutate(submitData);
     }
   };
 
@@ -265,52 +218,26 @@ export default function CouponManagement() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="imageUrl">優惠券圖片</Label>
-                        <div className="flex gap-2 items-start">
-                          <Input
-                            type="file"
-                            accept="image/jpeg,image/png,image/webp"
-                            onChange={async (e) => {
-                              const file = e.target.files?.[0];
-                              if (!file) return;
-                              
-                              // 驗證檔案大小 (5MB)
-                              if (file.size > 5 * 1024 * 1024) {
-                                toast.error('圖片檔案過大，請選擇小於 5MB 的圖片');
-                                return;
-                              }
-                              
-                              // 轉換為 base64
-                              const reader = new FileReader();
-                              reader.onload = async () => {
-                                const base64 = reader.result as string;
-                                setFormData({ ...formData, imageUrl: base64 });
-                              };
-                              reader.readAsDataURL(file);
-                            }}
-                            className="flex-1"
-                          />
-                          {formData.imageUrl && (
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setFormData({ ...formData, imageUrl: "" })}
-                            >
-                              清除
-                            </Button>
-                          )}
-                        </div>
+                        <Label htmlFor="imageUrl">優惠券圖片 URL</Label>
+                        <Input
+                          id="imageUrl"
+                          placeholder="https://example.com/coupon.jpg"
+                          value={formData.imageUrl}
+                          onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                        />
                         {formData.imageUrl && (
                           <div className="mt-2">
                             <img 
                               src={formData.imageUrl} 
                               alt="預覽" 
                               className="w-32 h-32 object-cover rounded border"
+                              onError={(e) => {
+                                e.currentTarget.src = 'https://via.placeholder.com/128?text=Invalid+URL';
+                              }}
                             />
                           </div>
                         )}
-                        <p className="text-xs text-muted-foreground">支援 JPG、PNG、WebP 格式，檔案大小不超過 5MB（建議尺寸：800×400 像素）</p>
+                        <p className="text-xs text-muted-foreground">請輸入圖片的完整 URL（建議使用 Imgur、Google Drive 等圖床）</p>
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="type">優惠類型 *</Label>

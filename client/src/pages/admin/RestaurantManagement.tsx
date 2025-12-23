@@ -192,62 +192,15 @@ export default function RestaurantManagement() {
     e.preventDefault();
     
     // 使用新的兩班制格式
-    let updatedFormData = {
+    const updatedFormData = {
       ...formData,
       operatingHours: convertNewFormatToJSON(newWeekSchedule),
     };
 
-    // 如果有上傳新照片（base64 格式），先上傳到 S3
-    if (formData.photoUrl && formData.photoUrl.startsWith('data:image/')) {
-      try {
-        toast.info('正在上傳照片...');
-        const mimeType = formData.photoUrl.match(/data:(image\/\w+);/)?.[1] || 'image/jpeg';
-        
-        if (editingId) {
-          // 編輯模式：使用 uploadPhoto API
-          const uploadResult = await uploadPhotoMutation.mutateAsync({
-            restaurantId: editingId,
-            imageData: formData.photoUrl,
-            mimeType,
-          });
-          updatedFormData.photoUrl = uploadResult.url;
-        } else {
-          // 新增模式：先不包含 photoUrl，等待店家建立後再處理
-          updatedFormData.photoUrl = '';
-        }
-      } catch (error) {
-        console.error('照片上傳失敗:', error);
-        toast.error('照片上傳失敗，請重試');
-        return;
-      }
-    }
-
     if (editingId) {
       updateMutation.mutate({ id: editingId, ...updatedFormData });
     } else {
-      // 新增模式
-      const photoData = formData.photoUrl?.startsWith('data:image/') ? formData.photoUrl : null;
-      const { photoUrl, ...dataWithoutPhoto } = updatedFormData;
-      
-      createMutation.mutate(dataWithoutPhoto, {
-        onSuccess: async (newRestaurant: any) => {
-          // 如果有照片，在店家建立後上傳
-          if (photoData && newRestaurant?.id) {
-            try {
-              const mimeType = photoData.match(/data:(image\/\w+);/)?.[1] || 'image/jpeg';
-              await uploadPhotoMutation.mutateAsync({
-                restaurantId: newRestaurant.id,
-                imageData: photoData,
-                mimeType,
-              });
-              toast.success('店家與照片新增成功！');
-            } catch (error) {
-              console.error('照片上傳失敗:', error);
-              toast.warning('店家已建立，但照片上傳失敗');
-            }
-          }
-        },
-      });
+      createMutation.mutate(updatedFormData);
     }
   };
 
@@ -382,52 +335,26 @@ export default function RestaurantManagement() {
                       />
                     </div>
                     <div className="grid gap-2">
-                      <Label htmlFor="photoUrl">店家照片</Label>
-                      <div className="flex gap-2 items-start">
-                        <Input
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp"
-                          onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (!file) return;
-                            
-                            // 驗證檔案大小 (5MB)
-                            if (file.size > 5 * 1024 * 1024) {
-                              toast.error('圖片檔案過大，請選擇小於 5MB 的圖片');
-                              return;
-                            }
-                            
-                            // 轉換為 base64
-                            const reader = new FileReader();
-                            reader.onload = async () => {
-                              const base64 = reader.result as string;
-                              setFormData({ ...formData, photoUrl: base64 });
-                            };
-                            reader.readAsDataURL(file);
-                          }}
-                          className="flex-1"
-                        />
-                        {formData.photoUrl && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setFormData({ ...formData, photoUrl: "" })}
-                          >
-                            清除
-                          </Button>
-                        )}
-                      </div>
+                      <Label htmlFor="photoUrl">店家照片 URL</Label>
+                      <Input
+                        id="photoUrl"
+                        placeholder="https://example.com/image.jpg"
+                        value={formData.photoUrl}
+                        onChange={(e) => setFormData({ ...formData, photoUrl: e.target.value })}
+                      />
                       {formData.photoUrl && (
                         <div className="mt-2">
                           <img 
                             src={formData.photoUrl} 
                             alt="預覽" 
                             className="w-32 h-32 object-cover rounded border"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://via.placeholder.com/128?text=Invalid+URL';
+                            }}
                           />
                         </div>
                       )}
-                      <p className="text-xs text-muted-foreground">支援 JPG、PNG、WebP 格式，檔案大小不超過 5MB（建議尺寸：800×600 像素）</p>
+                      <p className="text-xs text-muted-foreground">請輸入圖片的完整 URL（建議使用 Imgur、Google Drive 等圖床）</p>
                     </div>
                   </div>
 
