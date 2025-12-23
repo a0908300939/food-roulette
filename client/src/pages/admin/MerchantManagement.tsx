@@ -312,10 +312,10 @@ export default function MerchantManagement() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">商家管理</h2>
-          <p className="text-gray-500">管理商家帳號和店鋪綁定</p>
+          <h2 className="text-2xl font-bold">店舖管理</h2>
+          <p className="text-gray-500">管理店舖帳號和店舖綁定</p>
         </div>
-        <Button onClick={openCreateDialog}>新增商家</Button>
+        <Button onClick={openCreateDialog}>新增店舖</Button>
       </div>
 
       <div className="grid gap-4">

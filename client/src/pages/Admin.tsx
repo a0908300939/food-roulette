@@ -76,7 +76,7 @@ export default function Admin() {
             </TabsTrigger>
             <TabsTrigger value="merchants" className="flex items-center gap-2">
               <Briefcase className="h-4 w-4" />
-              <span className="hidden sm:inline">商家管理</span>
+              <span className="hidden sm:inline">店舖管理</span>
             </TabsTrigger>
           </TabsList>
 
