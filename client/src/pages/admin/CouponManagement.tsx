@@ -218,26 +218,52 @@ export default function CouponManagement() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="imageUrl">優惠券圖片 URL</Label>
-                        <Input
-                          id="imageUrl"
-                          placeholder="https://example.com/coupon.jpg"
-                          value={formData.imageUrl}
-                          onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                        />
+                        <Label htmlFor="imageUrl">優惠券圖片</Label>
+                        <div className="flex gap-2 items-start">
+                          <Input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              
+                              // 驗證檔案大小 (2MB)
+                              if (file.size > 2 * 1024 * 1024) {
+                                toast.error('圖片檔案過大，請選擇小於 2MB 的圖片');
+                                return;
+                              }
+                              
+                              // 轉換為 base64
+                              const reader = new FileReader();
+                              reader.onload = async () => {
+                                const base64 = reader.result as string;
+                                setFormData({ ...formData, imageUrl: base64 });
+                              };
+                              reader.readAsDataURL(file);
+                            }}
+                            className="flex-1"
+                          />
+                          {formData.imageUrl && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setFormData({ ...formData, imageUrl: "" })}
+                            >
+                              清除
+                            </Button>
+                          )}
+                        </div>
                         {formData.imageUrl && (
                           <div className="mt-2">
                             <img 
                               src={formData.imageUrl} 
                               alt="預覽" 
                               className="w-32 h-32 object-cover rounded border"
-                              onError={(e) => {
-                                e.currentTarget.src = 'https://via.placeholder.com/128?text=Invalid+URL';
-                              }}
                             />
                           </div>
                         )}
-                        <p className="text-xs text-muted-foreground">請輸入圖片的完整 URL（建議使用 Imgur、Google Drive 等圖床）</p>
+                        <p className="text-xs text-muted-foreground">支援 JPG、PNG、WebP 格式，檔案大小不超過 2MB（建議尺寸：800×600 像素）</p>
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="type">優惠類型 *</Label>
