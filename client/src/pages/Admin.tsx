@@ -12,7 +12,7 @@ import UserManagement from "./admin/UserManagement";
 import AnalyticsDashboard from "./admin/AnalyticsDashboard";
 import WheelImageSettings from "./admin/WheelImageSettings";
 import NotificationManagement from "./NotificationManagement";
-import MerchantManagement from "./admin/MerchantManagement";
+
 
 export default function Admin() {
   const { user, loading } = useAuth();
@@ -49,7 +49,7 @@ export default function Admin() {
         </div>
 
         <Tabs defaultValue="restaurants" className="space-y-6">
-          <TabsList className="w-full" style={{display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.5rem', borderRadius: '15px', marginTop: '-2px', marginBottom: '25px', marginLeft: '-4px', width: '100%', height: '56px', borderStyle: 'outset'}}>
+          <TabsList className="w-full" style={{display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '0.5rem', borderRadius: '15px', marginTop: '-2px', marginBottom: '25px', marginLeft: '-4px', width: '100%', height: '56px', borderStyle: 'outset'}}>
             <TabsTrigger value="restaurants" className="flex items-center gap-2">
               <Store className="h-4 w-4" />
               <span className="hidden sm:inline">店家管理</span>
@@ -74,10 +74,7 @@ export default function Admin() {
               <Bell className="h-4 w-4" />
               <span className="hidden sm:inline">推播管理</span>
             </TabsTrigger>
-            <TabsTrigger value="merchants" className="flex items-center gap-2">
-              <Briefcase className="h-4 w-4" />
-              <span className="hidden sm:inline">店舖管理</span>
-            </TabsTrigger>
+
           </TabsList>
 
           <TabsContent value="restaurants">
@@ -104,9 +101,7 @@ export default function Admin() {
             <NotificationManagement />
           </TabsContent>
 
-          <TabsContent value="merchants">
-            <MerchantManagement />
-          </TabsContent>
+
         </Tabs>
       </div>
     </DashboardLayout>

@@ -147,8 +147,29 @@ export const appRouter = router({
 
   // ========== 店家管理 (管理員專用) ==========
   restaurants: router({
-    list: publicProcedure.query(async () => {
-      return db.getAllRestaurants();
+    list: protectedProcedure.query(async ({ ctx }) => {
+      const user = ctx.user;
+      
+      // 管理員可以看到所有店舖
+      if (user.role === 'admin') {
+        return db.getAllRestaurants();
+      }
+      
+      // 店舖擁有者只能看到被指派的店舖
+      if (user.role === 'merchant') {
+        const userRestaurants = await db.getUserRestaurants(user.id);
+        const restaurantIds = userRestaurants.map(ur => ur.restaurantId);
+        
+        if (restaurantIds.length === 0) {
+          return [];
+        }
+        
+        const allRestaurants = await db.getAllRestaurants();
+        return allRestaurants.filter(r => restaurantIds.includes(r.id));
+      }
+      
+      // 一般使用者可以看到所有啟用的店舖
+      return db.getActiveRestaurants();
     }),
     
     listActive: publicProcedure.query(async () => {
@@ -182,7 +203,7 @@ export const appRouter = router({
         return db.createRestaurant(input);
       }),
     
-    update: adminProcedure
+    update: protectedProcedure
       .input(z.object({
         id: z.number(),
         name: z.string().min(1).optional(),
@@ -196,9 +217,25 @@ export const appRouter = router({
         providesCheckInReward: z.boolean().optional(),
         isActive: z.boolean().optional(),
       }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ input, ctx }) => {
         const { id, ...data } = input;
-        return db.updateRestaurant(id, data);
+        const user = ctx.user;
+        
+        // 管理員可以修改任何店舖
+        if (user.role === 'admin') {
+          return db.updateRestaurant(id, data);
+        }
+        
+        // 店舖擁有者只能修改被指派的店舖
+        if (user.role === 'merchant') {
+          const canManage = await db.canUserManageRestaurant(user.id, id);
+          if (!canManage) {
+            throw new TRPCError({ code: 'FORBIDDEN', message: '您沒有權限管理這個店舖' });
+          }
+          return db.updateRestaurant(id, data);
+        }
+        
+        throw new TRPCError({ code: 'FORBIDDEN', message: '沒有權限' });
       }),
     
     delete: adminProcedure
