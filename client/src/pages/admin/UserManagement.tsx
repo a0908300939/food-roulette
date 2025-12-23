@@ -181,7 +181,7 @@ export default function UserManagement() {
                   <TableHead>Email / 電話</TableHead>
                   <TableHead>登入方式</TableHead>
                   <TableHead>角色</TableHead>
-                  <TableHead>管理的商家</TableHead>
+                  <TableHead>管理的店舖</TableHead>
                   <TableHead>註冊時間</TableHead>
                   <TableHead className="text-right">操作</TableHead>
                 </TableRow>
@@ -201,7 +201,7 @@ export default function UserManagement() {
                     <TableCell>
                       {user.restaurantIds && user.restaurantIds.length > 0 ? (
                         <span className="text-sm text-muted-foreground">
-                          {user.restaurantIds.length} 家商家
+                          {user.restaurantIds.length} 家店舖
                         </span>
                       ) : (
                         <span className="text-sm text-muted-foreground">-</span>
@@ -265,7 +265,7 @@ export default function UserManagement() {
                       <SelectItem value="merchant">
                         <div className="flex items-center">
                           <Store className="h-4 w-4 mr-2" />
-                          商家擁有者
+                          店舖擁有者
                         </div>
                       </SelectItem>
                       <SelectItem value="admin">
@@ -277,8 +277,8 @@ export default function UserManagement() {
                     </SelectContent>
                   </Select>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {selectedRole === "admin" && "系統管理員可以管理所有商家和使用者"}
-                    {selectedRole === "merchant" && "商家擁有者只能管理被指派的商家"}
+                    {selectedRole === "admin" && "系統管理員可以管理所有店舖和使用者"}
+                    {selectedRole === "merchant" && "店舖擁有者只能管理被指派的店舖"}
                     {selectedRole === "user" && "一般使用者只能使用轉盤功能"}
                   </p>
                 </div>
@@ -286,10 +286,10 @@ export default function UserManagement() {
                 {/* 商家選擇（只有 merchant 角色才顯示） */}
                 {selectedRole === "merchant" && (
                   <div>
-                    <Label>管理的商家</Label>
+                    <Label>管理的店舖</Label>
                     <div className="mt-2 space-y-2 max-h-60 overflow-y-auto border rounded-md p-3">
                       {restaurants.length === 0 ? (
-                        <p className="text-sm text-muted-foreground">尚無商家資料</p>
+                        <p className="text-sm text-muted-foreground">尚無店舖資料</p>
                       ) : (
                         restaurants.map((restaurant: any) => (
                           <div key={restaurant.id} className="flex items-center space-x-2">
@@ -309,7 +309,7 @@ export default function UserManagement() {
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">
-                      選擇此使用者可以管理的商家（可多選）
+                      選擇此使用者可以管理的店舖（可多選）
                     </p>
                   </div>
                 )}

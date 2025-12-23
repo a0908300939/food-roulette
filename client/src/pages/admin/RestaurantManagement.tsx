@@ -256,22 +256,22 @@ export default function RestaurantManagement() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>店家管理</CardTitle>
-            <CardDescription>新增、編輯或刪除合作店家資訊</CardDescription>
+            <CardTitle>店舖管理</CardTitle>
+            <CardDescription>管理店舖資訊、營業時間和店舖設定</CardDescription>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button onClick={() => { resetForm(); setIsDialogOpen(true); }}>
                 <Plus className="h-4 w-4 mr-2" />
-                新增店家
+                新增店舖
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
-                  <DialogTitle>{editingId ? "編輯店家" : "新增店家"}</DialogTitle>
+                  <DialogTitle>{editingId ? "編輯店舖" : "新增店舖"}</DialogTitle>
                   <DialogDescription>
-                    填寫店家的基本資訊與營業時間
+                    填寫店舖的基本資訊、營業時間等
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-6 py-4">
