@@ -479,18 +479,23 @@ export default function Home() {
           )}
           {/* 標題區 */}
           <div className="text-center space-y-4 sm:space-y-6 animate-slide-in-bottom px-4">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 dark:text-white tracking-tight" style={{ textShadow: '2px 2px 4px rgba(255, 255, 255, 0.3)' }}>
               今天吃什麼？
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
               讓轉盤幫你決定，還有專屬優惠券等你拿！
             </p>
-            <DigitalClock />
+            
+            {/* 時鐘區域（白色卡片樣式） */}
+            <div className="inline-block bg-white dark:bg-gray-800 rounded-2xl shadow-lg px-6 py-3">
+              <DigitalClock />
+            </div>
+            
             <Button
               variant="outline"
               size="sm"
               onClick={() => setIsRulesDialogOpen(true)}
-              className="mx-auto"
+              className="mx-auto rounded-full border-2"
             >
               <Info className="h-4 w-4 mr-2" />
               查看抽獎規則
