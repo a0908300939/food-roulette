@@ -329,7 +329,7 @@ export default function Home() {
     >
       {/* 頂部導航 */}
       <header className="bg-white dark:bg-gray-900 border-b sticky top-0 z-50">
-        <div className="container py-4 px-4">
+        <div className="container py-5 px-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-2">
@@ -337,7 +337,7 @@ export default function Home() {
             </div>
             
             {/* 圖標式導航按鈕 */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-4 sm:gap-4">
               {isAuthenticated ? (
                 <>
                   {/* 通知 */}
@@ -345,9 +345,9 @@ export default function Home() {
                     variant="ghost"
                     size="icon"
                     onClick={() => setLocation("/notifications")}
-                    className="relative rounded-full h-14 w-14 sm:h-12 sm:w-12"
+                    className="relative rounded-full h-16 w-16 sm:h-14 sm:w-14"
                   >
-                    <Bell className="h-7 w-7 sm:h-6 sm:w-6" />
+                    <Bell className="h-8 w-8 sm:h-7 sm:w-7" />
                     {unreadData && unreadData.unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                         {unreadData.unreadCount > 9 ? '9+' : unreadData.unreadCount}
@@ -360,9 +360,9 @@ export default function Home() {
                     variant="ghost"
                     size="icon"
                     onClick={() => setLocation("/my-coupons")}
-                    className="rounded-full h-14 w-14 sm:h-12 sm:w-12"
+                    className="rounded-full h-16 w-16 sm:h-14 sm:w-14"
                   >
-                    <Ticket className="h-7 w-7 sm:h-6 sm:w-6" />
+                    <Ticket className="h-8 w-8 sm:h-7 sm:w-7" />
                   </Button>
                   
                   {/* 簽到 */}
@@ -370,7 +370,7 @@ export default function Home() {
                     variant="default"
                     size="lg"
                     onClick={() => setIsCheckInDialogOpen(true)}
-                    className="rounded-full px-5 py-3 text-base font-semibold hidden sm:flex"
+                    className="rounded-full px-6 py-4 text-lg font-bold hidden sm:flex"
                   >
                     簽到
                   </Button>
@@ -380,7 +380,7 @@ export default function Home() {
                     variant="default"
                     size="lg"
                     onClick={() => setIsCheckInDialogOpen(true)}
-                    className="rounded-full px-5 py-3 text-base font-semibold sm:hidden"
+                    className="rounded-full px-6 py-4 text-lg font-bold sm:hidden"
                   >
                     簽到
                   </Button>
@@ -397,7 +397,7 @@ export default function Home() {
                         variant="ghost" 
                         size="lg" 
                         onClick={() => setLocation("/admin")}
-                        className="rounded-full px-5 py-3 text-base font-semibold"
+                        className="rounded-full px-6 py-4 text-lg font-bold"
                       >
                         管理後台
                       </Button>
