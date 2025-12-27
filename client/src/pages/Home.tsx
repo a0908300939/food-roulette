@@ -333,23 +333,24 @@ export default function Home() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <h1 className="text-lg sm:text-xl font-bold text-primary truncate">{APP_TITLE}</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-primary truncate">{APP_TITLE}</h1>
             </div>
             
-            {/* 圖標式導航按鈕 */}
-            <div className="flex items-center gap-4 sm:gap-4">
+            {/* 文字式導航按鈕 */}
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               {isAuthenticated ? (
                 <>
                   {/* 通知 */}
                   <Button
-                    variant="ghost"
-                    size="icon"
+                    variant="outline"
+                    size="lg"
                     onClick={() => setLocation("/notifications")}
-                    className="relative rounded-full h-16 w-16 sm:h-14 sm:w-14"
+                    className="relative rounded-lg px-4 py-3 text-base font-bold flex items-center gap-2"
                   >
-                    <Bell className="h-8 w-8 sm:h-7 sm:w-7" />
+                    <Bell className="h-5 w-5" />
+                    <span className="hidden sm:inline">通知</span>
                     {unreadData && unreadData.unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                      <span className="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center ml-1">
                         {unreadData.unreadCount > 9 ? '9+' : unreadData.unreadCount}
                       </span>
                     )}
@@ -357,12 +358,13 @@ export default function Home() {
                   
                   {/* 我的優惠券 */}
                   <Button
-                    variant="ghost"
-                    size="icon"
+                    variant="outline"
+                    size="lg"
                     onClick={() => setLocation("/my-coupons")}
-                    className="rounded-full h-16 w-16 sm:h-14 sm:w-14"
+                    className="rounded-lg px-4 py-3 text-base font-bold flex items-center gap-2"
                   >
-                    <Ticket className="h-8 w-8 sm:h-7 sm:w-7" />
+                    <Ticket className="h-5 w-5" />
+                    <span className="hidden sm:inline">優惠券</span>
                   </Button>
                   
                   {/* 簽到 */}
@@ -370,38 +372,28 @@ export default function Home() {
                     variant="default"
                     size="lg"
                     onClick={() => setIsCheckInDialogOpen(true)}
-                    className="rounded-full px-6 py-4 text-lg font-bold hidden sm:flex"
+                    className="rounded-lg px-6 py-3 text-base font-bold flex items-center gap-2"
                   >
-                    簽到
-                  </Button>
-                  
-                  {/* 手機版簽到按鈕 */}
-                  <Button
-                    variant="default"
-                    size="lg"
-                    onClick={() => setIsCheckInDialogOpen(true)}
-                    className="rounded-full px-6 py-4 text-lg font-bold sm:hidden"
-                  >
+                    <Calendar className="h-5 w-5" />
                     簽到
                   </Button>
                   
                   {/* 用戶郵箱（桌面版顯示） */}
-                  <span className="text-sm text-muted-foreground hidden md:inline ml-2">
+                  <span className="text-base text-muted-foreground hidden lg:inline ml-2">
                     {user?.email?.split('@')[0]}
                   </span>
                   
                   {/* 管理後台 */}
                   {user?.role === 'admin' && (
-                    <>
-                      <Button 
-                        variant="ghost" 
-                        size="lg" 
-                        onClick={() => setLocation("/admin")}
-                        className="rounded-full px-6 py-4 text-lg font-bold"
-                      >
-                        管理後台
-                      </Button>
-                    </>
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      onClick={() => setLocation("/admin")}
+                      className="rounded-lg px-4 py-3 text-base font-bold flex items-center gap-2"
+                    >
+                      <Settings className="h-5 w-5" />
+                      <span className="hidden sm:inline">管理</span>
+                    </Button>
                   )}
                 </>
               ) : (
@@ -470,11 +462,11 @@ export default function Home() {
             </div>
           )}
           {/* 標題區 */}
-          <div className="text-center space-y-4 sm:space-y-6 animate-slide-in-bottom px-4">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 dark:text-white tracking-tight" style={{ textShadow: '2px 2px 4px rgba(255, 255, 255, 0.3)' }}>
+          <div className="text-center space-y-6 sm:space-y-8 animate-slide-in-bottom px-4">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-gray-900 dark:text-white tracking-tight" style={{ textShadow: '2px 2px 4px rgba(255, 255, 255, 0.3)' }}>
               今天吃什麼？
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-xl sm:text-2xl md:text-3xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto font-medium">
               讓轉盤幫你決定，還有專屬優惠券等你拿！
             </p>
             
@@ -485,11 +477,11 @@ export default function Home() {
             
             <Button
               variant="outline"
-              size="sm"
+              size="lg"
               onClick={() => setIsRulesDialogOpen(true)}
-              className="mx-auto rounded-full border-2"
+              className="mx-auto rounded-lg border-2 px-6 py-3 text-base font-bold"
             >
-              <Info className="h-4 w-4 mr-2" />
+              <Info className="h-5 w-5 mr-2" />
               查看抽獎規則
             </Button>
           </div>
