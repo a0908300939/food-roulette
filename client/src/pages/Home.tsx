@@ -329,7 +329,7 @@ export default function Home() {
     >
       {/* 頂部導航 */}
       <header className="bg-white dark:bg-gray-900 border-b sticky top-0 z-50">
-        <div className="container py-3 px-4">
+        <div className="container py-4 px-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-2">
@@ -337,7 +337,7 @@ export default function Home() {
             </div>
             
             {/* 圖標式導航按鈕 */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-3 sm:gap-4">
               {isAuthenticated ? (
                 <>
                   {/* 通知 */}
@@ -345,9 +345,9 @@ export default function Home() {
                     variant="ghost"
                     size="icon"
                     onClick={() => setLocation("/notifications")}
-                    className="relative rounded-full h-11 w-11 sm:h-10 sm:w-10"
+                    className="relative rounded-full h-14 w-14 sm:h-12 sm:w-12"
                   >
-                    <Bell className="h-6 w-6 sm:h-5 sm:w-5" />
+                    <Bell className="h-7 w-7 sm:h-6 sm:w-6" />
                     {unreadData && unreadData.unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                         {unreadData.unreadCount > 9 ? '9+' : unreadData.unreadCount}
@@ -360,29 +360,29 @@ export default function Home() {
                     variant="ghost"
                     size="icon"
                     onClick={() => setLocation("/my-coupons")}
-                    className="rounded-full h-11 w-11 sm:h-10 sm:w-10"
+                    className="rounded-full h-14 w-14 sm:h-12 sm:w-12"
                   >
-                    <Ticket className="h-6 w-6 sm:h-5 sm:w-5" />
+                    <Ticket className="h-7 w-7 sm:h-6 sm:w-6" />
                   </Button>
                   
                   {/* 簽到 */}
                   <Button
                     variant="default"
-                    size="sm"
+                    size="lg"
                     onClick={() => setIsCheckInDialogOpen(true)}
-                    className="rounded-full px-4 hidden sm:flex"
+                    className="rounded-full px-5 py-3 text-base font-semibold hidden sm:flex"
                   >
                     簽到
                   </Button>
                   
-                  {/* 手機版簽到按鈕（僅圖標） */}
+                  {/* 手機版簽到按鈕 */}
                   <Button
                     variant="default"
-                    size="icon"
+                    size="lg"
                     onClick={() => setIsCheckInDialogOpen(true)}
-                    className="rounded-full h-11 w-11 sm:hidden"
+                    className="rounded-full px-5 py-3 text-base font-semibold sm:hidden"
                   >
-                    <Calendar className="h-6 w-6" />
+                    簽到
                   </Button>
                   
                   {/* 用戶郵箱（桌面版顯示） */}
@@ -395,19 +395,11 @@ export default function Home() {
                     <>
                       <Button 
                         variant="ghost" 
-                        size="sm" 
+                        size="lg" 
                         onClick={() => setLocation("/admin")}
-                        className="rounded-full px-4 hidden sm:flex"
+                        className="rounded-full px-5 py-3 text-base font-semibold"
                       >
                         管理後台
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        onClick={() => setLocation("/admin")}
-                        className="rounded-full h-11 w-11 sm:hidden"
-                      >
-                        <Settings className="h-6 w-6" />
                       </Button>
                     </>
                   )}
