@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { getCurrentMealPeriods, getPrimaryMealPeriod, filterRestaurantsByPeriod, filterOpenRestaurants } from "@/lib/timeUtils";
-import { MapPin, Phone, Ticket, Navigation, Calendar, Settings, Info, Bell } from "lucide-react";
+import { MapPin, Phone, Ticket, Navigation, Calendar, Settings, Info, Bell, Menu, X } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect, useMemo } from "react";
 import { useLocation } from "wouter";
@@ -67,6 +67,7 @@ export default function Home() {
   const [locationPermissionDenied, setLocationPermissionDenied] = useState(false);
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { data: allRestaurants, isLoading: restaurantsLoading } = trpc.restaurants.listActiveWithCoupons.useQuery();
   
@@ -328,12 +329,15 @@ export default function Home() {
     >
       {/* 頂部導航 */}
       <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b sticky top-0 z-50">
-        <div className="container py-4">
+        <div className="container py-3 px-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <h1 className="text-xl font-bold text-primary">{APP_TITLE}</h1>
-            </div>
+            {/* Logo */}
             <div className="flex items-center gap-2">
+              <h1 className="text-lg sm:text-xl font-bold text-primary truncate">{APP_TITLE}</h1>
+            </div>
+            
+            {/* 桌面版導航 */}
+            <div className="hidden md:flex items-center gap-2">
               {isAuthenticated ? (
                 <>
                   <Button
@@ -343,7 +347,7 @@ export default function Home() {
                     className="flex items-center gap-2 relative"
                   >
                     <Bell className="h-4 w-4" />
-                    <span className="hidden sm:inline">通知</span>
+                    <span>通知</span>
                     {unreadData && unreadData.unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                         {unreadData.unreadCount > 99 ? '99+' : unreadData.unreadCount}
@@ -357,7 +361,7 @@ export default function Home() {
                     className="flex items-center gap-2"
                   >
                     <Ticket className="h-4 w-4" />
-                    <span className="hidden sm:inline">我的優惠券</span>
+                    <span>我的優惠券</span>
                   </Button>
                   <Button
                     variant="default"
@@ -366,9 +370,9 @@ export default function Home() {
                     className="flex items-center gap-2"
                   >
                     <Calendar className="h-4 w-4" />
-                    <span className="hidden sm:inline">簽到</span>
+                    <span>簽到</span>
                   </Button>
-                  <span className="text-sm text-muted-foreground hidden sm:inline">
+                  <span className="text-sm text-muted-foreground">
                     {user?.name || user?.email}
                   </span>
                   {user?.role === 'admin' && (
@@ -388,13 +392,105 @@ export default function Home() {
                 </Button>
               )}
             </div>
+
+            {/* 手機版選單按鈕 */}
+            <div className="md:hidden">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2"
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
           </div>
+
+          {/* 手機版下拉選單 */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden mt-3 pb-2 space-y-2 border-t pt-3">
+              {isAuthenticated ? (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setLocation("/notifications");
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full justify-start gap-2 relative"
+                  >
+                    <Bell className="h-4 w-4" />
+                    <span>通知</span>
+                    {unreadData && unreadData.unreadCount > 0 && (
+                      <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        {unreadData.unreadCount > 99 ? '99+' : unreadData.unreadCount}
+                      </span>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setLocation("/my-coupons");
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full justify-start gap-2"
+                  >
+                    <Ticket className="h-4 w-4" />
+                    <span>我的優惠券</span>
+                  </Button>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => {
+                      setIsCheckInDialogOpen(true);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full justify-start gap-2"
+                  >
+                    <Calendar className="h-4 w-4" />
+                    <span>簽到</span>
+                  </Button>
+                  {user?.role === 'admin' && (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => {
+                        setLocation("/admin");
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full justify-start gap-2"
+                    >
+                      <Settings className="h-4 w-4" />
+                      管理後台
+                    </Button>
+                  )}
+                  <div className="text-sm text-muted-foreground px-3 py-2">
+                    {user?.name || user?.email}
+                  </div>
+                </>
+              ) : (
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  onClick={() => {
+                    setIsLoginDialogOpen(true);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full"
+                >
+                  登入 / 註冊
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </header>
 
       {/* 主要內容 */}
-      <main className="container py-8 md:py-12">
-        <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+      <main className="container px-4 py-6 sm:py-8 md:py-12">
+        <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-fade-in">
           {/* 定位授權提示 */}
           {locationPermissionDenied && (
             <div className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 p-4 rounded-lg">
@@ -443,11 +539,11 @@ export default function Home() {
             </div>
           )}
           {/* 標題區 */}
-          <div className="text-center space-y-6 animate-slide-in-bottom">
-            <h1 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tight">
+          <div className="text-center space-y-4 sm:space-y-6 animate-slide-in-bottom px-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white tracking-tight">
               今天吃什麼？
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
               讓轉盤幫你決定，還有專屬優惠券等你拿！
             </p>
             <DigitalClock />
@@ -464,7 +560,7 @@ export default function Home() {
 
           {/* 轉盤區 */}
           <Card className="glass-card border-2 shadow-xl animate-slide-in-bottom delay-100">
-            <CardContent className="p-8">
+            <CardContent className="p-4 sm:p-6 md:p-8">
               {availableRestaurants.length > 0 ? (
                 <div className="space-y-4">
                   {/* 剩餘次數顯示 */}
@@ -526,15 +622,15 @@ export default function Home() {
 
           {/* 店家列表區 */}
           {availableRestaurants.length > 0 && (
-            <div className="space-y-4 animate-slide-in-bottom delay-200">
-              <div className="flex items-center justify-between">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
+            <div className="space-y-4 animate-slide-in-bottom delay-200 px-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
                   營業中的店家 ({availableRestaurants.length})
                 </h2>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as "default" | "distance")}
-                  className="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800"
+                  className="w-full sm:w-auto px-3 py-2 text-sm border rounded-lg bg-white dark:bg-gray-800"
                   disabled={sortBy === "distance" && !userLocation}
                 >
                   <option value="default">預設排序</option>
@@ -544,7 +640,7 @@ export default function Home() {
                 </select>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {sortedRestaurants.map((restaurant, index) => {
                   const distance = userLocation
                     ? calculateDistance(
