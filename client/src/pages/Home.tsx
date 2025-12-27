@@ -337,7 +337,7 @@ export default function Home() {
             </div>
             
             {/* 圖標式導航按鈕 */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 sm:gap-3">
               {isAuthenticated ? (
                 <>
                   {/* 通知 */}
@@ -345,9 +345,9 @@ export default function Home() {
                     variant="ghost"
                     size="icon"
                     onClick={() => setLocation("/notifications")}
-                    className="relative rounded-full h-10 w-10"
+                    className="relative rounded-full h-11 w-11 sm:h-10 sm:w-10"
                   >
-                    <Bell className="h-5 w-5" />
+                    <Bell className="h-6 w-6 sm:h-5 sm:w-5" />
                     {unreadData && unreadData.unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                         {unreadData.unreadCount > 9 ? '9+' : unreadData.unreadCount}
@@ -360,9 +360,9 @@ export default function Home() {
                     variant="ghost"
                     size="icon"
                     onClick={() => setLocation("/my-coupons")}
-                    className="rounded-full h-10 w-10"
+                    className="rounded-full h-11 w-11 sm:h-10 sm:w-10"
                   >
-                    <Ticket className="h-5 w-5" />
+                    <Ticket className="h-6 w-6 sm:h-5 sm:w-5" />
                   </Button>
                   
                   {/* 簽到 */}
@@ -380,9 +380,9 @@ export default function Home() {
                     variant="default"
                     size="icon"
                     onClick={() => setIsCheckInDialogOpen(true)}
-                    className="rounded-full h-10 w-10 sm:hidden"
+                    className="rounded-full h-11 w-11 sm:hidden"
                   >
-                    <Calendar className="h-5 w-5" />
+                    <Calendar className="h-6 w-6" />
                   </Button>
                   
                   {/* 用戶郵箱（桌面版顯示） */}
@@ -405,9 +405,9 @@ export default function Home() {
                         variant="ghost" 
                         size="icon" 
                         onClick={() => setLocation("/admin")}
-                        className="rounded-full h-10 w-10 sm:hidden"
+                        className="rounded-full h-11 w-11 sm:hidden"
                       >
-                        <Settings className="h-5 w-5" />
+                        <Settings className="h-6 w-6" />
                       </Button>
                     </>
                   )}
