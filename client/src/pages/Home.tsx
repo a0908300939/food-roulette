@@ -328,7 +328,7 @@ export default function Home() {
       } : undefined}
     >
       {/* 頂部導航 */}
-      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b sticky top-0 z-50">
+      <header className="bg-white dark:bg-gray-900 border-b sticky top-0 z-50">
         <div className="container py-3 px-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -336,50 +336,80 @@ export default function Home() {
               <h1 className="text-lg sm:text-xl font-bold text-primary truncate">{APP_TITLE}</h1>
             </div>
             
-            {/* 桌面版導航 */}
-            <div className="hidden md:flex items-center gap-2">
+            {/* 圖標式導航按鈕 */}
+            <div className="flex items-center gap-2">
               {isAuthenticated ? (
                 <>
+                  {/* 通知 */}
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
+                    size="icon"
                     onClick={() => setLocation("/notifications")}
-                    className="flex items-center gap-2 relative"
+                    className="relative rounded-full h-10 w-10"
                   >
-                    <Bell className="h-4 w-4" />
-                    <span>通知</span>
+                    <Bell className="h-5 w-5" />
                     {unreadData && unreadData.unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                        {unreadData.unreadCount > 99 ? '99+' : unreadData.unreadCount}
+                        {unreadData.unreadCount > 9 ? '9+' : unreadData.unreadCount}
                       </span>
                     )}
                   </Button>
+                  
+                  {/* 我的優惠券 */}
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
+                    size="icon"
                     onClick={() => setLocation("/my-coupons")}
-                    className="flex items-center gap-2"
+                    className="rounded-full h-10 w-10"
                   >
-                    <Ticket className="h-4 w-4" />
-                    <span>我的優惠券</span>
+                    <Ticket className="h-5 w-5" />
                   </Button>
+                  
+                  {/* 簽到 */}
                   <Button
                     variant="default"
                     size="sm"
                     onClick={() => setIsCheckInDialogOpen(true)}
-                    className="flex items-center gap-2"
+                    className="rounded-full px-4 hidden sm:flex"
                   >
-                    <Calendar className="h-4 w-4" />
-                    <span>簽到</span>
+                    簽到
                   </Button>
-                  <span className="text-sm text-muted-foreground">
-                    {user?.name || user?.email}
+                  
+                  {/* 手機版簽到按鈕（僅圖標） */}
+                  <Button
+                    variant="default"
+                    size="icon"
+                    onClick={() => setIsCheckInDialogOpen(true)}
+                    className="rounded-full h-10 w-10 sm:hidden"
+                  >
+                    <Calendar className="h-5 w-5" />
+                  </Button>
+                  
+                  {/* 用戶郵箱（桌面版顯示） */}
+                  <span className="text-sm text-muted-foreground hidden md:inline ml-2">
+                    {user?.email?.split('@')[0]}
                   </span>
+                  
+                  {/* 管理後台 */}
                   {user?.role === 'admin' && (
-                    <Button variant="outline" size="sm" onClick={() => setLocation("/admin")}>
-                      <Settings className="h-4 w-4 mr-2" />
-                      管理後台
-                    </Button>
+                    <>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => setLocation("/admin")}
+                        className="rounded-full px-4 hidden sm:flex"
+                      >
+                        管理後台
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => setLocation("/admin")}
+                        className="rounded-full h-10 w-10 sm:hidden"
+                      >
+                        <Settings className="h-5 w-5" />
+                      </Button>
+                    </>
                   )}
                 </>
               ) : (
@@ -387,104 +417,13 @@ export default function Home() {
                   variant="default" 
                   size="sm" 
                   onClick={() => setIsLoginDialogOpen(true)}
+                  className="rounded-full px-4"
                 >
-                  登入 / 註冊
+                  登入
                 </Button>
               )}
-            </div>
-
-            {/* 手機版選單按鈕 */}
-            <div className="md:hidden">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2"
-              >
-                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
             </div>
           </div>
-
-          {/* 手機版下拉選單 */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden mt-3 pb-2 space-y-2 border-t pt-3">
-              {isAuthenticated ? (
-                <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setLocation("/notifications");
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full justify-start gap-2 relative"
-                  >
-                    <Bell className="h-4 w-4" />
-                    <span>通知</span>
-                    {unreadData && unreadData.unreadCount > 0 && (
-                      <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                        {unreadData.unreadCount > 99 ? '99+' : unreadData.unreadCount}
-                      </span>
-                    )}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setLocation("/my-coupons");
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full justify-start gap-2"
-                  >
-                    <Ticket className="h-4 w-4" />
-                    <span>我的優惠券</span>
-                  </Button>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={() => {
-                      setIsCheckInDialogOpen(true);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full justify-start gap-2"
-                  >
-                    <Calendar className="h-4 w-4" />
-                    <span>簽到</span>
-                  </Button>
-                  {user?.role === 'admin' && (
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => {
-                        setLocation("/admin");
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="w-full justify-start gap-2"
-                    >
-                      <Settings className="h-4 w-4" />
-                      管理後台
-                    </Button>
-                  )}
-                  <div className="text-sm text-muted-foreground px-3 py-2">
-                    {user?.name || user?.email}
-                  </div>
-                </>
-              ) : (
-                <Button 
-                  variant="default" 
-                  size="sm" 
-                  onClick={() => {
-                    setIsLoginDialogOpen(true);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="w-full"
-                >
-                  登入 / 註冊
-                </Button>
-              )}
-            </div>
-          )}
         </div>
       </header>
 
