@@ -317,85 +317,101 @@ export default function CouponManagement() {
           <CardContent>
             {isLoading ? (
               <div className="text-center py-8">載入中...</div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>圖片</TableHead>
-                    <TableHead>標題</TableHead>
-                    <TableHead>類型</TableHead>
-                    <TableHead>獎勵類型</TableHead>
-                    <TableHead>狀態</TableHead>
-                    <TableHead className="text-right">操作</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {coupons?.map((coupon) => (
-                    <TableRow key={coupon.id}>
-                      <TableCell>
-                        {coupon.imageUrl ? (
-                          <img 
-                            src={coupon.imageUrl} 
-                            alt={coupon.title}
-                            className="w-16 h-16 object-cover rounded"
-                            onError={(e) => {
-                              e.currentTarget.src = 'https://via.placeholder.com/64?text=No+Image';
-                            }}
-                          />
-                        ) : (
-                          <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center text-xs text-muted-foreground">
-                            無圖片
+            ) : coupons && coupons.length > 0 ? (
+              <div className="space-y-4">
+                {coupons.map((coupon) => (
+                  <Card 
+                    key={coupon.id} 
+                    className="overflow-hidden hover:shadow-xl transition-all cursor-pointer"
+                    onClick={() => handleEdit(coupon)}
+                  >
+                    <CardContent className="p-0">
+                      <div className="flex items-center gap-4 p-4">
+                        {/* 圖片 */}
+                        <div className="flex-shrink-0">
+                          {coupon.imageUrl ? (
+                            <img 
+                              src={coupon.imageUrl} 
+                              alt={coupon.title}
+                              className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg"
+                              onError={(e) => {
+                                e.currentTarget.src = 'https://via.placeholder.com/128?text=No+Image';
+                              }}
+                            />
+                          ) : (
+                            <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                              <Ticket className="h-12 w-12 text-gray-400" />
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* 內容 */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <h3 className="text-lg sm:text-xl font-bold line-clamp-2">{coupon.title}</h3>
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium flex-shrink-0 ${
+                              coupon.isActive 
+                                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" 
+                                : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
+                            }`}>
+                              {coupon.isActive ? "啟用" : "停用"}
+                            </span>
                           </div>
-                        )}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-2">
-                          <Ticket className="h-4 w-4 text-primary" />
-                          {coupon.title}
+                          
+                          <div className="flex flex-wrap items-center gap-3 text-sm">
+                            <span className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full font-medium">
+                              {getCouponTypeLabel(coupon.type)}
+                            </span>
+                            <span className="px-3 py-1 bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 rounded-full font-medium">
+                              {coupon.isCheckInReward ? "簽到獎勵" : "轉盤優惠"}
+                            </span>
+                          </div>
+                          
+                          {coupon.description && (
+                            <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                              {coupon.description}
+                            </p>
+                          )}
                         </div>
-                      </TableCell>
-                      <TableCell>{getCouponTypeLabel(coupon.type)}</TableCell>
-                      <TableCell>
-                        {coupon.isCheckInReward ? "簽到獎勵" : "轉盤優惠"}
-                      </TableCell>
-                      <TableCell>
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                          coupon.isActive 
-                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" 
-                            : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
-                        }`}>
-                          {coupon.isActive ? "啟用" : "停用"}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEdit(coupon)}
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDelete(coupon.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {coupons?.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                        此店家尚無優惠券，請點擊上方按鈕新增
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                      </div>
+                      
+                      {/* 按鈕區 */}
+                      <div className="border-t bg-gray-50 dark:bg-gray-800/50 p-4 flex gap-3">
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEdit(coupon);
+                          }}
+                          className="flex-1 h-14 rounded-xl border-2 bg-white hover:bg-orange-50 hover:border-orange-500 hover:text-orange-600 text-base font-semibold"
+                        >
+                          <Pencil className="h-5 w-5 mr-2" />
+                          編輯優惠券
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(coupon.id);
+                          }}
+                          className="flex-1 h-14 rounded-xl border-2 bg-white hover:bg-red-50 hover:border-red-500 hover:text-red-600 text-base font-semibold"
+                        >
+                          <Trash2 className="h-5 w-5 mr-2" />
+                          刪除優惠券
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card>
+                <CardContent className="py-12 text-center text-muted-foreground">
+                  此店家尚無優惠券，請點擊上方按鈕新增
+                </CardContent>
+              </Card>
             )}
           </CardContent>
         </Card>

@@ -174,54 +174,58 @@ export default function UserManagement() {
             <p>沒有找到符合條件的使用者</p>
           </div>
         ) : (
-          <div className="border rounded-lg">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Email / 電話</TableHead>
-                  <TableHead>登入方式</TableHead>
-                  <TableHead>角色</TableHead>
-                  <TableHead>管理的店舖</TableHead>
-                  <TableHead>註冊時間</TableHead>
-                  <TableHead className="text-right">操作</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.map((user: any) => (
-                  <TableRow key={user.id}>
-                    <TableCell className="font-medium">
-                      {user.email || user.phone || "-"}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {user.loginMethod || "未知"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{getRoleBadge(user.role)}</TableCell>
-                    <TableCell>
-                      {user.restaurantIds && user.restaurantIds.length > 0 ? (
-                        <span className="text-sm text-muted-foreground">
-                          {user.restaurantIds.length} 家店舖
-                        </span>
-                      ) : (
-                        <span className="text-sm text-muted-foreground">-</span>
-                      )}
-                    </TableCell>
-                    <TableCell>{formatDate(user.createdAt)}</TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(user)}
-                      >
-                        <Edit className="h-4 w-4 mr-1" />
-                        編輯
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          <div className="space-y-4">
+            {filteredUsers.map((user: any) => (
+              <Card 
+                key={user.id} 
+                className="overflow-hidden hover:shadow-xl transition-all"
+              >
+                <CardContent className="p-0">
+                  <div className="p-4 sm:p-6">
+                    {/* 主要資訊 */}
+                    <div className="flex items-start justify-between gap-4 mb-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="text-lg sm:text-xl font-bold truncate">
+                            {user.email || user.phone || "-"}
+                          </h3>
+                          <Badge variant="outline" className="capitalize flex-shrink-0">
+                            {user.loginMethod || "未知"}
+                          </Badge>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            {getRoleBadge(user.role)}
+                          </div>
+                          {user.restaurantIds && user.restaurantIds.length > 0 && (
+                            <div className="flex items-center gap-1">
+                              <Store className="h-4 w-4" />
+                              <span>{user.restaurantIds.length} 家店舖</span>
+                            </div>
+                          )}
+                          <div>
+                            {formatDate(user.createdAt)}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* 按鈕區 */}
+                  <div className="border-t bg-gray-50 dark:bg-gray-800/50 p-4">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() => handleEdit(user)}
+                      className="w-full h-14 rounded-xl border-2 bg-white hover:bg-orange-50 hover:border-orange-500 hover:text-orange-600 text-base font-semibold"
+                    >
+                      <Edit className="h-5 w-5 mr-2" />
+                      編輯使用者
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         )}
 
