@@ -31,6 +31,18 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 async function startServer() {
+  // 執行資料庫遷移
+  console.log('檢查資料庫遷移...');
+  try {
+    const { migrate } = await import('drizzle-orm/mysql2/migrator');
+    const { db } = await import('../db');
+    await migrate(db, { migrationsFolder: './drizzle' });
+    console.log('✅ 資料庫遷移完成');
+  } catch (error) {
+    console.error('❌ 資料庫遷移失敗:', error);
+    // 不阻止伺服器啟動，可能是已經遷移過了
+  }
+  
   const app = express();
   const server = createServer(app);
   // Configure body parser with larger size limit for file uploads
