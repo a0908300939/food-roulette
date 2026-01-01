@@ -356,7 +356,19 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         try {
           const { OpenAI } = await import('openai');
-          const openai = new OpenAI();
+          
+          // 檢查環境變數
+          const apiKey = process.env.OPENAI_API_KEY;
+          if (!apiKey) {
+            throw new TRPCError({
+              code: 'INTERNAL_SERVER_ERROR',
+              message: '伺服器未設定 OPENAI_API_KEY 環境變數，請聯絡管理員',
+            });
+          }
+          
+          const openai = new OpenAI({
+            apiKey: apiKey,
+          });
           
           const completion = await openai.chat.completions.create({
             model: 'gpt-4.1-mini',
