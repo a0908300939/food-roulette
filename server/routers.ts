@@ -295,6 +295,7 @@ export const appRouter = router({
         imageUrl: z.string().optional(),
         type: z.enum(["discount", "gift", "cashback", "check_in_reward"]).default("discount"),
         isCheckInReward: z.boolean().default(false),
+        weight: z.number().min(1).max(10).default(5),
         expiresAt: z.date().optional(),
         isActive: z.boolean().default(true),
       }))
@@ -310,6 +311,7 @@ export const appRouter = router({
         imageUrl: z.string().optional(),
         type: z.enum(["discount", "gift", "cashback", "check_in_reward"]).optional(),
         isCheckInReward: z.boolean().optional(),
+        weight: z.number().min(1).max(10).optional(),
         expiresAt: z.date().optional(),
         isActive: z.boolean().optional(),
       }))

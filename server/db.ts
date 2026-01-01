@@ -313,12 +313,9 @@ export async function deleteRestaurant(id: number) {
 export async function getCouponsByRestaurantId(restaurantId: number) {
   const db = await getDb();
   if (!db) return [];
-  // 強制過濾簽到獎勵優惠券，確保轉盤中永遠不會出現
+  // 管理頁面使用，顯示所有優惠券（包括簽到獎勵）
   return db.select().from(coupons).where(
-    and(
-      eq(coupons.restaurantId, restaurantId),
-      eq(coupons.isCheckInReward, false)
-    )
+    eq(coupons.restaurantId, restaurantId)
   );
 }
 
