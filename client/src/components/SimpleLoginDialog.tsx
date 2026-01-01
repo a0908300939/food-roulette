@@ -111,10 +111,10 @@ export default function SimpleLoginDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px] p-6">
         <DialogHeader>
-          <DialogTitle>登入 / 註冊</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-2xl font-bold">登入 / 註冊</DialogTitle>
+          <DialogDescription className="text-base">
             輸入手機號碼或 Email 即可登入，無需驗證碼
           </DialogDescription>
         </DialogHeader>
@@ -124,15 +124,15 @@ export default function SimpleLoginDialog({
           onValueChange={(value) => setLoginType(value as "phone" | "email")}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="phone">手機號碼</TabsTrigger>
-            <TabsTrigger value="email">Email</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 h-12">
+            <TabsTrigger value="phone" className="text-lg font-semibold">手機號碼</TabsTrigger>
+            <TabsTrigger value="email" className="text-lg font-semibold">Email</TabsTrigger>
           </TabsList>
 
           <TabsContent value="phone">
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="phone">手機號碼</Label>
+              <div className="space-y-3">
+                <Label htmlFor="phone" className="text-lg font-semibold">手機號碼</Label>
                 <Input
                   id="phone"
                   type="tel"
@@ -141,20 +141,21 @@ export default function SimpleLoginDialog({
                   onChange={(e) => setPhone(e.target.value)}
                   maxLength={10}
                   disabled={loginMutation.isPending}
+                  className="h-14 text-lg px-4"
                 />
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base text-muted-foreground">
                   請輸入台灣手機號碼（09開頭）
                 </p>
               </div>
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full h-14 text-lg font-bold"
                 disabled={loginMutation.isPending}
               >
                 {loginMutation.isPending ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-6 w-6 animate-spin" />
                     登入中...
                   </>
                 ) : (
@@ -166,8 +167,8 @@ export default function SimpleLoginDialog({
 
           <TabsContent value="email">
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+              <div className="space-y-3">
+                <Label htmlFor="email" className="text-lg font-semibold">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -175,20 +176,21 @@ export default function SimpleLoginDialog({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loginMutation.isPending}
+                  className="h-14 text-lg px-4"
                 />
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base text-muted-foreground">
                   請輸入您的 Email 地址
                 </p>
               </div>
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full h-14 text-lg font-bold"
                 disabled={loginMutation.isPending}
               >
                 {loginMutation.isPending ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-6 w-6 animate-spin" />
                     登入中...
                   </>
                 ) : (
@@ -199,7 +201,7 @@ export default function SimpleLoginDialog({
           </TabsContent>
         </Tabs>
 
-        <div className="text-xs text-muted-foreground text-center">
+        <div className="text-sm text-muted-foreground text-center">
           登入即表示您同意我們的服務條款與隱私政策
         </div>
       </DialogContent>
