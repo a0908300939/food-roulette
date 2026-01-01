@@ -266,7 +266,7 @@ export default function RestaurantManagement() {
                 新增店舖
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-3xl">
               <form onSubmit={handleSubmit}>
                 <DialogHeader>
                   <DialogTitle>{editingId ? "編輯店舖" : "新增店舖"}</DialogTitle>

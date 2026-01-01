@@ -10,7 +10,7 @@ interface SpinRulesDialogProps {
 export default function SpinRulesDialog({ open, onOpenChange }: SpinRulesDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="text-2xl flex items-center gap-2">
             <Info className="h-6 w-6 text-primary" />

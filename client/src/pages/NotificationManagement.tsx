@@ -194,7 +194,7 @@ export default function NotificationManagement() {
                 建立推播
               </Button>
             </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-md">
             <DialogHeader>
               <DialogTitle>建立推播訊息</DialogTitle>
               <DialogDescription>

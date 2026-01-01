@@ -143,7 +143,7 @@ export default function CheckInDialog({ open, onOpenChange }: CheckInDialogProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-md">
         {showSuccess ? (
           <div className="py-12 text-center">
             <div className="mb-4 flex justify-center">

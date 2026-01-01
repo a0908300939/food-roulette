@@ -165,28 +165,42 @@ export default function MyCoupons() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" onClick={() => setLocation("/")}>
+    <div className="min-h-screen bg-gradient-to-br from-orange-500 to-orange-400">
+      {/* Header - Manus 樣式 */}
+      <header className="bg-white dark:bg-gray-900 border-b sticky top-0 z-50">
+        <div className="container py-4 px-4">
+          <div className="flex items-center justify-between">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              onClick={() => setLocation("/")}
+              className="h-12 sm:h-14 rounded-xl border-2 px-4 sm:px-6 flex items-center gap-2"
+            >
               ← 返回首頁
             </Button>
-            <h1 className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-              我的優惠券
-            </h1>
-          </div>
-          <div className="text-sm text-muted-foreground">
-            {user?.name || "使用者"}
+            <div className="text-sm sm:text-base text-muted-foreground font-medium">
+              {APP_TITLE}
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        {/* Filter */}
-        <div className="mb-6 flex items-center gap-4">
+        {/* 標題區 - Manus 樣式：大白色標題 */}
+        <div className="text-center py-8 mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight" style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.2)' }}>
+            我的優惠券
+          </h1>
+          <p className="text-lg sm:text-xl text-white/90 mt-4">
+            查看您的所有優惠券
+          </p>
+        </div>
+
+        {/* Filter - 白色卡片 */}
+        <Card className="mb-6 shadow-xl">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
           <label className="text-sm font-medium">篩選：</label>
           <Select value={filter} onValueChange={(value) => setFilter(value as typeof filter)}>
             <SelectTrigger className="w-[180px]">
@@ -202,7 +216,9 @@ export default function MyCoupons() {
           <span className="text-sm text-muted-foreground">
             共 {filteredCoupons.length} 張優惠券
           </span>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Coupons List */}
         {filteredCoupons.length === 0 ? (

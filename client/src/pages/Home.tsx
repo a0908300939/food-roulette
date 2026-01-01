@@ -443,6 +443,11 @@ export default function Home() {
           )}
           {/* 標題區 - 範本樣式：橘色漸層背景 */}
           <div className="bg-gradient-to-b from-orange-500 to-orange-400 rounded-3xl mx-2 sm:mx-4 p-6 sm:p-8 md:p-10 text-center space-y-4 sm:space-y-6 animate-slide-in-bottom">
+            {/* Logo 圖示 - 超大 */}
+            <div className="flex justify-center mb-4">
+              <img src={APP_LOGO} alt={APP_TITLE} className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 object-contain drop-shadow-lg" />
+            </div>
+            
             {/* 主標題 - 超大白色字體 */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight" style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.2)' }}>
               今天吃什麼？
@@ -526,10 +531,33 @@ export default function Home() {
                   <p className="text-sm text-muted-foreground mt-2">
                     請稍候，店家即將營業
                   </p>
-                </div>
-              )}
+                </div>              )}
             </CardContent>
           </Card>
+
+          {/* 簽到卡片 - Manus 樣式 */}
+          {isAuthenticated && (
+            <Card className="glass-card border-2 shadow-xl animate-slide-in-bottom delay-150 cursor-pointer hover:shadow-2xl hover:scale-105 transition-all duration-300" onClick={() => setIsCheckInDialogOpen(true)}>
+              <CardContent className="p-6 sm:p-8">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl p-4 shadow-lg">
+                      <Calendar className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">每日簽到</h3>
+                      <p className="text-sm sm:text-base text-muted-foreground">連續簽到 7 天可獲得專屬優惠券</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <Button size="lg" className="rounded-full px-6 sm:px-8 text-base sm:text-lg font-bold">
+                      立即簽到
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* 店家列表區 */}
           {availableRestaurants.length > 0 && (
@@ -619,7 +647,7 @@ export default function Home() {
 
       {/* 結果對話框 */}
       <Dialog open={isResultDialogOpen} onOpenChange={setIsResultDialogOpen}>
-        <DialogContent className="max-w-[90vw] sm:max-w-md max-h-[85vh] overflow-y-auto">
+        <DialogContent className="max-w-md">
           <DialogHeader className="space-y-1">
             <DialogTitle className="text-lg sm:text-xl text-center">🎉 恭喜獲得優惠券！</DialogTitle>
             <DialogDescription className="text-xs sm:text-sm text-center">快來看看你抽到什麼好康</DialogDescription>
