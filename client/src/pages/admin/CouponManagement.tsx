@@ -157,21 +157,26 @@ export default function CouponManagement() {
           <CardDescription>請先選擇一家店家以管理其優惠券</CardDescription>
         </CardHeader>
         <CardContent>
-          <Select
-            value={selectedRestaurant?.toString() || ""}
-            onValueChange={(value) => setSelectedRestaurant(parseInt(value))}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="選擇店家" />
-            </SelectTrigger>
-            <SelectContent>
-              {restaurants?.map((restaurant) => (
-                <SelectItem key={restaurant.id} value={restaurant.id.toString()}>
-                  {restaurant.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {restaurants?.map((restaurant) => (
+              <button
+                key={restaurant.id}
+                onClick={() => setSelectedRestaurant(restaurant.id)}
+                className={`p-4 sm:p-6 rounded-xl border-2 text-left transition-all ${
+                  selectedRestaurant === restaurant.id
+                    ? "bg-orange-50 border-orange-500 text-orange-600 dark:bg-orange-900/20"
+                    : "bg-white border-gray-200 hover:border-orange-300 hover:bg-orange-50/50 dark:bg-gray-800 dark:border-gray-700"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  {selectedRestaurant === restaurant.id && (
+                    <div className="w-2 h-2 rounded-full bg-orange-500 flex-shrink-0" />
+                  )}
+                  <span className="text-base sm:text-lg font-semibold">{restaurant.name}</span>
+                </div>
+              </button>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
