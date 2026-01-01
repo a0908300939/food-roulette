@@ -175,23 +175,25 @@ export default function NotificationManagement() {
 
   return (
     <div className="container py-8 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Bell className="h-8 w-8" />
-            推播管理
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            建立推播訊息並發送給所有使用者
-          </p>
-        </div>
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button size="lg">
-              <Plus className="h-4 w-4 mr-2" />
-              建立推播
-            </Button>
-          </DialogTrigger>
+      {/* 推播管理標題區 - 白色背景 */}
+      <div className="bg-white rounded-2xl shadow-sm p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              <Bell className="h-8 w-8" />
+              推播管理
+            </h1>
+            <p className="text-muted-foreground mt-2">
+              建立推播訊息並發送給所有使用者
+            </p>
+          </div>
+          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+            <DialogTrigger asChild>
+              <Button size="lg">
+                <Plus className="h-4 w-4 mr-2" />
+                建立推播
+              </Button>
+            </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>建立推播訊息</DialogTitle>
@@ -295,6 +297,7 @@ export default function NotificationManagement() {
             </div>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       {/* 推播列表 */}
