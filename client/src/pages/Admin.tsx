@@ -44,34 +44,34 @@ export default function Admin() {
     <DashboardLayout>
       <div className="container py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">管理後台</h1>
-          <p className="text-muted-foreground">管理店家、優惠券與查看數據分析</p>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-3">管理後台</h1>
+          <p className="text-lg sm:text-xl text-muted-foreground">管理店家、優惠券與查看數據分析</p>
         </div>
 
         <Tabs defaultValue="restaurants" className="space-y-6">
-          <TabsList className="w-full" style={{display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '0.5rem', borderRadius: '15px', marginTop: '-2px', marginBottom: '25px', marginLeft: '-4px', width: '100%', height: '56px', borderStyle: 'outset'}}>
-            <TabsTrigger value="restaurants" className="flex items-center gap-2">
-              <Store className="h-4 w-4" />
+          <TabsList className="w-full overflow-x-auto" style={{display: 'flex', gap: '0.5rem', borderRadius: '15px', marginTop: '-2px', marginBottom: '25px', marginLeft: '-4px', width: '100%', minHeight: '64px', borderStyle: 'outset', flexWrap: 'wrap'}}>
+            <TabsTrigger value="restaurants" className="flex items-center gap-2 px-4 py-3 text-base font-semibold whitespace-nowrap">
+              <Store className="h-5 w-5" />
               <span className="hidden sm:inline">店家管理</span>
             </TabsTrigger>
-            <TabsTrigger value="coupons" className="flex items-center gap-2">
-              <Ticket className="h-4 w-4" />
+            <TabsTrigger value="coupons" className="flex items-center gap-2 px-4 py-3 text-base font-semibold whitespace-nowrap">
+              <Ticket className="h-5 w-5" />
               <span className="hidden sm:inline">優惠券</span>
             </TabsTrigger>
-            <TabsTrigger value="users" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
+            <TabsTrigger value="users" className="flex items-center gap-2 px-4 py-3 text-base font-semibold whitespace-nowrap">
+              <Users className="h-5 w-5" />
               <span className="hidden sm:inline">使用者 消費者</span>
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4" />
+            <TabsTrigger value="analytics" className="flex items-center gap-2 px-4 py-3 text-base font-semibold whitespace-nowrap">
+              <BarChart3 className="h-5 w-5" />
               <span className="hidden sm:inline">數據分析</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
+            <TabsTrigger value="settings" className="flex items-center gap-2 px-4 py-3 text-base font-semibold whitespace-nowrap">
+              <Settings className="h-5 w-5" />
               <span className="hidden sm:inline">轉盤設定</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center gap-2">
-              <Bell className="h-4 w-4" />
+            <TabsTrigger value="notifications" className="flex items-center gap-2 px-4 py-3 text-base font-semibold whitespace-nowrap">
+              <Bell className="h-5 w-5" />
               <span className="hidden sm:inline">推播管理</span>
             </TabsTrigger>
 
