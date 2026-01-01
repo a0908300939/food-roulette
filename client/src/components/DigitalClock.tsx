@@ -56,26 +56,26 @@ export default function DigitalClock({ className = "" }: DigitalClockProps) {
 
   return (
     <div
-      className={`inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-full shadow-sm ${className}`}
+      className={`inline-flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-200 rounded-2xl shadow-lg ${className}`}
     >
       {/* 時鐘圖示 */}
-      <Clock className="w-5 h-5 text-orange-600" />
+      <Clock className="w-7 h-7 text-orange-600" />
 
       {/* 數位時鐘顯示 */}
       <div className="flex items-baseline gap-2">
-        <span className="text-2xl font-bold text-orange-600 tabular-nums tracking-tight">
+        <span className="text-4xl font-bold text-orange-600 tabular-nums tracking-tight">
           {formatTime(currentTime)}
         </span>
       </div>
 
       {/* 分隔線 */}
-      <div className="w-px h-6 bg-orange-300" />
+      <div className="w-px h-8 bg-orange-300" />
 
       {/* 時段標籤 */}
-      <div className="flex items-center gap-1.5">
-        <span className="text-lg">{mealPeriodIcon}</span>
-        <span className="text-sm font-medium text-orange-700">
-          現在是 <span className="font-bold">{mealPeriodLabel}</span> 時段
+      <div className="flex items-center gap-2">
+        <span className="text-2xl">{mealPeriodIcon}</span>
+        <span className="text-base font-semibold text-orange-700">
+          現在是 <span className="font-bold text-lg">{mealPeriodLabel}</span> 時段
         </span>
       </div>
     </div>

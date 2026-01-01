@@ -329,11 +329,11 @@ export default function Home() {
     >
       {/* 頂部導航 */}
       <header className="bg-white dark:bg-gray-900 border-b sticky top-0 z-50">
-        <div className="container py-5 px-4">
+        <div className="container py-6 px-6">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-bold text-primary truncate">{APP_TITLE}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-primary truncate">{APP_TITLE}</h1>
             </div>
             
             {/* 文字式導航按鈕 */}
@@ -345,9 +345,9 @@ export default function Home() {
                     variant="outline"
                     size="lg"
                     onClick={() => setLocation("/notifications")}
-                    className="relative rounded-lg px-4 py-3 text-base font-bold flex items-center gap-2"
+                    className="relative rounded-xl px-5 py-4 text-lg font-bold flex items-center gap-2"
                   >
-                    <Bell className="h-5 w-5" />
+                    <Bell className="h-6 w-6" />
                     <span className="hidden sm:inline">通知</span>
                     {unreadData && unreadData.unreadCount > 0 && (
                       <span className="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center ml-1">
@@ -361,9 +361,9 @@ export default function Home() {
                     variant="outline"
                     size="lg"
                     onClick={() => setLocation("/my-coupons")}
-                    className="rounded-lg px-4 py-3 text-base font-bold flex items-center gap-2"
+                    className="rounded-xl px-5 py-4 text-lg font-bold flex items-center gap-2"
                   >
-                    <Ticket className="h-5 w-5" />
+                    <Ticket className="h-6 w-6" />
                     <span className="hidden sm:inline">優惠券</span>
                   </Button>
                   
@@ -372,14 +372,14 @@ export default function Home() {
                     variant="default"
                     size="lg"
                     onClick={() => setIsCheckInDialogOpen(true)}
-                    className="rounded-lg px-6 py-3 text-base font-bold flex items-center gap-2"
+                    className="rounded-xl px-6 py-4 text-lg font-bold flex items-center gap-2"
                   >
-                    <Calendar className="h-5 w-5" />
+                    <Calendar className="h-6 w-6" />
                     簽到
                   </Button>
                   
                   {/* 用戶郵箱（桌面版顯示） */}
-                  <span className="text-base text-muted-foreground hidden lg:inline ml-2">
+                  <span className="text-lg text-muted-foreground hidden lg:inline ml-2">
                     {user?.email?.split('@')[0]}
                   </span>
                   
@@ -389,9 +389,9 @@ export default function Home() {
                       variant="outline" 
                       size="lg" 
                       onClick={() => setLocation("/admin")}
-                      className="rounded-lg px-4 py-3 text-base font-bold flex items-center gap-2"
+                      className="rounded-xl px-5 py-4 text-lg font-bold flex items-center gap-2"
                     >
-                      <Settings className="h-5 w-5" />
+                      <Settings className="h-6 w-6" />
                       <span className="hidden sm:inline">管理</span>
                     </Button>
                   )}
@@ -399,9 +399,9 @@ export default function Home() {
               ) : (
                 <Button 
                   variant="default" 
-                  size="sm" 
+                  size="lg" 
                   onClick={() => setIsLoginDialogOpen(true)}
-                  className="rounded-full px-4"
+                  className="rounded-xl px-8 py-4 text-lg font-bold"
                 >
                   登入
                 </Button>
@@ -462,16 +462,16 @@ export default function Home() {
             </div>
           )}
           {/* 標題區 */}
-          <div className="text-center space-y-6 sm:space-y-8 animate-slide-in-bottom px-4">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-gray-900 dark:text-white tracking-tight" style={{ textShadow: '2px 2px 4px rgba(255, 255, 255, 0.3)' }}>
+          <div className="text-center space-y-8 sm:space-y-10 animate-slide-in-bottom px-6">
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-gray-900 dark:text-white tracking-tight leading-tight" style={{ textShadow: '2px 2px 4px rgba(255, 255, 255, 0.3)' }}>
               今天吃什麼？
             </h1>
-            <p className="text-xl sm:text-2xl md:text-3xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto font-medium">
+            <p className="text-2xl sm:text-3xl md:text-4xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto font-bold">
               讓轉盤幫你決定，還有專屬優惠券等你拿！
             </p>
             
-            {/* 時鐘區域（白色卡片樣式） */}
-            <div className="inline-block bg-white dark:bg-gray-800 rounded-2xl shadow-lg px-6 py-3">
+            {/* 時鐘區域 */}
+            <div className="flex justify-center">
               <DigitalClock />
             </div>
             
@@ -479,9 +479,9 @@ export default function Home() {
               variant="outline"
               size="lg"
               onClick={() => setIsRulesDialogOpen(true)}
-              className="mx-auto rounded-lg border-2 px-6 py-3 text-base font-bold"
+              className="mx-auto rounded-xl border-2 px-8 py-4 text-lg font-bold"
             >
-              <Info className="h-5 w-5 mr-2" />
+              <Info className="h-6 w-6 mr-2" />
               查看抽獎規則
             </Button>
           </div>
