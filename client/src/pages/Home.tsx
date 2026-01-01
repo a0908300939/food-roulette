@@ -327,81 +327,61 @@ export default function Home() {
         backgroundAttachment: 'fixed',
       } : undefined}
     >
-      {/* 頂部導航 */}
+      {/* 頂部導航 - 範本樣式 */}
       <header className="bg-white dark:bg-gray-900 border-b sticky top-0 z-50">
-        <div className="container py-6 px-6">
+        <div className="container py-4 px-4">
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl sm:text-3xl font-bold text-primary truncate">{APP_TITLE}</h1>
+            {/* Logo - 大字橘紅色 */}
+            <div className="flex items-center">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">{APP_TITLE}</h1>
             </div>
             
-            {/* 文字式導航按鈕 */}
-            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            {/* 導航按鈕 - 圓角方形邊框 */}
+            <div className="flex items-center gap-2 sm:gap-3">
               {isAuthenticated ? (
                 <>
-                  {/* 通知 */}
+                  {/* 通知 - 圓角方形邊框按鈕 */}
                   <Button
                     variant="outline"
-                    size="lg"
+                    size="icon"
                     onClick={() => setLocation("/notifications")}
-                    className="relative rounded-xl px-5 py-4 text-lg font-bold flex items-center gap-2"
+                    className="relative h-12 w-12 sm:h-14 sm:w-14 rounded-xl border-2"
                   >
-                    <Bell className="h-6 w-6" />
-                    <span className="hidden sm:inline">通知</span>
+                    <Bell className="h-6 w-6 sm:h-7 sm:w-7" />
                     {unreadData && unreadData.unreadCount > 0 && (
-                      <span className="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center ml-1">
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                         {unreadData.unreadCount > 9 ? '9+' : unreadData.unreadCount}
                       </span>
                     )}
                   </Button>
                   
-                  {/* 我的優惠券 */}
+                  {/* 我的優惠券 - 圓角方形邊框按鈕 */}
                   <Button
                     variant="outline"
-                    size="lg"
+                    size="icon"
                     onClick={() => setLocation("/my-coupons")}
-                    className="rounded-xl px-5 py-4 text-lg font-bold flex items-center gap-2"
+                    className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl border-2"
                   >
-                    <Ticket className="h-6 w-6" />
-                    <span className="hidden sm:inline">優惠券</span>
+                    <Ticket className="h-6 w-6 sm:h-7 sm:w-7" />
                   </Button>
                   
-                  {/* 簽到 */}
-                  <Button
-                    variant="default"
-                    size="lg"
-                    onClick={() => setIsCheckInDialogOpen(true)}
-                    className="rounded-xl px-6 py-4 text-lg font-bold flex items-center gap-2"
-                  >
-                    <Calendar className="h-6 w-6" />
-                    簽到
-                  </Button>
-                  
-                  {/* 用戶郵箱（桌面版顯示） */}
-                  <span className="text-lg text-muted-foreground hidden lg:inline ml-2">
-                    {user?.email?.split('@')[0]}
-                  </span>
-                  
-                  {/* 管理後台 */}
+                  {/* 管理後台 - 圓角方形邊框按鈕加文字 */}
                   {user?.role === 'admin' && (
                     <Button 
                       variant="outline" 
-                      size="lg" 
                       onClick={() => setLocation("/admin")}
-                      className="rounded-xl px-5 py-4 text-lg font-bold flex items-center gap-2"
+                      className="h-12 sm:h-14 rounded-xl border-2 px-4 sm:px-5 flex items-center gap-2"
                     >
-                      <Settings className="h-6 w-6" />
-                      <span className="hidden sm:inline">管理</span>
+                      <Settings className="h-6 w-6 sm:h-7 sm:w-7" />
+                      <span className="text-base sm:text-lg font-semibold">管理後台</span>
                     </Button>
                   )}
                 </>
               ) : (
                 <Button 
                   variant="default" 
-                  size="lg" 
                   onClick={() => setIsLoginDialogOpen(true)}
-                  className="rounded-xl px-8 py-4 text-lg font-bold"
+                  className="h-12 sm:h-14 rounded-xl px-6 sm:px-8 text-base sm:text-lg font-bold"
                 >
                   登入
                 </Button>
@@ -461,27 +441,30 @@ export default function Home() {
               </div>
             </div>
           )}
-          {/* 標題區 */}
-          <div className="text-center space-y-8 sm:space-y-10 animate-slide-in-bottom px-6">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-gray-900 dark:text-white tracking-tight leading-tight" style={{ textShadow: '2px 2px 4px rgba(255, 255, 255, 0.3)' }}>
+          {/* 標題區 - 範本樣式：橘色漸層背景 */}
+          <div className="bg-gradient-to-b from-orange-500 to-orange-400 rounded-3xl mx-2 sm:mx-4 p-6 sm:p-8 md:p-10 text-center space-y-4 sm:space-y-6 animate-slide-in-bottom">
+            {/* 主標題 - 超大白色字體 */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight" style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.2)' }}>
               今天吃什麼？
             </h1>
-            <p className="text-2xl sm:text-3xl md:text-4xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto font-bold">
-              讓轉盤幫你決定，還有專屬優惠券等你拿！
+            
+            {/* 副標題 */}
+            <p className="text-lg sm:text-xl md:text-2xl text-white/90 leading-relaxed max-w-2xl mx-auto font-medium">
+              草屯在地美食,抽出驚喜優惠！
             </p>
             
-            {/* 時鐘區域 */}
+            {/* 時鐘區域 - 白色圓角卡片 */}
             <div className="flex justify-center">
               <DigitalClock />
             </div>
             
+            {/* 查看抽獎規則按鈕 - 白色圓角 */}
             <Button
               variant="outline"
-              size="lg"
               onClick={() => setIsRulesDialogOpen(true)}
-              className="mx-auto rounded-xl border-2 px-8 py-4 text-lg font-bold"
+              className="mx-auto bg-white hover:bg-gray-50 text-gray-700 rounded-full border-0 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-md"
             >
-              <Info className="h-6 w-6 mr-2" />
+              <Info className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
               查看抽獎規則
             </Button>
           </div>

@@ -6,8 +6,6 @@ interface DigitalClockProps {
   className?: string;
 }
 
-
-
 export default function DigitalClock({ className = "" }: DigitalClockProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [mealPeriodLabel, setMealPeriodLabel] = useState("用餐");
@@ -52,30 +50,26 @@ export default function DigitalClock({ className = "" }: DigitalClockProps) {
     return `${hours}:${minutes}:${seconds}`;
   };
 
-
-
   return (
     <div
-      className={`inline-flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-200 rounded-2xl shadow-lg ${className}`}
+      className={`inline-flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3 sm:py-4 bg-white rounded-full shadow-lg ${className}`}
     >
       {/* 時鐘圖示 */}
-      <Clock className="w-7 h-7 text-orange-600" />
+      <Clock className="w-6 h-6 sm:w-7 sm:h-7 text-orange-500" />
 
-      {/* 數位時鐘顯示 */}
-      <div className="flex items-baseline gap-2">
-        <span className="text-4xl font-bold text-orange-600 tabular-nums tracking-tight">
-          {formatTime(currentTime)}
-        </span>
-      </div>
+      {/* 數位時鐘顯示 - 大橘色數字 */}
+      <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-orange-500 tabular-nums tracking-tight">
+        {formatTime(currentTime)}
+      </span>
 
       {/* 分隔線 */}
-      <div className="w-px h-8 bg-orange-300" />
+      <div className="w-px h-6 sm:h-8 bg-gray-300" />
 
       {/* 時段標籤 */}
-      <div className="flex items-center gap-2">
-        <span className="text-2xl">{mealPeriodIcon}</span>
-        <span className="text-base font-semibold text-orange-700">
-          現在是 <span className="font-bold text-lg">{mealPeriodLabel}</span> 時段
+      <div className="flex items-center gap-1 sm:gap-2">
+        <span className="text-xl sm:text-2xl">{mealPeriodIcon}</span>
+        <span className="text-sm sm:text-base font-medium text-gray-600">
+          現在是 <span className="font-bold text-orange-500">{mealPeriodLabel}</span> 時段
         </span>
       </div>
     </div>
