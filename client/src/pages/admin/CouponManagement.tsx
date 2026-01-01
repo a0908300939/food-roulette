@@ -217,7 +217,36 @@ export default function CouponManagement() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="description">優惠內容 *</Label>
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="description">優惠內容 *</Label>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={async () => {
+                              if (!formData.title) {
+                                toast.error('請先輸入優惠券標題');
+                                return;
+                              }
+                              try {
+                                toast.info('正在生成優惠內容...');
+                                const result = await trpc.coupons.generateDescription.mutate({
+                                  title: formData.title,
+                                });
+                                setFormData({ ...formData, description: result.description });
+                                toast.success('AI 生成成功！');
+                              } catch (error: any) {
+                                toast.error(error.message || 'AI 生成失敗');
+                              }
+                            }}
+                            className="text-xs"
+                          >
+                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            AI 協作
+                          </Button>
+                        </div>
                         <Textarea
                           id="description"
                           value={formData.description}

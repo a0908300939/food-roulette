@@ -347,6 +347,51 @@ export const appRouter = router({
         
         return { url };
       }),
+    
+    // AI 生成優惠內容
+    generateDescription: adminProcedure
+      .input(z.object({
+        title: z.string().min(1),
+      }))
+      .mutation(async ({ input }) => {
+        try {
+          const { OpenAI } = await import('openai');
+          const openai = new OpenAI();
+          
+          const completion = await openai.chat.completions.create({
+            model: 'gpt-4.1-mini',
+            messages: [
+              {
+                role: 'system',
+                content: '你是一個專業的優惠券內容編寫助手。根據優惠券標題，生成一段 50-100 字的詳細優惠內容說明。內容應該包括：優惠條件、使用方式、注意事項。請直接輸出內容，不要加上「優惠內容：」等前綴。',
+              },
+              {
+                role: 'user',
+                content: `優惠券標題：${input.title}`,
+              },
+            ],
+            temperature: 0.7,
+            max_tokens: 200,
+          });
+          
+          const description = completion.choices[0]?.message?.content?.trim() || '';
+          
+          if (!description) {
+            throw new TRPCError({
+              code: 'INTERNAL_SERVER_ERROR',
+              message: 'AI 生成內容失敗',
+            });
+          }
+          
+          return { description };
+        } catch (error: any) {
+          console.error('AI 生成優惠內容錯誤:', error);
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: `AI 生成失敗：${error.message}`,
+          });
+        }
+      }),
   }),
 
   // ========== 轉盤功能 (使用者) ==========
