@@ -418,89 +418,100 @@ export default function RestaurantManagement() {
         </div>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>照片</TableHead>
-              <TableHead>店家名稱</TableHead>
-              <TableHead>地址</TableHead>
-              <TableHead>電話</TableHead>
-              <TableHead>狀態</TableHead>
-              <TableHead className="text-right">操作</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {restaurants?.map((restaurant) => (
-              <TableRow key={restaurant.id}>
-                <TableCell>
-                  {restaurant.photoUrl ? (
-                    <img 
-                      src={restaurant.photoUrl} 
-                      alt={restaurant.name}
-                      className="w-16 h-16 object-cover rounded"
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://via.placeholder.com/64?text=No+Image';
-                      }}
-                    />
-                  ) : (
-                    <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center text-xs text-muted-foreground">
-                      無照片
-                    </div>
-                  )}
-                </TableCell>
-                <TableCell className="font-medium">{restaurant.name}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1 text-sm">
-                    <MapPin className="h-3 w-3" />
-                    {restaurant.address}
+        <div className="space-y-4">
+          {restaurants?.map((restaurant) => (
+            <Card 
+              key={restaurant.id} 
+              className="overflow-hidden hover:shadow-xl transition-all cursor-pointer"
+              onClick={() => handleEdit(restaurant)}
+            >
+              <CardContent className="p-0">
+                <div className="flex items-center gap-4 p-4">
+                  {/* 照片 */}
+                  <div className="flex-shrink-0">
+                    {restaurant.photoUrl ? (
+                      <img 
+                        src={restaurant.photoUrl} 
+                        alt={restaurant.name}
+                        className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://via.placeholder.com/128?text=No+Image';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                        <span className="text-4xl">🍴</span>
+                      </div>
+                    )}
                   </div>
-                </TableCell>
-                <TableCell>
-                  {restaurant.phone && (
-                    <div className="flex items-center gap-1 text-sm">
-                      <Phone className="h-3 w-3" />
-                      {restaurant.phone}
+                  
+                  {/* 內容 */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h3 className="text-lg sm:text-xl font-bold truncate">{restaurant.name}</h3>
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium flex-shrink-0 ${
+                        restaurant.isActive 
+                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" 
+                          : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
+                      }`}>
+                        {restaurant.isActive ? "啟用" : "停用"}
+                      </span>
                     </div>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                    restaurant.isActive 
-                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" 
-                      : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
-                  }`}>
-                    {restaurant.isActive ? "啟用" : "停用"}
-                  </span>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(restaurant)}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDelete(restaurant.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    
+                    <div className="space-y-1 text-sm text-muted-foreground">
+                      <div className="flex items-start gap-2">
+                        <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                        <span className="line-clamp-2">{restaurant.address}</span>
+                      </div>
+                      {restaurant.phone && (
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-4 w-4 flex-shrink-0" />
+                          <span>{restaurant.phone}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </TableCell>
-              </TableRow>
-            ))}
-            {restaurants?.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                  尚無店家資料，請點擊上方按鈕新增
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+                </div>
+                
+                {/* 按鈕區 */}
+                <div className="border-t bg-gray-50 dark:bg-gray-800/50 p-4 flex gap-3">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEdit(restaurant);
+                    }}
+                    className="flex-1 h-14 rounded-xl border-2 bg-white hover:bg-orange-50 hover:border-orange-500 hover:text-orange-600 text-base font-semibold"
+                  >
+                    <Pencil className="h-5 w-5 mr-2" />
+                    編輯店家
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(restaurant.id);
+                    }}
+                    className="flex-1 h-14 rounded-xl border-2 bg-white hover:bg-red-50 hover:border-red-500 hover:text-red-600 text-base font-semibold"
+                  >
+                    <Trash2 className="h-5 w-5 mr-2" />
+                    刪除店家
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+          
+          {restaurants?.length === 0 && (
+            <Card>
+              <CardContent className="py-12 text-center text-muted-foreground">
+                尚無店家資料，請點擊上方按鈕新增
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
