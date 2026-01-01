@@ -89,6 +89,16 @@ export default function CouponManagement() {
     },
   });
 
+  const generateDescriptionMutation = trpc.coupons.generateDescription.useMutation({
+    onSuccess: (data) => {
+      setFormData({ ...formData, description: data.description });
+      toast.success('AI 生成成功！');
+    },
+    onError: (error) => {
+      toast.error(error.message || 'AI 生成失敗');
+    },
+  });
+
   const resetForm = () => {
     setFormData({
       restaurantId: selectedRestaurant || 0,
@@ -223,22 +233,17 @@ export default function CouponManagement() {
                             type="button"
                             variant="outline"
                             size="sm"
-                            onClick={async () => {
+                            onClick={() => {
                               if (!formData.title) {
                                 toast.error('請先輸入優惠券標題');
                                 return;
                               }
-                              try {
-                                toast.info('正在生成優惠內容...');
-                                const result = await trpc.coupons.generateDescription.mutate({
-                                  title: formData.title,
-                                });
-                                setFormData({ ...formData, description: result.description });
-                                toast.success('AI 生成成功！');
-                              } catch (error: any) {
-                                toast.error(error.message || 'AI 生成失敗');
-                              }
+                              toast.info('正在生成優惠內容...');
+                              generateDescriptionMutation.mutate({
+                                title: formData.title,
+                              });
                             }}
+                            disabled={generateDescriptionMutation.isPending}
                             className="text-xs"
                           >
                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
