@@ -67,6 +67,8 @@ export const coupons = mysqlTable("coupons", {
   expiresAt: timestamp("expiresAt"),
   // 是否為簽到獎勵優惠券 (連續簽到 7 天獲得)
   isCheckInReward: boolean("isCheckInReward").default(false).notNull(),
+  // 曝光權重 (1-10，數字越大曝光機率越高)
+  weight: int("weight").default(5).notNull(),
   isActive: boolean("isActive").default(true).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

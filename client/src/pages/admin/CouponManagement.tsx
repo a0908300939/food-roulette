@@ -11,6 +11,7 @@ import { Plus, Pencil, Trash2, Ticket } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
 
 interface CouponFormData {
   restaurantId: number;
@@ -19,6 +20,7 @@ interface CouponFormData {
   imageUrl?: string;
   type: "discount" | "gift" | "cashback" | "check_in_reward";
   isCheckInReward: boolean;
+  weight: number;
   isActive: boolean;
 }
 
@@ -33,6 +35,7 @@ export default function CouponManagement() {
     imageUrl: "",
     type: "discount",
     isCheckInReward: false,
+    weight: 5,
     isActive: true,
   });
 
@@ -94,6 +97,7 @@ export default function CouponManagement() {
       imageUrl: "",
       type: "discount",
       isCheckInReward: false,
+      weight: 5,
       isActive: true,
     });
     setEditingId(null);
@@ -124,6 +128,7 @@ export default function CouponManagement() {
       imageUrl: coupon.imageUrl || "",
       type: coupon.type,
       isCheckInReward: coupon.isCheckInReward || false,
+      weight: coupon.weight || 5,
       isActive: coupon.isActive,
     });
     setIsDialogOpen(true);
@@ -292,6 +297,32 @@ export default function CouponManagement() {
                       <p className="text-xs text-muted-foreground">
                         簽到獎勵優惠券：連續簽到 7 天的使用者會隨機獲得，有效期限為獲得後 7 天
                       </p>
+                      
+                      {/* 曝光權重 */}
+                      <div className="grid gap-4">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="weight">曝光權重</Label>
+                          <span className="text-2xl font-bold text-primary">{formData.weight}</span>
+                        </div>
+                        <Slider
+                          id="weight"
+                          min={1}
+                          max={10}
+                          step={1}
+                          value={[formData.weight]}
+                          onValueChange={(value) => setFormData({ ...formData, weight: value[0] })}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>1 (低)</span>
+                          <span>5 (中)</span>
+                          <span>10 (高)</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          權重越高，轉盤中出現的機率越大。例如權重 5 的優惠券會比權重 1 的優惠券出現 5 倍。
+                        </p>
+                      </div>
+                      
                       <div className="flex items-center space-x-2">
                         <Switch
                           id="isActive"
