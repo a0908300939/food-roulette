@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, Search, Edit, ShieldCheck, User as UserIcon, Store } from "lucide-react";
+import { Loader2, Search, Edit, ShieldCheck, User as UserIcon, Store, Phone, Mail, Calendar } from "lucide-react";
 import { toast } from "sonner";
 
 export default function UserManagement() {
@@ -122,22 +121,22 @@ export default function UserManagement() {
     switch (role) {
       case "admin":
         return (
-          <Badge className="bg-amber-500 hover:bg-amber-600">
-            <ShieldCheck className="h-3 w-3 mr-1" />
+          <Badge className="bg-amber-500 hover:bg-amber-600 text-sm px-3 py-1">
+            <ShieldCheck className="h-4 w-4 mr-1" />
             系統管理員
           </Badge>
         );
       case "merchant":
         return (
-          <Badge className="bg-blue-500 hover:bg-blue-600">
-            <Store className="h-3 w-3 mr-1" />
+          <Badge className="bg-blue-500 hover:bg-blue-600 text-sm px-3 py-1">
+            <Store className="h-4 w-4 mr-1" />
             商家擁有者
           </Badge>
         );
       default:
         return (
-          <Badge variant="secondary">
-            <UserIcon className="h-3 w-3 mr-1" />
+          <Badge variant="secondary" className="text-sm px-3 py-1">
+            <UserIcon className="h-4 w-4 mr-1" />
             一般使用者
           </Badge>
         );
@@ -147,7 +146,7 @@ export default function UserManagement() {
   return (
     <Card className="shadow-2xl">
       <CardHeader>
-        <CardTitle className="text-3xl font-bold">使用者管理</CardTitle>
+        <CardTitle className="text-2xl sm:text-3xl font-bold">使用者管理</CardTitle>
         <CardDescription className="text-base">管理使用者角色與商家權限</CardDescription>
       </CardHeader>
       <CardContent>
@@ -164,7 +163,7 @@ export default function UserManagement() {
           </div>
         </div>
 
-        {/* 使用者列表 - 表格式 */}
+        {/* 使用者列表 - 卡片形式 */}
         {isLoading ? (
           <div className="flex justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -174,73 +173,76 @@ export default function UserManagement() {
             <p className="text-base">沒有找到符合條件的使用者</p>
           </div>
         ) : (
-          <div className="rounded-lg border overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-50 dark:bg-gray-800">
-                  <TableHead className="font-bold text-base">使用者</TableHead>
-                  <TableHead className="font-bold text-base">登入方式</TableHead>
-                  <TableHead className="font-bold text-base">角色</TableHead>
-                  <TableHead className="font-bold text-base">店舖數</TableHead>
-                  <TableHead className="font-bold text-base">註冊時間</TableHead>
-                  <TableHead className="font-bold text-base text-right">操作</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.map((user: any) => (
-                  <TableRow 
-                    key={user.id}
-                    className="hover:bg-orange-50 dark:hover:bg-orange-950/20 transition-colors"
-                  >
-                    <TableCell className="font-medium">
-                      <div className="flex flex-col">
-                        <span className="text-base font-semibold">
-                          {user.email || user.phone || "-"}
-                        </span>
+          <div className="space-y-4">
+            {filteredUsers.map((user: any) => (
+              <Card 
+                key={user.id}
+                className="border-2 hover:border-orange-300 transition-colors"
+              >
+                <CardContent className="p-4">
+                  {/* 上方：角色徽章和編輯按鈕 */}
+                  <div className="flex items-center justify-between mb-3">
+                    {getRoleBadge(user.role)}
+                    <Button
+                      variant="default"
+                      size="lg"
+                      onClick={() => handleEdit(user)}
+                      className="h-12 px-6 text-base font-bold bg-orange-500 hover:bg-orange-600 text-white rounded-xl"
+                    >
+                      <Edit className="h-5 w-5 mr-2" />
+                      編輯
+                    </Button>
+                  </div>
+
+                  {/* 使用者資訊 */}
+                  <div className="space-y-2">
+                    {/* Email */}
+                    {user.email && (
+                      <div className="flex items-center gap-2 text-base">
+                        <Mail className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                        <span className="font-medium break-all">{user.email}</span>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">
+                    )}
+                    
+                    {/* 電話 */}
+                    {user.phone && (
+                      <div className="flex items-center gap-2 text-base">
+                        <Phone className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                        <span className="font-medium">{user.phone}</span>
+                      </div>
+                    )}
+
+                    {/* 下方資訊：登入方式、店舖數、註冊時間 */}
+                    <div className="flex flex-wrap items-center gap-3 pt-2 border-t mt-3">
+                      {/* 登入方式 */}
+                      <Badge variant="outline" className="text-sm capitalize">
                         {user.loginMethod || "未知"}
                       </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {getRoleBadge(user.role)}
-                    </TableCell>
-                    <TableCell>
-                      {user.restaurantIds && user.restaurantIds.length > 0 ? (
-                        <div className="flex items-center gap-1 text-sm">
+
+                      {/* 店舖數 */}
+                      {user.restaurantIds && user.restaurantIds.length > 0 && (
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
                           <Store className="h-4 w-4" />
-                          <span>{user.restaurantIds.length}</span>
+                          <span>{user.restaurantIds.length} 間店舖</span>
                         </div>
-                      ) : (
-                        <span className="text-muted-foreground">-</span>
                       )}
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {formatDate(user.createdAt)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(user)}
-                        className="h-10 px-4 hover:bg-orange-50 hover:border-orange-500 hover:text-orange-600"
-                      >
-                        <Edit className="h-4 w-4 mr-1" />
-                        編輯
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+
+                      {/* 註冊時間 */}
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Calendar className="h-4 w-4" />
+                        <span>{formatDate(user.createdAt)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         )}
 
         {/* 編輯對話框 */}
         <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="w-[95vw] max-w-[500px] max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="text-2xl">編輯使用者</DialogTitle>
               <DialogDescription className="text-base">
@@ -310,7 +312,7 @@ export default function UserManagement() {
                               id={`restaurant-${restaurant.id}`}
                               checked={selectedRestaurantIds.includes(restaurant.id)}
                               onCheckedChange={() => toggleRestaurant(restaurant.id)}
-                              className="h-5 w-5"
+                              className="h-6 w-6"
                             />
                             <label
                               htmlFor={`restaurant-${restaurant.id}`}
@@ -330,18 +332,18 @@ export default function UserManagement() {
               </div>
             )}
 
-            <DialogFooter className="gap-2">
+            <DialogFooter className="gap-2 mt-4">
               <Button 
                 variant="outline" 
                 onClick={() => setEditDialogOpen(false)}
-                className="h-14 px-6 text-base"
+                className="h-14 px-6 text-base flex-1"
               >
                 取消
               </Button>
               <Button 
                 onClick={handleSave} 
                 disabled={updateRoleMutation.isPending || assignRestaurantsMutation.isPending}
-                className="h-14 px-6 text-base bg-orange-500 hover:bg-orange-600"
+                className="h-14 px-6 text-base bg-orange-500 hover:bg-orange-600 flex-1"
               >
                 {(updateRoleMutation.isPending || assignRestaurantsMutation.isPending) && (
                   <Loader2 className="h-5 w-5 mr-2 animate-spin" />
