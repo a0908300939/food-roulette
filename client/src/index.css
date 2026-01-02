@@ -169,44 +169,58 @@
   }
   
   html {
-    /* 禁止雙擊放大 */
-    touch-action: manipulation;
+    /* 完全禁止縮放 - 只允許垂直捲動 */
+    touch-action: pan-y;
     /* 禁止 iOS Safari 的文字大小調整 */
     -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
     /* 確保 viewport 固定 */
     overflow-x: hidden;
     width: 100%;
     height: 100%;
+    /* 禁止選取文字時的放大鏡 */
+    -webkit-tap-highlight-color: transparent;
   }
   
   body {
     @apply bg-background text-foreground;
     font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    /* 禁止縮放相關 */
-    touch-action: manipulation;
+    /* 完全禁止縮放 - 只允許垂直捲動 */
+    touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
     width: 100%;
     min-height: 100vh;
+    min-height: 100dvh;
     /* 防止 iOS 橡皮筋效果 */
     overscroll-behavior: none;
+    overscroll-behavior-y: none;
   }
   
-  /* 禁止所有元素的雙擊放大 */
-  button, a, input, select, textarea, label, [role="button"] {
-    touch-action: manipulation;
+  /* 所有元素都禁止縮放，只允許垂直捲動 */
+  * {
+    touch-action: pan-y;
+  }
+  
+  /* 可捲動容器允許垂直捲動 */
+  [data-scrollable], .overflow-y-auto, .overflow-auto {
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
   }
   
   /* 確保輸入框不會觸發 iOS 自動放大 */
   input, select, textarea {
     font-size: 16px !important;
+    touch-action: manipulation;
   }
   
   /* 確保所有可點擊元素有足夠的觸控區域 */
   button, a, [role="button"], input[type="checkbox"], input[type="radio"] {
     min-height: 44px;
     min-width: 44px;
+    touch-action: manipulation;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),

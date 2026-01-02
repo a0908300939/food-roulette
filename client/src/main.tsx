@@ -7,35 +7,7 @@ import superjson from "superjson";
 import App from "./App";
 import "./index.css";
 
-// ===== 禁止頁面縮放 =====
-// 防止雙指縮放
-document.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
-document.addEventListener('gesturechange', (e) => e.preventDefault(), { passive: false });
-document.addEventListener('gestureend', (e) => e.preventDefault(), { passive: false });
-
-// 防止雙擊縮放
-let lastTouchEnd = 0;
-document.addEventListener('touchend', (e) => {
-  const now = Date.now();
-  if (now - lastTouchEnd <= 300) {
-    e.preventDefault();
-  }
-  lastTouchEnd = now;
-}, { passive: false });
-
-// 防止 Ctrl+滾輪縮放（桌面瀏覽器）
-document.addEventListener('wheel', (e) => {
-  if (e.ctrlKey) {
-    e.preventDefault();
-  }
-}, { passive: false });
-
-// 防止 Ctrl+加減號縮放
-document.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
-    e.preventDefault();
-  }
-});
+// ===== 禁止頁面縮放（增強版） =====
 
 // 確保 viewport 設定正確
 const ensureViewport = () => {
@@ -48,12 +20,96 @@ const ensureViewport = () => {
   viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
 };
 ensureViewport();
+
+// 防止 iOS Safari 雙指縮放（gesture 事件）
+document.addEventListener('gesturestart', (e) => {
+  e.preventDefault();
+  (e.target as HTMLElement)?.blur?.();
+}, { passive: false, capture: true });
+
+document.addEventListener('gesturechange', (e) => {
+  e.preventDefault();
+}, { passive: false, capture: true });
+
+document.addEventListener('gestureend', (e) => {
+  e.preventDefault();
+}, { passive: false, capture: true });
+
+// 防止雙指縮放（touchmove 事件）
+let lastTouchCount = 0;
+document.addEventListener('touchstart', (e) => {
+  lastTouchCount = e.touches.length;
+  if (e.touches.length > 1) {
+    e.preventDefault();
+  }
+}, { passive: false, capture: true });
+
+document.addEventListener('touchmove', (e) => {
+  // 如果是多指觸控，阻止縮放
+  if (e.touches.length > 1 || lastTouchCount > 1) {
+    e.preventDefault();
+  }
+}, { passive: false, capture: true });
+
+// 防止雙擊縮放
+let lastTouchEnd = 0;
+let lastTouchX = 0;
+let lastTouchY = 0;
+document.addEventListener('touchend', (e) => {
+  const now = Date.now();
+  const touch = e.changedTouches[0];
+  const x = touch?.clientX || 0;
+  const y = touch?.clientY || 0;
+  
+  // 如果兩次點擊在 300ms 內且位置相近，阻止雙擊放大
+  if (now - lastTouchEnd <= 300) {
+    const distance = Math.sqrt(Math.pow(x - lastTouchX, 2) + Math.pow(y - lastTouchY, 2));
+    if (distance < 50) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+  
+  lastTouchEnd = now;
+  lastTouchX = x;
+  lastTouchY = y;
+}, { passive: false, capture: true });
+
+// 防止 Ctrl+滾輪縮放（桌面瀏覽器）
+document.addEventListener('wheel', (e) => {
+  if (e.ctrlKey || e.metaKey) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+// 防止 Ctrl/Cmd+加減號縮放
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
+    e.preventDefault();
+  }
+});
+
 // 每次頁面可見時重新確認 viewport
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') {
     ensureViewport();
   }
 });
+
+// 頁面載入後再次確認
+window.addEventListener('load', () => {
+  ensureViewport();
+  // 延遲執行以確保其他腳本不會覆蓋
+  setTimeout(ensureViewport, 100);
+  setTimeout(ensureViewport, 500);
+});
+
+// 當結尾方向改變時重新確認
+window.addEventListener('orientationchange', () => {
+  ensureViewport();
+  setTimeout(ensureViewport, 100);
+});
+
 // ===== 禁止頁面縮放結束 =====
 
 const queryClient = new QueryClient();
