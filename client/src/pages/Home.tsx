@@ -327,27 +327,27 @@ export default function Home() {
         backgroundAttachment: 'fixed',
       } : undefined}
     >
-      {/* 頂部導航 - 範本樣式 */}
-      <header className="bg-white dark:bg-gray-900 border-b sticky top-0 z-50">
-        <div className="container py-4 px-4">
+      {/* 頂部導航 - 放大版 */}
+      <header className="bg-white dark:bg-gray-900 border-b-2 sticky top-0 z-50">
+        <div className="container py-3 sm:py-4 px-3 sm:px-4">
           <div className="flex items-center justify-between">
-            {/* Logo - 大字橘紅色 */}
+            {/* Logo - 放大字體 */}
             <div className="flex items-center">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">{APP_TITLE}</h1>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary">{APP_TITLE}</h1>
             </div>
             
-            {/* 導航按鈕 - 圓角方形邊框 */}
+            {/* 導航按鈕 - 放大 */}
             <div className="flex items-center gap-2 sm:gap-3">
               {isAuthenticated ? (
                 <>
-                  {/* 通知 - 圓角方形邊框按鈕 */}
+                  {/* 通知 - 放大按鈕 */}
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={() => setLocation("/notifications")}
-                    className="relative h-12 w-12 sm:h-14 sm:w-14 rounded-xl border-2"
+                    className="relative h-14 w-14 sm:h-16 sm:w-16 rounded-xl border-2"
                   >
-                    <Bell className="h-6 w-6 sm:h-7 sm:w-7" />
+                    <Bell className="h-7 w-7 sm:h-8 sm:w-8" />
                     {unreadData && unreadData.unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                         {unreadData.unreadCount > 9 ? '9+' : unreadData.unreadCount}
@@ -355,25 +355,25 @@ export default function Home() {
                     )}
                   </Button>
                   
-                  {/* 我的優惠券 - 圓角方形邊框按鈕 */}
+                  {/* 我的優惠券 - 放大按鈕 */}
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={() => setLocation("/my-coupons")}
-                    className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl border-2"
+                    className="h-14 w-14 sm:h-16 sm:w-16 rounded-xl border-2"
                   >
-                    <Ticket className="h-6 w-6 sm:h-7 sm:w-7" />
+                    <Ticket className="h-7 w-7 sm:h-8 sm:w-8" />
                   </Button>
                   
-                  {/* 管理後台 - 圓角方形邊框按鈕加文字 */}
+                  {/* 管理後台 - 放大按鈕 */}
                   {user?.role === 'admin' && (
                     <Button 
                       variant="outline" 
                       onClick={() => setLocation("/admin")}
-                      className="h-12 sm:h-14 rounded-xl border-2 px-4 sm:px-5 flex items-center gap-2"
+                      className="h-14 sm:h-16 rounded-xl border-2 px-4 sm:px-6 flex items-center gap-2"
                     >
-                      <Settings className="h-6 w-6 sm:h-7 sm:w-7" />
-                      <span className="text-base sm:text-lg font-semibold">管理後台</span>
+                      <Settings className="h-7 w-7 sm:h-8 sm:w-8" />
+                      <span className="text-lg sm:text-xl font-bold">管理後台</span>
                     </Button>
                   )}
                 </>
@@ -381,7 +381,7 @@ export default function Home() {
                 <Button 
                   variant="default" 
                   onClick={() => setIsLoginDialogOpen(true)}
-                  className="h-12 sm:h-14 rounded-xl px-6 sm:px-8 text-base sm:text-lg font-bold"
+                  className="h-14 sm:h-16 rounded-xl px-8 sm:px-10 text-lg sm:text-xl font-black"
                 >
                   登入
                 </Button>
@@ -441,35 +441,30 @@ export default function Home() {
               </div>
             </div>
           )}
-          {/* 標題區 - 範本樣式：橘色漸層背景 */}
-          <div className="bg-gradient-to-b from-orange-500 to-orange-400 rounded-3xl mx-2 sm:mx-4 p-6 sm:p-8 md:p-10 text-center space-y-4 sm:space-y-6 animate-slide-in-bottom">
-            {/* Logo 圖示 - 超大 */}
-            <div className="flex justify-center mb-4">
-              <img src={APP_LOGO} alt={APP_TITLE} className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 object-contain drop-shadow-lg" />
-            </div>
-            
-            {/* 主標題 - 超大白色字體 */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight" style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.2)' }}>
+          {/* 標題區 - 簡化版：縮小橘色區域，移除 LOGO */}
+          <div className="bg-gradient-to-b from-orange-500 to-orange-400 rounded-2xl mx-2 sm:mx-4 p-4 sm:p-5 text-center space-y-2 sm:space-y-3 animate-slide-in-bottom">
+            {/* 主標題 - 縮小 */}
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight" style={{ textShadow: '2px 2px 8px rgba(0, 0, 0, 0.2)' }}>
               今天吃什麼？
             </h1>
             
-            {/* 副標題 */}
-            <p className="text-lg sm:text-xl md:text-2xl text-white/90 leading-relaxed max-w-2xl mx-auto font-medium">
+            {/* 副標題 - 縮小 */}
+            <p className="text-sm sm:text-base text-white/90 leading-relaxed max-w-2xl mx-auto font-medium">
               草屯在地美食,抽出驚喜優惠！
             </p>
             
-            {/* 時鐘區域 - 白色圓角卡片 */}
+            {/* 時鐘區域 - 縮小 */}
             <div className="flex justify-center">
               <DigitalClock />
             </div>
             
-            {/* 查看抽獎規則按鈕 - 白色圓角 */}
+            {/* 查看抽獎規則按鈕 - 縮小 */}
             <Button
               variant="outline"
               onClick={() => setIsRulesDialogOpen(true)}
-              className="mx-auto bg-white hover:bg-gray-50 text-gray-700 rounded-full border-0 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-md"
+              className="mx-auto bg-white hover:bg-gray-50 text-gray-700 rounded-full border-0 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold shadow-md"
             >
-              <Info className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
+              <Info className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5" />
               查看抽獎規則
             </Button>
           </div>

@@ -288,8 +288,8 @@ export default function SpinWheel({ restaurants, wheelData, onResult, onSpin, wh
       // 計算最大文字寬度（扇形內可用空間）
       const maxWidth = radius * 0.5; // 限制文字寬度在扇形的 50% 半徑內
       
-      // 根據文字長度決定字體大小和是否換行
-      let fontSize = 14;
+      // 根據文字長度決定字體大小和是否換行 - 放大版
+      let fontSize = 16;
       let lines: string[] = [displayText];
       
       // 如果文字太長，嘗試分成兩行
@@ -299,12 +299,12 @@ export default function SpinWheel({ restaurants, wheelData, onResult, onSpin, wh
         const line1 = displayText.substring(0, midPoint);
         const line2 = displayText.substring(midPoint);
         lines = [line1, line2];
-        fontSize = 12; // 兩行時使用較小字體
+        fontSize = 14; // 兩行時使用較小字體
       }
       
       // 如果文字仍然太長，進一步縮小字體
       if (displayText.length > 12) {
-        fontSize = 10;
+        fontSize = 12;
       }
       
       ctx.font = `bold ${fontSize}px 'Noto Sans TC', sans-serif`;
@@ -384,31 +384,31 @@ export default function SpinWheel({ restaurants, wheelData, onResult, onSpin, wh
   };
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      {/* 轉盤容器 */}
-      <div className="relative w-80 h-80 flex items-center justify-center">
-        {/* 指針 */}
+    <div className="flex flex-col items-center gap-4 sm:gap-6">
+      {/* 轉盤容器 - 放大至全寬 */}
+      <div className="relative w-[90vw] max-w-[400px] aspect-square flex items-center justify-center">
+        {/* 指針 - 放大 */}
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="w-0 h-0 border-l-8 border-r-8 border-t-12 border-l-transparent border-r-transparent border-t-red-500"></div>
+          <div className="w-0 h-0 border-l-[12px] border-r-[12px] border-t-[20px] border-l-transparent border-r-transparent border-t-red-500 drop-shadow-lg"></div>
         </div>
 
-        {/* 轉盤 */}
+        {/* 轉盤 - 放大 */}
         <canvas
           ref={canvasRef}
-          width={320}
-          height={320}
-          className="w-80 h-80 transition-transform duration-4000 ease-out"
+          width={400}
+          height={400}
+          className="w-full h-full transition-transform duration-4000 ease-out"
           style={{ transform: `rotate(${rotation}deg)` }}
         />
       </div>
 
-      {/* 開始轉盤按鈕 */}
+      {/* 開始轉盤按鈕 - 大幅放大，讓使用者一眼就知道要按這裡 */}
       <Button
         onClick={handleSpin}
         disabled={isSpinning}
-        className="px-8 py-3 text-lg font-bold bg-orange-500 hover:bg-orange-600 text-white rounded-lg"
+        className="w-full max-w-[280px] h-16 sm:h-20 px-10 sm:px-14 text-xl sm:text-2xl font-black bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
       >
-        {isSpinning ? '轉盤中...' : '開始轉盤'}
+        {isSpinning ? '轉盤中...' : '🎰 開始轉盤'}
       </Button>
 
       {/* 音效元素 */}
