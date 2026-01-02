@@ -504,7 +504,7 @@ export default function Home() {
                   )}
                   
                   {/* 轉盤 */}
-                  {(!isAuthenticated || (remainingSpins && remainingSpins.canSpin)) ? (
+                  {(!isAuthenticated || (remainingSpins && (remainingSpins.isAdmin || remainingSpins.canSpin))) ? (
                     <SpinWheel
                       restaurants={sortedRestaurants}
                       wheelData={wheelData}
