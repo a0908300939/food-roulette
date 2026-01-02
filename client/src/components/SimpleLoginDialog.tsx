@@ -39,6 +39,18 @@ export default function SimpleLoginDialog({
   const [loginType, setLoginType] = useState<"phone" | "email">("phone");
   const utils = trpc.useUtils();
 
+  // 當對話框關閉時，重置 viewport 縮放
+  const handleOpenChange = (newOpen: boolean) => {
+    if (!newOpen) {
+      // 重置 viewport 縮放
+      const viewport = document.querySelector('meta[name="viewport"]');
+      if (viewport) {
+        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+      }
+    }
+    onOpenChange(newOpen);
+  };
+
   const loginMutation = (trpc.auth as any).simpleLogin.useMutation({
     onSuccess: async (data: any) => {
       toast.success(data.isNewUser ? "註冊成功！" : "登入成功！");
@@ -46,6 +58,12 @@ export default function SimpleLoginDialog({
       // 直接更新 TRPC 快取中的使用者資料，而不是重新載入頁面
       // 這樣可以確保 useAuth hook 立即取得最新的使用者資訊
       utils.auth.me.setData(undefined, data.user);
+      
+      // 重置 viewport 縮放
+      const viewport = document.querySelector('meta[name="viewport"]');
+      if (viewport) {
+        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+      }
       
       onOpenChange(false);
       onSuccess?.();
@@ -110,7 +128,7 @@ export default function SimpleLoginDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[500px] p-6">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">登入 / 註冊</DialogTitle>
