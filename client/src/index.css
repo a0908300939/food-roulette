@@ -164,10 +164,49 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    /* 禁止文字選取時的放大鏡效果 */
+    -webkit-touch-callout: none;
   }
+  
+  html {
+    /* 禁止雙擊放大 */
+    touch-action: manipulation;
+    /* 禁止 iOS Safari 的文字大小調整 */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* 確保 viewport 固定 */
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+  }
+  
   body {
     @apply bg-background text-foreground;
     font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    /* 禁止縮放相關 */
+    touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
+    /* 防止 iOS 橡皮筋效果 */
+    overscroll-behavior: none;
+  }
+  
+  /* 禁止所有元素的雙擊放大 */
+  button, a, input, select, textarea, label, [role="button"] {
+    touch-action: manipulation;
+  }
+  
+  /* 確保輸入框不會觸發 iOS 自動放大 */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  
+  /* 確保所有可點擊元素有足夠的觸控區域 */
+  button, a, [role="button"], input[type="checkbox"], input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
