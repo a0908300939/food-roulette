@@ -640,22 +640,22 @@ export default function Home() {
         </div>
       </main>
 
-      {/* 結果對話框 - 放大至幾乎全螢幕 */}
+      {/* 結果對話框 - 同比例放大，不留空白 */}
       <Dialog open={isResultDialogOpen} onOpenChange={setIsResultDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-[95vw] h-[90vh] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+        <DialogContent className="w-[92vw] max-w-[500px] max-h-[85vh] overflow-y-auto p-5 sm:p-6">
           <DialogHeader className="space-y-2">
             <DialogTitle className="text-2xl sm:text-3xl text-center font-black">🎉 恭喜獲得優惠券！</DialogTitle>
             <DialogDescription className="text-base sm:text-lg text-center">快來看看你抽到什麼好康</DialogDescription>
           </DialogHeader>
           
           {selectedRestaurant && (
-            <div className="space-y-4 sm:space-y-5 mt-4">
+            <div className="space-y-4 mt-3">
               {/* 優惠券資訊（優先顯示） */}
               {selectedCoupon && (
                 <Card className="coupon-card text-white overflow-hidden">
                   {/* 優惠券圖片 */}
                   {selectedCoupon.imageUrl && (
-                    <div className="w-full h-40 sm:h-52 relative">
+                    <div className="w-full h-36 sm:h-44 relative">
                       <img
                         src={selectedCoupon.imageUrl}
                         alt={selectedCoupon.title}
@@ -663,16 +663,16 @@ export default function Home() {
                       />
                     </div>
                   )}
-                  <CardHeader className="p-4 sm:p-5">
-                    <div className="flex items-center gap-4">
-                      <Ticket className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0" />
-                      <CardTitle className="text-white text-xl sm:text-2xl font-bold">{selectedCoupon.title}</CardTitle>
+                  <CardHeader className="p-4">
+                    <div className="flex items-center gap-3">
+                      <Ticket className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0" />
+                      <CardTitle className="text-white text-lg sm:text-xl font-bold">{selectedCoupon.title}</CardTitle>
                     </div>
                   </CardHeader>
-                  <CardContent className="p-4 sm:p-5 pt-0">
-                    <p className="text-white/90 text-base sm:text-lg leading-relaxed">{selectedCoupon.description}</p>
+                  <CardContent className="p-4 pt-0">
+                    <p className="text-white/90 text-sm sm:text-base leading-relaxed">{selectedCoupon.description}</p>
                     {selectedCoupon.expiresAt && (
-                      <p className="text-sm sm:text-base text-white/70 mt-3">
+                      <p className="text-xs sm:text-sm text-white/70 mt-2">
                         有效期限：{new Date(selectedCoupon.expiresAt).toLocaleDateString('zh-TW')}
                       </p>
                     )}
@@ -682,32 +682,32 @@ export default function Home() {
 
               {/* 店家資訊 */}
               <Card>
-                <CardHeader className="p-4 sm:p-5">
-                  <CardTitle className="text-lg sm:text-xl font-bold">{selectedRestaurant.name}</CardTitle>
+                <CardHeader className="p-4">
+                  <CardTitle className="text-base sm:text-lg font-bold">{selectedRestaurant.name}</CardTitle>
                   {selectedRestaurant.description && (
-                    <CardDescription className="text-base sm:text-lg mt-2 leading-relaxed">{selectedRestaurant.description}</CardDescription>
+                    <CardDescription className="text-sm sm:text-base mt-1.5 leading-relaxed">{selectedRestaurant.description}</CardDescription>
                   )}
                 </CardHeader>
-                <CardContent className="space-y-3 p-4 sm:p-5 pt-0">
-                  <div className="flex items-start gap-3 text-base sm:text-lg">
-                    <MapPin className="h-5 w-5 sm:h-6 sm:w-6 mt-0.5 text-muted-foreground flex-shrink-0" />
+                <CardContent className="space-y-2 p-4 pt-0">
+                  <div className="flex items-start gap-2 text-sm sm:text-base">
+                    <MapPin className="h-5 w-5 mt-0.5 text-muted-foreground flex-shrink-0" />
                     <span>{selectedRestaurant.address}</span>
                   </div>
                   {selectedRestaurant.phone && (
-                    <div className="flex items-center gap-3 text-base sm:text-lg">
-                      <Phone className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
+                    <div className="flex items-center gap-2 text-sm sm:text-base">
+                      <Phone className="h-5 w-5 text-muted-foreground" />
                       <span>{selectedRestaurant.phone}</span>
                     </div>
                   )}
                 </CardContent>
               </Card>
 
-              {/* 操作按鈕 - 放大 */}
-              <div className="flex flex-col gap-3 sm:gap-4">
+              {/* 操作按鈕 - 放大白色文字 */}
+              <div className="flex flex-col gap-3">
                 <Button
                   size="lg"
                   onClick={handleNavigate}
-                  className="w-full h-14 sm:h-16 text-lg sm:text-xl font-bold rounded-xl"
+                  className="w-full h-14 sm:h-16 text-xl sm:text-2xl font-black text-white rounded-xl shadow-lg"
                 >
                   <Navigation className="h-6 w-6 sm:h-7 sm:w-7 mr-3" />
                   立即導航
@@ -719,7 +719,7 @@ export default function Home() {
                     variant={isRedeemed ? "secondary" : "default"}
                     onClick={handleRedeem}
                     disabled={isRedeemed || redeemCouponMutation.isPending}
-                    className="w-full h-14 sm:h-16 text-lg sm:text-xl font-bold rounded-xl"
+                    className="w-full h-14 sm:h-16 text-xl sm:text-2xl font-black text-white rounded-xl shadow-lg"
                   >
                     <Ticket className="h-6 w-6 sm:h-7 sm:w-7 mr-3" />
                     {isRedeemed ? "已兑換" : "確認兑換"}
@@ -727,7 +727,7 @@ export default function Home() {
                 )}
 
                 {!isAuthenticated && (
-                  <p className="text-sm sm:text-base text-center text-muted-foreground mt-2">
+                  <p className="text-sm sm:text-base text-center text-muted-foreground mt-1">
                     登入後即可兑換優惠券
                   </p>
                 )}
