@@ -246,38 +246,50 @@ export function filterOpenRestaurants<T extends { operatingHours: string; isActi
     const currentDay = dayNames[taiwanDay];
     
     return restaurants.filter((restaurant) => {
-      if (!restaurant.isActive) return false;
+      if (!restaurant.isActive) {
+        console.log('[filterOpenRestaurants]', restaurant.name || 'unknown', '→ 未啟用');
+        return false;
+      }
       
       try {
         const hours = JSON.parse(restaurant.operatingHours);
         const todayHours = hours[currentDay];
         
+        console.log('[filterOpenRestaurants]', restaurant.name || 'unknown', '→ currentDay:', currentDay, 'todayHours:', JSON.stringify(todayHours));
+        
         if (!todayHours || todayHours === "closed") {
+          console.log('[filterOpenRestaurants]', restaurant.name || 'unknown', '→ 無營業時間或公休');
           return false;
         }
         
         // 檢查是否為公休
         if (typeof todayHours === 'object' && todayHours !== null && todayHours.closed === true) {
+          console.log('[filterOpenRestaurants]', restaurant.name || 'unknown', '→ 公休 (closed=true)');
           return false;
         }
         
         // 如果有 shifts 陣列，檢查每個班次
         if (typeof todayHours === 'object' && Array.isArray(todayHours.shifts)) {
+          console.log('[filterOpenRestaurants]', restaurant.name || 'unknown', '→ 檢查 shifts:', JSON.stringify(todayHours.shifts), 'currentMinutes:', currentMinutes);
           for (const shift of todayHours.shifts) {
             const storeStart = timeToMinutes(shift.start);
             const storeEnd = timeToMinutes(shift.end);
+            console.log('[filterOpenRestaurants]', restaurant.name || 'unknown', '→ shift:', shift.start, '-', shift.end, 'storeStart:', storeStart, 'storeEnd:', storeEnd);
             
             // 處理跨午夜的情況
             if (storeEnd <= storeStart) {
               if (currentMinutes >= storeStart || currentMinutes < storeEnd) {
+                console.log('[filterOpenRestaurants]', restaurant.name || 'unknown', '→ ✅ 營業中 (跨午夜)');
                 return true;
               }
             } else {
               if (currentMinutes >= storeStart && currentMinutes < storeEnd) {
+                console.log('[filterOpenRestaurants]', restaurant.name || 'unknown', '→ ✅ 營業中');
                 return true;
               }
             }
           }
+          console.log('[filterOpenRestaurants]', restaurant.name || 'unknown', '→ ❌ 不在營業時間內');
           return false;
         }
         
