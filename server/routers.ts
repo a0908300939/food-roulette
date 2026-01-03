@@ -408,39 +408,50 @@ export const appRouter = router({
 
   // ========== 轉盤功能 (使用者) ==========
   spin: router({
-    // 取得轉盤資料（預先分配每個店家的優惠券）
+    // 取得轉盤資料（每家店的每張優惠券都顯示在轉盤上）
     getWheelData: publicProcedure
       .input(z.object({
         restaurantIds: z.array(z.number()),
       }))
       .query(async ({ input }) => {
-        // 為每個店家預先分配一張優惠券
-        const wheelSlices = await Promise.all(
-          input.restaurantIds.map(async (restaurantId) => {
-            const restaurant = await db.getRestaurantById(restaurantId);
-            if (!restaurant) return null;
-            
-            // 查詢該店家的所有優惠券（已過濾簽到獎勵券）
-            const coupons = await db.getCouponsByRestaurantId(restaurantId);
-            const availableCoupons = coupons.filter(c => c.isActive && !c.isCheckInReward);
-            
-            // 隨機選擇一張優惠券
-            let selectedCoupon = null;
-            if (availableCoupons.length > 0) {
-              const randomIndex = Math.floor(Math.random() * availableCoupons.length);
-              selectedCoupon = availableCoupons[randomIndex];
+        // 為每個店家的每張優惠券建立一個扇形
+        const allSlices: { restaurantId: number; restaurant: any; coupon: any }[] = [];
+        
+        for (const restaurantId of input.restaurantIds) {
+          const restaurant = await db.getRestaurantById(restaurantId);
+          if (!restaurant) continue;
+          
+          // 查詢該店家的所有優惠券（已過濾簽到獎勵券）
+          const coupons = await db.getCouponsByRestaurantId(restaurantId);
+          const availableCoupons = coupons.filter(c => c.isActive && !c.isCheckInReward);
+          
+          if (availableCoupons.length > 0) {
+            // 每張優惠券都建立一個扇形
+            for (const coupon of availableCoupons) {
+              allSlices.push({
+                restaurantId,
+                restaurant,
+                coupon,
+              });
             }
-            
-            return {
+          } else {
+            // 如果沒有優惠券，仍然顯示店家（無優惠券）
+            allSlices.push({
               restaurantId,
               restaurant,
-              coupon: selectedCoupon,
-            };
-          })
-        );
+              coupon: null,
+            });
+          }
+        }
         
-        // 過濾掉 null 值
-        return wheelSlices.filter(slice => slice !== null);
+        // 根據優惠券的 weight 權重排序（權重高的優先）
+        allSlices.sort((a, b) => {
+          const weightA = a.coupon?.weight || 5;
+          const weightB = b.coupon?.weight || 5;
+          return weightB - weightA;
+        });
+        
+        return allSlices;
       }),
     
     // 查詢當日剩餘抽獎次數

@@ -115,14 +115,13 @@ export function isRestaurantOpenForPeriod(
     const hours = JSON.parse(operatingHours);
     const dayNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
     
-    // 使用台灣時間（UTC+8）
-    const utcTime = currentTime.getTime();
-    const taiwanTimeMs = utcTime + 8 * 60 * 60 * 1000;
+    // 使用 toLocaleString 取得台灣時間，更可靠
+    const taiwanTimeStr = currentTime.toLocaleString('en-US', { timeZone: 'Asia/Taipei' });
+    const taiwanDate = new Date(taiwanTimeStr);
     
-    // 計算台灣時間的小時、分鐘、星期
-    const taiwanHour = Math.floor((taiwanTimeMs / (60 * 60 * 1000)) % 24);
-    const taiwanMinute = Math.floor((taiwanTimeMs / (60 * 1000)) % 60);
-    const taiwanDay = Math.floor((taiwanTimeMs / (24 * 60 * 60 * 1000)) % 7);
+    const taiwanHour = taiwanDate.getHours();
+    const taiwanMinute = taiwanDate.getMinutes();
+    const taiwanDay = taiwanDate.getDay(); // 0 = Sunday, 1 = Monday, ...
     const currentDay = dayNames[taiwanDay];
     
     const todayHours = hours[currentDay];
@@ -232,14 +231,16 @@ export function filterOpenRestaurants<T extends { operatingHours: string; isActi
   currentTime: Date = new Date()
 ): T[] {
   try {
-    const utcTime = currentTime.getTime();
-    const taiwanTimeMs = utcTime + 8 * 60 * 60 * 1000;
+    // 使用 toLocaleString 取得台灣時間，更可靠
+    const taiwanTimeStr = currentTime.toLocaleString('en-US', { timeZone: 'Asia/Taipei' });
+    const taiwanDate = new Date(taiwanTimeStr);
     
-    // 計算台灣時間的小時、分鐘、星期
-    const taiwanHour = Math.floor((taiwanTimeMs / (60 * 60 * 1000)) % 24);
-    const taiwanMinute = Math.floor((taiwanTimeMs / (60 * 1000)) % 60);
-    const taiwanDay = Math.floor((taiwanTimeMs / (24 * 60 * 60 * 1000)) % 7);
+    const taiwanHour = taiwanDate.getHours();
+    const taiwanMinute = taiwanDate.getMinutes();
+    const taiwanDay = taiwanDate.getDay(); // 0 = Sunday, 1 = Monday, ...
     const currentMinutes = taiwanHour * 60 + taiwanMinute;
+    
+    console.log('[filterOpenRestaurants] 台灣時間:', taiwanHour + ':' + taiwanMinute, '星期:', taiwanDay);
     
     const dayNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
     const currentDay = dayNames[taiwanDay];
