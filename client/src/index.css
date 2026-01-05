@@ -182,6 +182,15 @@
     height: 100%;
     /* 禁止選取文字時的放大鏡 */
     -webkit-tap-highlight-color: transparent;
+    /* 設定基礎字體大小為 18px，讓所有元素都更大 */
+    font-size: 18px;
+  }
+  
+  /* 手機介面優化 - 讓所有瀏覽器都顯示較大的介面 */
+  @media (max-width: 768px) {
+    html {
+      font-size: 20px;
+    }
   }
   
   body {
@@ -218,9 +227,17 @@
   
   /* 確保所有可點擊元素有足夠的觸控區域 */
   button, a, [role="button"], input[type="checkbox"], input[type="radio"] {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 48px;
+    min-width: 48px;
     touch-action: manipulation;
+  }
+  
+  /* 手機介面放大按鈕 */
+  @media (max-width: 768px) {
+    button, [role="button"] {
+      min-height: 56px;
+      font-size: 1.125rem !important;
+    }
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),

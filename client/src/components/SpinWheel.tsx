@@ -406,7 +406,7 @@ export default function SpinWheel({ restaurants, wheelData, onResult, onSpin, wh
       <Button
         onClick={handleSpin}
         disabled={isSpinning}
-        className="w-full max-w-[280px] h-16 sm:h-20 px-10 sm:px-14 text-xl sm:text-2xl font-black bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
+        className="w-full max-w-[320px] h-20 sm:h-24 px-12 sm:px-16 text-2xl sm:text-3xl font-black bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
       >
         {isSpinning ? '轉盤中...' : '🎰 開始轉盤'}
       </Button>
