@@ -131,8 +131,8 @@ export default function SimpleLoginDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="w-[92vw] max-w-[500px] p-5 sm:p-6">
         <DialogHeader>
-          <DialogTitle className="text-2xl sm:text-3xl font-bold">登入 / 註冊</DialogTitle>
-          <DialogDescription className="text-base sm:text-lg">
+          <DialogTitle className="text-xl sm:text-2xl font-bold">登入 / 註冊</DialogTitle>
+          <DialogDescription className="text-base">
             輸入手機號碼或 Email 即可登入，無需驗證碼
           </DialogDescription>
         </DialogHeader>
@@ -142,9 +142,9 @@ export default function SimpleLoginDialog({
           onValueChange={(value) => setLoginType(value as "phone" | "email")}
           className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-2 h-14 sm:h-16">
-            <TabsTrigger value="phone" className="text-lg sm:text-xl font-semibold">手機號碼</TabsTrigger>
-            <TabsTrigger value="email" className="text-lg sm:text-xl font-semibold">Email</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 h-12 sm:h-14">
+            <TabsTrigger value="phone" className="text-base sm:text-lg font-semibold">手機號碼</TabsTrigger>
+            <TabsTrigger value="email" className="text-base sm:text-lg font-semibold">Email</TabsTrigger>
           </TabsList>
 
           <TabsContent value="phone">
@@ -168,7 +168,7 @@ export default function SimpleLoginDialog({
 
               <Button
                 type="submit"
-                className="w-full h-16 sm:h-18 text-xl sm:text-2xl font-black"
+                className="w-full h-14 sm:h-16 text-lg sm:text-xl font-bold"
                 disabled={loginMutation.isPending}
               >
                 {loginMutation.isPending ? (
@@ -203,7 +203,7 @@ export default function SimpleLoginDialog({
 
               <Button
                 type="submit"
-                className="w-full h-16 sm:h-18 text-xl sm:text-2xl font-black"
+                className="w-full h-14 sm:h-16 text-lg sm:text-xl font-bold"
                 disabled={loginMutation.isPending}
               >
                 {loginMutation.isPending ? (

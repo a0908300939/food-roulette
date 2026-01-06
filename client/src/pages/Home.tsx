@@ -331,23 +331,23 @@ export default function Home() {
       <header className="bg-white dark:bg-gray-900 border-b-2 sticky top-0 z-50">
         <div className="container py-3 sm:py-4 px-3 sm:px-4">
           <div className="flex items-center justify-between">
-            {/* Logo - 放大字體 */}
+            {/* Logo */}
             <div className="flex items-center">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-primary">{APP_TITLE}</h1>
+              <h1 className="text-xl sm:text-2xl font-black text-primary">{APP_TITLE}</h1>
             </div>
             
-            {/* 導航按鈕 - 放大 */}
+            {/* 導航按鈕 */}
             <div className="flex items-center gap-2 sm:gap-3">
               {isAuthenticated ? (
                 <>
-                  {/* 通知 - 放大按鈕 */}
+                  {/* 通知 */}
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={() => setLocation("/notifications")}
-                    className="relative h-14 w-14 sm:h-16 sm:w-16 rounded-xl border-2"
+                    className="relative h-12 w-12 sm:h-14 sm:w-14 rounded-xl border-2"
                   >
-                    <Bell className="h-7 w-7 sm:h-8 sm:w-8" />
+                    <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
                     {unreadData && unreadData.unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                         {unreadData.unreadCount > 9 ? '9+' : unreadData.unreadCount}
@@ -355,25 +355,25 @@ export default function Home() {
                     )}
                   </Button>
                   
-                  {/* 我的優惠券 - 放大按鈕 */}
+                  {/* 我的優惠券 */}
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={() => setLocation("/my-coupons")}
-                    className="h-14 w-14 sm:h-16 sm:w-16 rounded-xl border-2"
+                    className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl border-2"
                   >
-                    <Ticket className="h-7 w-7 sm:h-8 sm:w-8" />
+                    <Ticket className="h-5 w-5 sm:h-6 sm:w-6" />
                   </Button>
                   
-                  {/* 管理後台 - 放大按鈕 */}
+                  {/* 管理後台 */}
                   {user?.role === 'admin' && (
                     <Button 
                       variant="outline" 
                       onClick={() => setLocation("/admin")}
-                      className="h-14 sm:h-16 rounded-xl border-2 px-4 sm:px-6 flex items-center gap-2"
+                      className="h-12 sm:h-14 rounded-xl border-2 px-3 sm:px-4 flex items-center gap-1.5"
                     >
-                      <Settings className="h-7 w-7 sm:h-8 sm:w-8" />
-                      <span className="text-lg sm:text-xl font-bold">管理後台</span>
+                      <Settings className="h-5 w-5 sm:h-6 sm:w-6" />
+                      <span className="text-base sm:text-lg font-bold">管理後台</span>
                     </Button>
                   )}
                 </>
@@ -381,7 +381,7 @@ export default function Home() {
                 <Button 
                   variant="default" 
                   onClick={() => setIsLoginDialogOpen(true)}
-                  className="h-14 sm:h-16 rounded-xl px-8 sm:px-10 text-lg sm:text-xl font-black"
+                  className="h-12 sm:h-14 rounded-xl px-6 sm:px-8 text-base sm:text-lg font-bold"
                 >
                   登入
                 </Button>
