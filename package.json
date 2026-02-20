@@ -1,0 +1,16 @@
+{
+  "name": "food-roulette",
+  "version": "1.0.0",
+  "description": "草屯美食抽抽樂",
+  "scripts": {
+    "install:all": "cd client && pnpm install && cd ../server && pnpm install",
+    "build": "cd client && pnpm build",
+    "start": "cd server && pnpm start",
+    "dev:client": "cd client && pnpm dev",
+    "dev:server": "cd server && pnpm dev"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

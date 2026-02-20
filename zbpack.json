@@ -1,0 +1,5 @@
+{
+  "build_command": "cd client && pnpm install && pnpm build && cd ../server && pnpm install",
+  "start_command": "cd server && pnpm start",
+  "install_command": "pnpm install"
+}
